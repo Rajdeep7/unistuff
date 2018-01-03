@@ -74,3 +74,17 @@ Gegenmaßnahme:
 - Keine rekursiven Anfragen von extern beantworten
 
 ### SYN Flooding
+- SYN Paket mit SeqNr = x eröffnet den Handshake. 
+- Opfer reserviert Buffer für einkommende Pakete und antwortet ACK x+1
+- Halboffene TCP-Verbindungen so lange aufbauen, bis Ressourcen von Bob erschöpft sind. Dann kann Bob keine weiteren Verbindungen aufbauen
+
+Linux kernel 2.2.9 besonders betroffen, da
+- Harmloser Exponential Backoff (3s, 6s, 12s ...) für Wartezeit für Sende-Wiederholungen
+- Viele Erlaubte Wiederholungs-Versuche (7 -> nach 381 Sekunden)
+
+Gegenmaßnahmen:
+- Timer für ACK von Mallet, danach Ressourcen freigeben
+- Zufällig halboffene Verbindung schließen bei Knappheit
+- Maximale Anzahl an halboffenen Verbindungen pro Quell-Adresse
+- SYN Cookies: Ressourcen erst reservieren, wenn ACK y+1 von Mallet eingeht
+  - Problem: Wenn ACK y+1 von Alice verloren geht, kommt keine legitime Verbindung zustande
