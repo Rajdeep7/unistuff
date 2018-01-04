@@ -212,3 +212,83 @@ From https://stackoverflow.com/questions/79923/what-and-where-are-the-stack-and-
 - Format String Attacks
 
 ### Account / Password Cracking
+- Brute-Force
+- Dictionary Attack
+- Brechen des Hashalgorithmus 
+- Social Engineering
+
+Salt:
+- Zunächst wurde das Password mit sich selbst als Schlüssel verschlüsselt -> Immer derselbe Hash
+- Mit Salt muss der Angreifer alle Einträge im Wörterbuch für jedes Passwort / jeden Salt-Wert erneut ausprobieren
+
+Maßnahmen:
+- Langes Salt
+- Aufwendige Hashverfahren (mehrere Runden)
+- Slow Hash Functions verwenden
+- Shadow Password System (nur root kann Passwörter lesen)
+
+### Back Doors, Trap Doors
+- Dauerhafter Zugang zu kompromittierten Maschine durch
+  - Installation eines versteckten Netzdienstes, der hin und wieder auf Kommandos wartet
+  - Eintrag in `.rhosts` von root bzw. `authorized_keys` für SSH
+  - SUID-root Programm austauschen mit Schadfunktionalität
+  
+**SUID** 
+- "Set Owner User ID upon execution"
+- Wenn ein Nutzer eine Datei ausführt hat er die Rechte des Eigentümers der Datei
+  
+Maßnahmen:
+- Überprüfung der offenen Ports und aktiven Netzdienste
+- Suche nach ungewöhnlichen SUID-Programmen
+
+### Rootkits
+1. Angreifer kompromittiert Maschine und erlangt root
+2. Angreifer installiert Rootkit
+  - bereinigt Spuren
+  - öffnet Backdoors
+
+1. Generation:
+- Ersetzt Systembefehle (ls, top, find, netstat, passwd etc.) mit eigenen Varianten
+- Verstecken Prozesse, Dateien etc. des Angreifers
+
+2. Generation:
+- Modifiziert den Kernel, um Dateien vor **allen** Systemprogrammen zu verstecken
+- z.B. durch Loadable Kernel Module unter Linux
+
+Moderne Ausprägungen
+- Hypervisor-level Rootkits: Ursprüngliches OS läuft als virtuelle Maschine
+- Bootkits: Bootloader wird durch Malware ersetzt
+- Hardware / Firmware-Rootkits: BIOS / Firmware der Netzwerkkarte
+
+## Web-basierte Angriffe
+### Cross Site Scripting
+Einbetten von Schadcode in vertrauenswürdigen anderen Code
+1. DOM-basiertes (lokales) XSS
+  - Ohne Beteiligung eines Webservers
+  - JavaScript schreibt irgendwo URL Parameter ins Dokument -> Schadcode wird in URL Parameter übergeben
+  - Mallet bringt Alice dazu, einen Link mit entsprechenden Parametern anzuklicken
+2. Reflexives (nicht-persistentes) XSS
+  - Webserver liefert Webseite mit Schadcode über URL Parameter aus (z.B. über PHP)
+  - Mallet bringt Alice dazu, einen Link mit entsprechenden Parametern anzuklicken
+3. Persistentes (stored) XSS
+  - Schadcode wird vom Webserver gespeichert und bei jeder Anfrage ausgeliefert
+  
+Gegenmaßnahme:
+- Webserver muss Script-Code entfernen oder escapen
+- Client-seitig JavaScript deaktivieren
+
+### SQL Injection
+`ID=42;DROP+TABLE+students;--`
+
+## Netzbasierte Angriffe
+### Sniffing
+- Netzwerkkarten können gesamten Verkehr mithören im WLAN / Ethernet
+- Promiscuous Mode: Auch an andere Rechner adressierte Pakete werden gelesen und ans OS durchgereicht
+- tcpdump, wireshark, ngrep
+
+### Port-Scanner
+- Suchen auf entferntem Rechner nach offenen Ports -> identifizieren Dienste
+- Suchen nach Diensten mit bekannten Schwächen
+
+Gegenmaßnahme:
+- Proaktive Netzüberwachung mit Portscans
