@@ -125,6 +125,8 @@ Gegenmaßnahmen:
   2. Schadensteil (lösche Daten am 1.1.2018)
   3. Sprung an Anfang des Wirtsprogramms
   
+Virus-Signatur: Byte-Sequenz, die in einer Virus-Datei enthalten ist. 
+  
 ### Wurm
 - Eigenständiges Programm, benötigt keinen Wirt
 - Selbstreplikation
@@ -152,3 +154,61 @@ Gegenmaßnahmen:
 ## Email: Hoaxes, Spam, Phishing
 - AIDS-Infektion im Kino etc.
 - Über 99% aller Mails sind Spam
+
+### Spamfilter
+Unterschiedlich schnell / granular
+1. Blacklist / Whitelist:  
+  Blockieren von Mail-Servern und Mail-Domänen, die üblicherweise von Spammern benutzt werden
+2. Regelbasiert im Header und Body
+3. Filtersoftware lernt (NN, Bayes)
+
+Greylisting: 
+- Jede Email mit unbekanntem Tripel (Absender, Quell-Mailserver, Empfänger) ablehnen und Fehlermeldung zurückschicken
+- Erst nach Wartezeit erneute Versuche zulassen
+
+## Mobile Code
+- Typischerweise in Webseiten eingebettet
+- Nutzt Sicherheitslücken in JavaScript, Flash, HTML5 etc.
+- Auf entferntem Rechner generiert und auf lokalem Rechner ausgeführt
+
+Problem mit JavaScript: kein explizites Sicherheits modell / "Identify and Patch" approach
+Problem mit HTML5: Web Storage API, WebSockets API, Cross-Origin Resource Sharing
+
+## Systemnahe Angriffe
+
+### Buffer Overflow
+- Ziel: Ausführen von Code auf fremdem Rechner unter fremden Rechten
+
+### Variante: Stack Smashing
+- Überschreiben von Programmpuffer (z.B. durch Eingabe, Dateien, Datenpakete eines Protokolls) 
+- Manipulation der Rücksprungadresse
+
+Erinnerung:
+
+> **The Stack** - When you call a function the arguments to that function plus some other overhead is put on the stack. Some info (such as where to go on return) is also stored there. When you declare a variable inside your function, that variable is also allocated on the stack.
+> 
+> Deallocating the stack is pretty simple because you always deallocate in the reverse order in which you allocate. Stack stuff is added as you enter functions, the corresponding data is removed as you exit them. This means that you tend to stay within a small region of the stack unless you call lots of functions that call lots of other functions (or create a recursive solution).
+
+From https://stackoverflow.com/questions/79923/what-and-where-are-the-stack-and-heap
+
+<img src="https://github.com/batzner/unistuff/blob/master/img/it-security-buffer-overflow-stack.png?raw=true" width=500/>
+
+**Hürden**
+- Rücksprungadresse ist absolut - Lösung: NOPs vor Schadcode
+- Wenig Speicher in Stack-Segment - Lösung: Dynamisches Nachladen von Schadcode
+- Quellcode von proprietärer Software nicht verfügbar - Lösung: Fuzzing (Kucken, was bei Fehleingaben / Edge Cases passiert)
+
+**Beispiele**
+- Nachbildung von `system("/bin/sh")`, um die Shell mit root-Rechten nutzen zu können
+- *return-to-libc* -> keinen eigenen Code einfügen, sondern Funktionen der Standard-Funktionsbibliothek nutzen, z.B. `system()`
+
+**Gegenmaßnahmen**
+- Sicheres Programmieren `strncpy` statt `strcpy`
+- Stack-Guarding - Mehrere Kopien von Rücksprungadresse machen, bevor die Unterfunktion aufgerufen wird
+- Nicht-ausführbare Stacks - Keinen Code im Stack ausführen (NX bit), schützt nicht gegen return-to-lib
+
+### Weiter Buffer-Overflow Attacken
+- Heap Corruption (Datenstrukturen werden überschrieben)
+- Format String Attacks
+
+### Account / Password Cracking
