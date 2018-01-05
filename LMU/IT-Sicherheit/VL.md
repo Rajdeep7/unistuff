@@ -292,3 +292,106 @@ Gegenmaßnahme:
 
 Gegenmaßnahme:
 - Proaktive Netzüberwachung mit Portscans
+
+## Common Vulnerability Scoring System
+- Hauptziel: Priorisierung
+- Drei Gruppen von Kennzahlen:
+  - Base Metrics: Grundlegende Verwundbarkeitseigenschaften
+  - Temporal Metrics: Zeitabhängige Verwundbarkeitseigenschaften
+  - Environmental Metrics: Anwenderspezifische Verwundbarkeitseigenschaften
+  
+Input:
+- Bewetung von Schwachstellen durch vorgegebene Fragen und Antwortmöglichkeiten
+Output:
+- CVSS-Score [0, 10]
+- CVSS-Vektor = Kurzfassung des gesamten Inputs
+
+**Base Metrics**
+Konstante intrinsische Eigenschaften von Schwachstellen
+- Exploitability metrics
+  - Attack vector (Physisch, auf Rechner, LAN, Internet)
+  - Attack complexity 
+  - Required Privileges
+  - User Interaction (was muss das Opfer tun)
+- Impact metrics
+  - C
+  - I
+  - A
+- Scope -> Auswirkung auf andere Systeme
+
+**Temporal Metrics**
+Aktueller Stand
+- Exploit Code Maturity
+- Remediation Level
+- Report Confidence
+
+**Environmental Metrics**
+Einsatzgebiet des betroffenen Systems
+-> Ändern den Score basierend auf der Bedeuting des betroffenen Systems für die Organisation
+- C, I, A Requirements -> gering, mittel, hoch
+- Modified Base Metrics -> Falls die Organisation besondere Sicherheitsmaßnahmen einsetzt, die die Base Metric Eigenschaften ändern
+
+## Zero-Day Exploits
+Angriff, der eine unbekannte (/soeben erst bekannt gewordene / unbeseitigte) Sicherheitslücke ausnutzt
+
+# Social Engineering
+Ziele:
+- Informationsgewinnung (vs. Vertraulichkeit)
+- Nutzer führt vom Angreifer gewünschte Aktionen aus (vs. Integrität)
+
+## Kategorisierung
+Passive Angriffe  (keine Interaktion mit Opfer)
+- Belauschen
+- Über Schulter schauen
+- Durchsuchen von Papiertonnen
+- Liegenlassen präparierter USB-Sticks (baiting)
+Aktive Angriffe
+- Pretexting - Als Mitarbeiter etc. ausgeben
+- Phishing
+- Internet-Bekanntschaften
+
+Kategorien:
+- Human-based Social Engineering
+  - Dumpster Diving
+  - Shoulder Surfing
+  - Tailgating
+  - Pretexting
+- Computer-based Social Engineering (mit technischen Hilfsmitteln)
+  - Phishing
+  - Baiting
+  - Forensic analysis (Elektronik-Dumpster diving)
+
+## Gegenmaßnahmen
+- Aktenvernichtung
+- Sichtschutzfolien
+- Vereinzelungsanlagen
+- Schulungen etc.
+
+Sensibilisierungs-Phasen-Modell:
+- Aufmerksamkeit
+- Wissen & Einsetllung
+- Verstärkung
+- Öffentlichkeit
+
+## Penetration Tests
+-> White-Hat Hacker identifizieren und melden unbekannte Sicherheitslücken
+
+5 Phasen
+1. Planung und Zielfestlegung
+2. Informationsakquise und Auskundschaften
+3. Spezifikation der Angriffe
+4. Angriff
+5. Ergebnisbericht und Beratung
+
+# Rechtliche Regelungen
+## Strafrecht
+- Antragsdelikt: Tat wird auf Anzeige hin verfolgt
+- Offizialdelikt: Takt wird "von Amts wegen" (Staatsanwaltschaft) verfolgt
+
+### 
+
+# Fragen in letzter VL
+1. Wie genau muss man die Paragraphennummern den Tatbeständen zuordnen können?
+
+# TODO
+Alle Angriffsvarianten nach Auswirkung auf Vertraulichkeit, Integrität und Verfügbarkeit bewerten
