@@ -334,7 +334,7 @@ Einsatzgebiet des betroffenen Systems
 ## Zero-Day Exploits
 Angriff, der eine unbekannte (/soeben erst bekannt gewordene / unbeseitigte) Sicherheitslücke ausnutzt
 
-# Social Engineering
+# 4 - Social Engineering
 Ziele:
 - Informationsgewinnung (vs. Vertraulichkeit)
 - Nutzer führt vom Angreifer gewünschte Aktionen aus (vs. Integrität)
@@ -383,12 +383,96 @@ Sensibilisierungs-Phasen-Modell:
 4. Angriff
 5. Ergebnisbericht und Beratung
 
-# Rechtliche Regelungen
+# 5 - Rechtliche Regelungen
 ## Strafrecht
 - Antragsdelikt: Tat wird auf Anzeige hin verfolgt
 - Offizialdelikt: Takt wird "von Amts wegen" (Staatsanwaltschaft) verfolgt
 
-### 
+### §202a StGB: Ausspähen von Daten
+Zugang
+1. unbefugt / nicht für Täter bestimmt
+2. unter Überwindung einer Zugangssicherung
+3. elektronische gespeicherte oder übermittelte Daten
+
+### §202b StGB: Abfangen von Daten
+Datenbeschaffung
+1. unbefugt / nicht für ihn bestimmt
+2. aus nichtöffentlichen Datenübermittlung
+
+### §202c StGB Vorbereitung von 202a oder 202b (Hackerparagraph)
+Vorbereitung durch **Passwörter oder Computerprogramme**
+- Herstellung
+- Verschaffung
+- Zugänglich machen
+
+Offizialdelikt!
+- Rechtsausschuss des Bundestages: Gutwilliger Umgang mit solchen Werkzeugen durch IT-Sicherheitsexperten wird nicht von §202c erfasst
+- Bundesjustizministerium: Nur Vorbereitungshandlungen zu **Computerstraftaten**
+- Weiterhin Rechtsunsicherheit
+
+### §303a StGB: Datenveränderung
+- Rechtswidrig
+- Löschen, Unbrauchbar machen, Verändern
+- Versuch und Vorbereitung ist strafbar
+
+### §303b StGB: Computersabotage
+- Stören einer Datenverarbeitung
+- Daten mit böser Absicht eingeben / übermitteln
+- Erhöhte Strafe bei wesentlicher Bedeutung der Datenverarbeitung
+- Versuch und Vorbereitung strafbar
+
+## Datenschutz
+Grundprinzipien
+- Generelles Verbot mit Erlaubnisvorbehalt
+- Datenvermeidung / Datensparsamkeit
+- Zweckbindung
+- Transparenz
+
+Datenschutz-Gesetze
+- EU-Datenschutzgrundverordnung
+- BDSG
+- BayDSG
+
+Datenschutzbeauftragter
+- Nur beratend, kein Veto-Recht
+
+Auftragsdatenverarbeitung (ADV)
+- Andere Stelle speichert und verarbeitet Daten im Auftrag
+
+## IT-Sicherheitsgesetz
+- Webserver-Betreiber müssen Kundendaten nach Stand der Technik schützen
+- AKW-Betreiber müssen erhebliche IT-Sicherheitsvorfälle melden
+
+# 6 - Kryptographische Grundlagen
+- **Kryptographie** - Lehre von Methoden zur Ver- und Entschlüsselung von Nachrichten
+- **Kryptoanalyse** - Lehre von Methoden zur Entschlüsselung, ohne im Besitz des Schlüssels zu sein
+- **Kryptologie** = Kryptographie + Kryptoanalyse
+- **Stenographie** - Methoden, die bereits die Existenz einer geheimen Nachricht verbergen  
+  -> geheime Nachricht wird zum **Senagramm**
+  - Linguistische Steganographie
+  - Technische Steganographie (Geheimtinten, unwichtige Bits in Bildern)
+- Verdeckte Kanäle - Nachrichtentransport über nicht erkennbare Medien / Kanäle  
+  Oftmals geringe Bandbreite, da sonst erkennbar
+- **Geheimtext (Ciphertext)** - Verschlüsselte Nachricht
+
+### Kryptographisches System
+$KS = (M,K,C,e,d)$
+- $M$ = Alle Klartexte (Messages)
+- $K$ = Alle Schlüssel (Keys)
+- $C$ = Alle Chiffretexte
+- $e = M \times K \rightarrow C$ - Verschlüsselungsfunktion
+- $d = C \times K \rightarrow M$ - Entschlüsselungsfunktion
+
+### Symmetrische Verfahren
+- Gemeinsamer, geheimer Schlüssel
+- DES, AES, Blowfish
+- Meist 128 oder 256 Bit
+
+### Asymmetrische Verfahren
+- Schlüsselpaar: private key (wird nie übertragen) und public key
+- RSA, DSA, ElGamal
+- Meist 2048 bis 8192 Bit
+- Meist Faktor 100 bis 1000 langsamer
 
 # Fragen in letzter VL
 1. Wie genau muss man die Paragraphennummern den Tatbeständen zuordnen können?
