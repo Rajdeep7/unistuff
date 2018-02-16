@@ -208,17 +208,19 @@ Maßnahmen:
 1. Generation:
 - Ersetzt Systembefehle (ls, top, find, netstat, passwd etc.) mit eigenen Varianten
 - Verstecken Prozesse, Dateien etc. des Angreifers
+- Gegenmaßnahme: Rootkitscanner `chkrootkit`
 
 2. Generation:
 - Modifiziert den Kernel, um Dateien vor **allen** Systemprogrammen zu verstecken
-- z.B. durch Loadable Kernel Module unter Linux
+- z.B. durch Loadable Kernel Module unter Linux -> ersetzt Systemfunktionen
+- Gegenmaßnahme: LKM deaktivieren
 
 Moderne Ausprägungen
 - Hypervisor-level Rootkits: Ursprüngliches OS läuft als virtuelle Maschine
 - Bootkits: Bootloader wird durch Malware ersetzt
 - Hardware / Firmware-Rootkits: BIOS / Firmware der Netzwerkkarte
 
-## Web-basierte Angriffe
+## 6. Web-basierte Angriffe
 ### Cross Site Scripting
 Einbetten von Schadcode in vertrauenswürdigen anderen Code
 1. DOM-basiertes (lokales) XSS
@@ -259,7 +261,7 @@ Gegenmaßnahme:
   - Environmental Metrics: Anwenderspezifische Verwundbarkeitseigenschaften
   
 Input:
-- Bewetung von Schwachstellen durch vorgegebene Fragen und Antwortmöglichkeiten
+- Bewertung von Schwachstellen durch vorgegebene Fragen und Antwortmöglichkeiten
 Output:
 - CVSS-Score [0, 10]
 - CVSS-Vektor = Kurzfassung des gesamten Inputs
@@ -279,8 +281,8 @@ Konstante intrinsische Eigenschaften von Schwachstellen
 
 **Temporal Metrics**
 Aktueller Stand
-- Exploit Code Maturity
-- Remediation Level
+- Exploit Code Maturity (von reine Theorie bis Wurm im Umlauf)
+- Remediation Level (von keine Lösung bis offizieller Fix verfügbar)
 - Report Confidence
 
 **Environmental Metrics**
