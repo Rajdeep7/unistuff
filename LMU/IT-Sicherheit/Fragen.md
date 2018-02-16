@@ -92,3 +92,36 @@
 
 ### Nenne vier Gegenmaßnahmen gegen Brute-Force Password Cracking
 
+### Nenne drei Varianten, eine Back Door zu installieren
+
+### Nenne zwei Gegemaßnahmen gegen Back Doors
+
+### Nenne die zwei Schritte bei einem Rootkit Angriff
+
+### Was ist der Unterschied zwischen Rootkits der 1. und der 2. Generation? Nenne jeweils eine Gegenmaßnahme
+
+### Was ist CSS? Erläutere drei verschiedene Arten.
+
+### Nenne zwei Gegenmaßnahmen gegen CSS
+
+### Nenne zwei Arten Web-basierter Angriffe
+
+### Schreibe ein Beispielbefehl einer SQL Injection hin
+
+### Nenne zwei Arten Netzbasierter Angriffe und je eine Gegenmaßnahme
+
+### Wofür steht CVSS und was ist sein Ziel?
+
+### Was sind Input und Output des CVSS
+
+### Welche Kennzahlen gibt es im CVSS und was beschreiben sie?
+
+### Woraus bestehen die CVSS Base Metrics?
+
+### Woraus bestehen die CVSS Temporal Metrics?
+
+### Woraus bestehen die CVSS Environmental Metrics?
+
+### Was ist ein Zero-Day Exploit?
+
+### Ordne alle bekannten Varianten von den sieben Kategorien für Angriffe je C, I, A und A zu.
