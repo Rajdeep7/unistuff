@@ -41,7 +41,7 @@ Nachteile:
 
 ## 5 Klassen Kryptoanalytischer Angriffe
 - Brufe Force Schlüsselsuche
-- Angriff auf Chiffren - Angreifer kennt Chiffren
-- Bekannter Klartext - Angreifer kennt Klartext-Chiffren-Kombinationen
-- Gewählte Chiffre - Angreifer kann sich zu ausgewählten Chiffren den Klartext berechnen lassen
-- Gewählter Klartext - Angreifer kann selber Klartexte wählen und verschlüsseln lassen
+- ciphertext-only - Angreifer kennt Chiffren
+- known-plaintext - Angreifer kennt Klartext-Chiffren-Kombinationen
+- chosen-plaintext - Angreifer kann selber Klartexte wählen und verschlüsseln lassen
+- chosen-ciphertext - Angreifer kann sich zu ausgewählten Chiffren den Klartext berechnen lassen
