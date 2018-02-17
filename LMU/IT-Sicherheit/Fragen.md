@@ -125,3 +125,43 @@
 ### Was ist ein Zero-Day Exploit?
 
 ### Ordne alle bekannten Varianten von den sieben Kategorien für Angriffe je C, I, A und A zu.
+
+## 4 - Social Engineering
+
+### Nenne zwei Ziele eines Social Engineering Angriffs
+
+### Nenne zwei Arten, Social Engineering zu kategorisieren
+
+### Nenne je drei Beispiele für passive und aktive Social Engineering Angriffe
+
+### Nenne je drei Beispiele für Human- und Computer-based Social Engineering Angriffe
+
+### Nenne vier Gegenmaßnahmen gegen Social Engineering
+
+### Erläutere das Vier-Phasen-Modell nach Fox/Kaun
+
+### Was ist ein Penetration Test?
+
+### Was sind die 5 Phasen eine Social Engineering Penetration Tests?
+
+## 5 - Rechtliche Regelungen
+
+### Was ist der Unterschied zwischen einem Antrags und einem Offizialdelikt?
+
+### Welche drei Elemente beschreibt der §202 StGB? Beschreiben sie jeweils den Tatbestand.
+
+### Welche der drei Elemente des §202 sind Offizialdelikte?
+
+### Was regelt der §303a StGB?
+
+### Was regelt der §303b StGB?
+
+### Nenne 4 Grundprinzipien der Datenschutz-Gesetzgebung
+
+### Nenne 3 Datenschutzgesetze
+
+### Welche Macht hat ein Datenschutzbeauftragter?
+
+### Was ist Auftragsdatenverarbeitung?
+
+### Nenne zwei Regelungen des IT-Sicherheitsgesetzes
