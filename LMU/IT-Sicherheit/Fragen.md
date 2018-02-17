@@ -165,3 +165,25 @@
 ### Was ist Auftragsdatenverarbeitung?
 
 ### Nenne zwei Regelungen des IT-Sicherheitsgesetzes
+
+## 6 - Kryptographische Grundlagen
+
+### Grenze die Begriffe Krpytographie, Kryptoanalyse und Kryptologie voneinander ab
+
+### Was ist Stenographie? Welche Formen gibt es? Was ist ein Semagramm?
+
+### Was ist ein verdeckter Kanal?
+
+### Woraus besteht ein Krpytographisches System?
+
+### Nenne drei Symmetrische Verfahren
+
+### Nenne drei Asymmetrische Verfahren
+
+### Nenne drei Unterschiede zwischen Symmetrischen und Asymmetrischen Verfahren
+
+### Was sind One-Time Pads? Was sind die Nachteile?
+
+### Nenne die 5 Klassen Kryptoanalytischer Angriffe
+
+## 7 - Symmetrische Kryptosysteme
