@@ -150,7 +150,7 @@ Erinnerung:
 
 From https://stackoverflow.com/questions/79923/what-and-where-are-the-stack-and-heap
 
-<img src="https://github.com/batzner/unistuff/blob/master/img/it-security-buffer-overflow-stack.png?raw=true" width=500/>
+<img src="https://github.com/batzner/unistuff/raw/master/LMU/IT-Sicherheit/img/buffer-overflow-stack.png" width=500/>
 
 **Hürden**
 - Rücksprungadresse ist absolut - Lösung: NOPs vor Schadcode
