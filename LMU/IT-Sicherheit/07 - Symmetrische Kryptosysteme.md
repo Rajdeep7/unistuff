@@ -99,4 +99,52 @@
 - Fortpflanzung von Übertragungsfehlern
 
 ## AES
+- $N_b$ = Blocklänge = $4 \cdot N_b$ Bytes = Anzahl der Reihen 
+- $N_k$ = Schlüssellänge = $4 \cdot N_k$ Bytes
+- $N_r$ = Runden = $max(N_b, N_k) + 6$
+- Runden arbeiten auf State. Input wird als Column-First-Matrix interpretiert!
+
+### Verschlüsselung
+1. Addition des Schlüssels
+2. Byte-Substitution
+3. Zeilenshift
+4. Außer in letzter Runde: Spaltenmix
+5. Addition des Schlüssels
+6. Zurück zu 2
+
+### Entschlüsselung
+1. Addition des Schlüssels
+2. Inverser Zeilenshift
+3. Inverse Bytesubstitution
+4. Addition des Schlüssels
+5. Außer in letzter Runde: Inverser Spaltenmix
+6. Zurück zu 2
+
+### Bytesubstitution
+Mit S-Box -> aktueller Byte-Inhalt = (Zeile, Spalte)
+
+### Zeilenshift
+Jede Zeile um i-1 nach Links
+
+### Spaltenmix 
+- $s' = A s$
+- $A = ((02, 03, 01, 01), ...)$ geshiftet nach links pro Reihe
+
+### Addition des Rundenschlüssels
+- Rundenschlüssel hat gleiche Form wie State
+- Jede Spalte des Rundenschlüssels ist ein Wort
+- Schlüssel wird rotiert und mit S-Box Bytesubstituiert, abhängig von Rundenkonstante
+
+## AES Designkriterien
+
+### Vorteile des Rundenschlüssels
+- S-Box verhindert, dass mit Teilen des Schlüssels der Rest berechnet werden kann
+- S-Box verhindert, dass zwei ähnliche Schlüssel viele gemeinsame Rundenschlüssel haben
+- Rundenkonstante verhindert Symmetrien im Prozess
+
+### Diffusion
+- Nach 2 Runden hängen 50% Output-Bits von jedem Input-Bit ab
+- Diffusion durch MixColumn - Änderung in einem Input-Byte verursacht Änderung in allen Output-Bytes
+
+### Keine Angriffe bekannt, die besser als Brute Force sind ab 8+ Runden
 
