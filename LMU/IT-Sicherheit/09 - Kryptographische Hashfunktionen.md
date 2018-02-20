@@ -37,13 +37,27 @@ Wang & Yu: Für jeden Initialisierungsvektor lassen sich in einer Stunde zwei Pa
 
 ## Zertifikierung
 - "Yes, this person is who they say they are, and we, the CA, certify that."
+- Verhindert, dass ein Angreifer von Anfang an die Verbindung faked -> **Authenticity**
 - CA = Trusted Third Party
 - Spezifiziert im X.509 Standard -> X.509 certificate, enthält Domain für HTTPS
-- 
+- Viele CAs können beliebige Domains zertifizieren -> OS X vertraut über 200 Root Certificates -> Sicherheitsproblem
+- Signatur auf X.509 Zertifikat ist verschlüsselter Hash!
+- Typischer Signaturalgorithmus: md5WithRSAEncryption
 
 1. Server schickt CA seinen Public Key und eigene Identität
 2. CA bestätigt Public Key und Identität (z.B. Domain Inhaberschaft)
-3. CA signiert den Public Key mit eigenem Private Key und schickt resultierendes X.509 Certificate an Server
+3. CA signiert die Infos mit eigenem Private Key und schickt resultierendes X.509 Certificate an Server
 4. Client initiiert HTTPS mit Server
 5. Server schickt Public Key und X.509 Certificate an Client
-6. Client überprüft X.509 Certificate mit Public Key von CA (Schon im Voraus installiert)
+6. Client überprüft X.509 Certificate mit Public Key von CA (Schon im Voraus als CA Root Certificate installiert)
+
+### MD5 CA Angriff
+- Verwendete Rouge CA Zertifikat zum Signieren falscher Zertifikate
+- Rouge CA Zertifikat wurde aus einem validen Webseiten Zertifikat erstellt
+
+## SHA-3
+- Sponge-Funktion mit absorbing und squeezing
+- Addition von Rundenkonstanten
+- Nichtlinear
+- Diffusion
+- Variable Output-Länge -> kann als PRNG für Stream Ciphers genutzt werden
