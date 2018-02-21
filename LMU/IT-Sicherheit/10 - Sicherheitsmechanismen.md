@@ -184,4 +184,114 @@ Problem: Replay-Angriff, K bleibt gültig
 
 Lösung: Sequenznummern / Timestamps / begrenzte Gültigkeitsdauer
 
-## 
+## Kerberos
+- Kerberos-Server (TTP) kennt Schlüssel aller Clients
+- Authentisierung basiert auf IP-Adresse
+- Symmetrische Verschlüsselung
+- Single-Sign-On über Kooperation mehrerer Server
+
+### Authentisierungsdaten
+1. Ticket 
+  - Nur für einen Server gültig
+  - Wird vom Ticket Granting Server erstellt
+  - Speichert Client, Server, Lifetime und Timestamp und symmetrischen Schlüssel
+2. Authenticator
+  - Vom Client erstellt
+  - Wir zusammen mit Ticket verschickt
+  - Speichert Client und Timestamp
+
+### Ablauf
+Kerberos Server und TGS Server sind zusammen in "sicherem Bereich", Server s ist außerhalb dieses Bereichs
+- $T_{c,tgs}$ = Ticket für c, um tgs zu nutzen
+- $A_{c,tgs}$ = Authenticator von c für tgs
+- $c$ = Client
+- $a$ = Adresse
+- $t$ = Zeitstempel
+
+1. Request for Ticket Granting Ticket $c, tgs$
+  - Client an Kerberos Server
+  - Kerberos überprüft, ob Client in Datenbank
+2. Ticket Granting Ticket $K_c[K_{c, tgs}], K_{tgs}[T_{c,tgs}]$
+  - $T_{c,tgs}$ ist Ticket und enthält Schlüssel $K_{c,tgs}$
+3. Request für Server Ticket $s, K_{c, tgs}[A_{c, tgs}], K_{tgs}[T_{c,tgs}]$
+  - $A_{c, tgs} = c,a,t$
+4. Server Ticket $K_{c, tgs}[K_{c,s}], K_s[T_{c,s}]
+  - $T_{c,s}$ ist ein Ticket und enthält Schlüssel $K_{c,s}$
+5. Request für Service $K_{c,s}[A_{c,s}], K_s[T_{c,s}]$
+  - $A_{c,s} = c,a,t,key,seqNo$
+6. Server Authentication $K_{c,s}[t, key, seqNo]$
+
+### Multi-Domain-Kerberos
+- TGS der fremden Realm wird "normaler" Server
+- Probleme: 
+  1. Beide Domänen müssen sich vertrauen
+  2. $n$ Realms erfordern $\mathcal{O}(n^2)$ Schlüssel
+
+<img src="https://github.com/batzner/unistuff/raw/master/LMU/IT-Sicherheit/img/kerberos-multi-domain.png" width=500/>
+
+### Bewertung
+- IP-Spoofing u.U. möglich
+- Kerberos-Schlüssel wird aus Passwort abgeleitet -> Sicherheit hängt davon ab
+- Synchronisation über lose gekoppelte globale Zeit
+- Kerberos-Server und TGS sind "Single Point of Failure"
+- Verlässt sich auf vertrauenswürdige Software -> Problem Trojaner
+
+## Autorisierung und Zugriffskontrolle
+- Autorisierung: Vergabe von Berechtigungen
+- Zugriffskontrolle: Durchsetzung dieser Berechtigungen
+
+### Zugriffskontrollstrategien
+1. Discretionary Access Control (z.B. chmod auf Datei für Yuxiang)
+  - Eigentümerprinzip - Eigentümer spezifiziert die Berechtigungen an seinen Objekten
+  - Auf Basis der Objekte
+2. Mandatory Access Control
+  - Regelbasierte Festlegung der Rechte, z.B. über Sicherheitsklassen 
+  - Systemglobal
+3. Role-based Access Controll (z.B. chmod auf Datei für Administratoren)
+  - Subjekt -> Aufgabe / Rolle -> Berechtigungen
+  
+### Referenzmonitor / Access Control Monitor
+- Regelt Zugriff auf Objekte
+- Kann Subjekte authentisieren 
+- Kann Objektzugriff unterbrechen / verhindern
+
+## Identifikation
+- Verbindung von digitaler ID und Real-World Entity
+
+Zwei Stufen:
+1. Personalisierung 
+  - Ermittlung der Real-World Identität
+  - Vergabe einer digitalen ID (Benutzername)
+2. Identifikation
+  - Verbindung beider mit Informationen, die nur die Entität kennt (Passwort)
+  
+### Certification Authority
+- Realm = Alle Nutzer, die der CA vertrauen
+
+### CA Aufgaben
+- Generierung von C
+- Speicherung von C
+- Widerruf und Sperrung von C 
+  - **Certificate Revocation Lists**
+  - **Online Certificate Status Protocol**
+- Aktualisierung von C
+- Beglaubigung von Verträgen (wie Notar)
+
+### Benutzerzertifizierung Ablauf
+1. Schlüsselgenerierung
+2. Personalisierung, Certification Request
+  - Feststellung der Identität
+  - Benutzer beweist Besitz des privaten Schlüssels
+3. Zertifikat generieren
+4. Zertifikat signieren
+
+### X.509 Attribute
+- Version
+- SerialNumber
+- SignatureAlgorithm `SHA-256 mit RSA`
+- Issuer
+- Validity
+- Subject
+- SubjectPublicKeyInfo (Algorithmus, Schlüssel, Verwendung, Länge, Exponent)
+- Alternativer Name (mittlerweile wichtig für mehrere Domains)
+- Signature (signiert alles obere)
