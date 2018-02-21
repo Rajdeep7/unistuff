@@ -4,7 +4,7 @@
 1. Confidentiality / Vertraulichkeit - Daten können nur von Berechtigten genutzt werden - Verschlüsselung
 2. Integrity / Integrität - Geschützte Daten können nicht unbemerkt und unautorisiert modifiziert werden - Prüfsummen
 3. Availability / Verfügbarkeit - Berechtigte können störungsfrei Berechtigungen wahrnehmen - Redundanz
-4. Authentizität / Nicht-Abstreitbarkeit
+4. Authentizität / Nicht-Abstreitbarkeit - Informationen wurden von dem übertragen, der als Absender angegeben ist
 
 ### Nenne zwei Dimensionen zur Einordnung von Sicherheitsmaßnahmen und ihre Werte.
 1. technisch / organisatorisch
@@ -295,77 +295,209 @@ Bob'; DROP TABLE students;--
 - Priorisierung von Vulnerabilities
 
 ### Was sind Input und Output des CVSS?
+- Input: Bewertung von Schwachstellen durch vorgegebene Fragen und Antwortmöglichkeiten
+- Output: CVSS-Score und Vektor
 
 ### Welche Kennzahlen gibt es im CVSS und was beschreiben sie?
+- Base Metrics: Grundlegende Verwundbarkeitseigenschaften
+- Temporal Metrics: Zeitabhängige Verwundbarkeitseigenschaften
+- Environmental Metrics: Anwenderspezifische Verwundbarkeitseigenschaften
 
 ### Woraus bestehen die CVSS Base Metrics?
+- Exploitability metrics 
+  - Attack Vector (Physisch, auf Rechner, LAN, Internet)
+  - Attack Complexity 
+  - Required Privileges
+  - User Interaction (was muss das Opfer tun)
+- Impact metrics: C, I, A
+- Scope - Auswirkung auf andere Systeme
 
 ### Woraus bestehen die CVSS Temporal Metrics?
+- Exploit Code Maturity
+- Remediation Level
+- Report Confidence
 
 ### Woraus bestehen die CVSS Environmental Metrics?
+- C, I, A Requirements
+- Modified Base Metrics
 
 ### Was ist ein Zero-Day Exploit?
+Angriff, der eine unbekannte / soeben erst bekannt gewordene / unbeseitigte Sicherheitslücke ausnutzt
 
-### Ordne alle bekannten Varianten von den sieben Kategorien für Angriffe je C, I, A und A zu.
+### Ordne alle bekannten Varianten von den sieben Kategorien für Angriffe je C, I, A und Au zu.
+1. DoS -> Availability zentral
+  1. SMURF
+  2. DNS Amplification
+  3. SYN Flooding
+  4. DDoS
+2. Malicious Code -> alle
+  1. Virus
+  2. Wurm
+  3. Trojaner
+3. E-Mail -> Confidentiality, Authenticity
+  1. Hoax
+  2. Spam
+  3. Phishing
+4. Mobile Code - JavaScript, HTML, Flash -> Integrity, Confidentiality
+5. Systemnahe Angriffe
+  1. Buffer Overflow / Stack Smashing
+  2. Rootkits
+  3. Password Cracking
+  4. Back Doors
+6. Web-basierte Angriffe
+  1. XSS
+  2. SQL Injection
+7. Netzbasierte Angriffe
+  1. Sniffing
+  2. Port Scanning
 
 ## 4 - Social Engineering
 
 ### Nenne zwei Ziele eines Social Engineering Angriffs
+1. Informationsgewinnung (vs. Vertraulichkeit)
+2. Nutzer führt vom Angreifer gewünschte Aktionen aus (vs. Integrität)
 
 ### Nenne zwei Arten, Social Engineering zu kategorisieren
+- Passiv vs. Aktiv
+- Human- vs. Computer-based
 
 ### Nenne je drei Beispiele für passive und aktive Social Engineering Angriffe
+Passiv:
+1. Belauschen
+2. Shoulder Surfing
+3. Dumpster Diving
+4. Liegenlassen präparierter USB-Sticks (Baiting)
+
+Aktiv:
+1. Phishing
+2. Pretexting
+3. Internet-Bekanntschaften
 
 ### Nenne je drei Beispiele für Human- und Computer-based Social Engineering Angriffe
+Human-based:
+1. Dumpster Diving
+2. Shoulder Surfing
+3. Tailgating
+4. Pretexting
+
+Computer-based:
+1. Forensic analysis
+2. Phishing
+3. Baiting
 
 ### Nenne vier Gegenmaßnahmen gegen Social Engineering
+1. Vereinzelungsmaschinen
+2. Aktenvernichtung
+3. Sichtschutzfolien
+4. Schulungen
 
 ### Erläutere das Vier-Phasen-Modell nach Fox/Kaun
+1. Aufmerksamkeit
+2. Wissen & Einstellung
+3. Verstärkung
+4. Öffentlichkeit
 
 ### Was ist ein Penetration Test?
+White-Hat Hacker identifizieren und melden unbekannte Sicherheitslücken
 
 ### Was sind die 5 Phasen eine Social Engineering Penetration Tests?
+1. Planung und Zielfestlegung
+2. Informationsakquise
+3. Spezifikation der Angriffe
+4. Angriff
+5. Ergebnisbericht und Beratung
 
 ## 5 - Rechtliche Regelungen
 
 ### Was ist der Unterschied zwischen einem Antrags und einem Offizialdelikt?
+Antragsdelikt wird nur verfolgt, falls es eine Anzeige gibt. Offizialdelikt wird von Amts wegen verfolgt.
 
 ### Welche drei Elemente beschreibt der §202 StGB? Beschreiben sie jeweils den Tatbestand.
+1. Ausspähen von Daten
+  - Zugang
+  - unbefugt / nicht für Täter bestimmt
+  - Überwindung einer Zugangssicherung
+  - elektronisch gespeicherte oder übermittelte Daten
+2. Abfangen von Daten
+  - Datenbeschaffung
+  - unbefugt
+  - aus nichtöffentlicher Datenübermittlung
+3. Vorbereitung von a und b durch Passwörter oder Computerprogramme
 
 ### Welche der drei Elemente des §202 sind Offizialdelikte?
+Nur §202c
 
 ### Was regelt der §303a StGB?
+Datenveränderung
 
 ### Was regelt der §303b StGB?
+Computersabotage
 
 ### Nenne 4 Grundprinzipien der Datenschutz-Gesetzgebung
+1. Generelles Verbot mit Erlaubnisvorbehalt
+2. Datenvermeidung / -sparsamkeit
+3. Zweckbindung
+4. Transparenz
 
 ### Nenne 3 Datenschutzgesetze
+1. BayDSG
+2. BDSG
+3. EU-Datenschutzgrundverordnung
 
 ### Welche Macht hat ein Datenschutzbeauftragter?
+Gar keine, nur beratend, kein Veto-Recht
 
 ### Was ist Auftragsdatenverarbeitung?
+Datenverarbeitung wird ausgelagert an andere Stelle im Auftrag.
 
 ### Nenne zwei Regelungen des IT-Sicherheitsgesetzes
+1. Webserver-Betreiber müssen Kundendaten nach Stand der Technik schützen
+2. AKW-Betreiber müssen erhebliche IT-Sicherheitsvorfälle melden
 
 ## 6 - Kryptographische Grundlagen
 
-### Grenze die Begriffe Krpytographie, Kryptoanalyse und Kryptologie voneinander ab
+### Grenze die Begriffe Kryptographie, Kryptoanalyse und Kryptologie voneinander ab.
+- Kryptographie - Verschlüsseln und Entschlüsseln von Nachrichten
+- Kryptoanalyse - Entschlüsseln von Nachrichten, ohne im Besitz des Schlüssels zu sein
+- Kryptologie = Kryptographie + Kryptoanalyse
 
 ### Was ist Stenographie? Welche Formen gibt es? Was ist ein Semagramm?
+- Stenographie = Methoden, die bereits die Existenz einer geheimen Nachricht verbergen
+- Linguistische und Technische Stenographie
+- Semagramm = geheime Nachricht im Bild
 
 ### Was ist ein verdeckter Kanal?
+Nachrichtentransport über nicht erkennbares Medium
 
 ### Woraus besteht ein Krpytographisches System?
+(K, M, C, e, d)
 
 ### Nenne drei Symmetrische Verfahren
+DES, AES, Blowfish
 
 ### Nenne drei Asymmetrische Verfahren
+RSA, ElGamal, DSA
 
 ### Nenne drei Unterschiede zwischen Symmetrischen und Asymmetrischen Verfahren
+1. Schnelligkeit (Faktor 100-1000)
+2. Gemeinsamer Schlüssel
+3. Schlüsselgröße - 128/256 vs. 2048 / 4096
 
 ### Was sind One-Time Pads? Was sind die Nachteile?
+- Schlüssel wird niemals wiederverwendet
+- Schlüssel ist mindestens genauso lang wie der Klartext
+
+Nachteile:
+- Schlüsselmanagement aufwendig
+  - Viele echte Zufallszahlen nötig
+  - Schlüssel müssen sicher ausgetauscht werden
+- Keine Integritätssicherung
 
 ### Nenne die 5 Klassen Kryptoanalytischer Angriffe
+1. Brute Force
+2. Ciphertext-only
+3. Known-plaintext
+4. Chosen-ciphertext
+5. Chosen-plaintext
 
 ## 7 - Symmetrische Kryptosysteme
