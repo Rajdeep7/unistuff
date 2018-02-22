@@ -786,4 +786,165 @@ Per se anfällig für Man in the Middle Angriffe -> Simulation des Servers
 - Wenn Hashes im Klartext abgefangen werden, kann man Passwort erraten
 
 ### Wie funktioniert RSA SecurID?
-- Jede Minute neue Zahl, die nur zentraler Authentifizierungsserver 
+- Jede Minute neue Zahl, die nur zentraler Authentifizierungsserver vorhersagen kann
+- 2 Faktor-Authentisierung zusammen mit Benutzerpasswort
+- Berechnung über AES mit echtem Zufalls-Seed + Vergangene Sekunden seit 1986
+- Hardwaremanipulation führt zu Hardwarebeschädigung
+
+### Nenne vier Möglichkeiten, um den Datenursprung zu Authentisieren
+1. Verschlüsselung (Shared Secret)
+2. Digitale Signatur 
+3. Message Authentication Code
+4. Hashed MAC
+
+### Was sind die Vor- und Nachteile von symmetrischer Verschlüsselung zur Authentisierung des Datenursprungs?
+Vorteile
+- Authentisierung des Datenursprungs
+- Vertraulichkeit der Daten
+- Empfänger nicht authentisiert, aber effektiv der einzige mit Zugang
+
+Nachteile
+- Sender kann Sendung leugnen
+- Empfang kann nicht bewiesen werden
+- Keine Integritätssicherung
+
+### Was sind die Vor- und Nachteile von asymmetrischer Verschlüsselung (nicht Signatur) zur Authentisierung des Datenursprungs?
+Vorteile
+- Vertraulichkeit der Daten
+- Empfänger nicht authentisiert, aber effektiv der Einzige mit Zugang
+
+Nachteile
+- Keine Authentisierung des Datenursprungs
+- Sender kann Sendung leugnen
+- Empfang kann nicht bewiesen werden
+- Keine Integritätssicherung
+
+### Was sind die Vor- und Nachteile von Signaturen zur Authentisierung des Datenursprungs?
+Vorteile
+- Authentisierung des Datenursprungs
+- Sendung kann nicht geleugnet werden
+
+Nachteile
+- Keine Vertraulichkeit der Daten
+- Keine Integritätssicherung
+- Empfang kann nicht bewiesen werden
+- Empfänger wird nicht authentisiert
+
+### Was sind die Vor- und Nachteile von asymmetrischer Verschlüsselung + Signatur zur Authentisierung des Datenursprungs?
+Vorteile
+- Authentisierung des Datenursprungs
+- Keine Authentisierung des Empfängers, aber effektiv der Einzige mit Zugang
+- Vertraulichkeit der Daten
+- Vertraulichkeit der Signatur, da Empfänger zuerst mit Private Key entschlüsseln muss
+- Sendung kann nicht geleugnet werden
+
+Nachteile
+- Keine Integritätssicherung
+- Empfang kann nicht bewiesen werden
+- Dauert lange
+
+### Welche Methoden gibt es, um Integrität und Authentisierung des Datenursprungs sicherzustellen? Was ist das Häufigste Verfahren?
+1. Hash[Nachricht + Shared Secret] mitschicken
+2. SymmE[Nachricht + Hash] 
+3. Nachricht + Signierter Hash
+4. SymmE[Nachricht + Signierter Hash] (häufigstes)
+
+### Was sind die Vor- und Nachteile von Hash[Nachricht + Shared Secret] zur Authentisierung des Datenursprungs?
+Vorteile
+- Integrität
+
+Nachteile
+- Keine Vertraulichkeit
+- Sendung kann geleugnet werden
+- Empfang kann nicht bewiesen werden
+
+### Was sind die Vor- und Nachteile von SymmE[Nachricht + Hash] zur Authentisierung des Datenursprungs?
+Vorteile
+- Integrität
+- Vertraulichkeit
+- Authentisierung des Datenursprungs
+
+Nachteile
+- Sendung kann geleugnet werden
+- Empfang kann nicht bewiesen werden
+
+### Was sind die Vor- und Nachteile von SymmE[Nachricht + Signierter Hash] zur Authentisierung des Datenursprungs?
+Vorteile
+- Integrität
+- Vertraulichkeit
+- Authentisierung des Datenursprungs
+- Sendung kann nicht geleugnet werden
+
+Nachteile
+- Empfang kann nicht bewiesen werden
+
+### Was ist eine Merkle-Damgard-Konstruktion?
+- Initialisierungsvektor
+- Input ist Block und vorheriger Output-Block
+- Eventuell Finalisierung des Output N zum resultierenden Hash
+
+### Wie funktionieren Message Authentication Codes?
+- Wird aus Nachricht und Shared Secret berechnet
+- AES im CBC Mode mit Rundenschlüssel = immer gleiches Shared Secret
+
+### Was ist ein Angriff auf MACs?
+Length Extension - Bei Merkle-Damgard-Konstruktion können 0en ohne Kenntnis des Shared Secret eingefügt werden
+
+### Wie funktionieren Hashed MACs?
+- Keine symmetrische Verschlüsselung wie bei MAC, sondern Hash-Funktion
+- Problem: Hash-Funktionen nutzen keinen Schlüssel
+- Schlüssel wird verarbeitet und dann mit Nachricht konkateniert -> Dann gehasht
+
+### Nenne zwei Authentisierungsprotokolle
+1. Needham Schröder
+2. Kerberos
+
+### Erkläre den Ablauf von Needham Schröder
+1. Alice schickt Trent A, B und Nonce
+2. Trent schickt Alice verschlüsselt [B, Nonce, Sitzungsschlüssel und E_B[A, K]]
+3. Alice schickt Bob E_B[A, K]
+4. Bob schickt Alice K[Nonce]
+5. Alice schickt Bob K[Nonce-1]
+
+### Nenne eine Schwachstelle von Needham Schröder und zeige Lösungen auf
+- Replay-Angriff: Alte Sitzungsschlüssel bleiben gültig, Mallory kann einfach E_B[A, K] nochmal schicken, wenn es K geknackt hat
+- Lösung: Sequenznummern in E_B[K, A]] Nachricht, Timestamps, begrenzte Gültigkeitsdauer
+
+### Was ist der Unterschied zwischen einem Ticket und einem Authenticator in Kerberos?
+- Ticket ist für einen Client für einen Server gültig
+- Ticket wird vom TGS erstellt, Authenticator vom Client
+
+### Was speichert ein Ticket in Kerberos?
+1. Client
+2. Server
+3. Client-Adresse
+4. Lifetime
+5. Timestamp
+6. Symmetrischer Schlüssel
+
+### Was speichert ein Authenticator in Kerberos?
+1. Client
+2. Client-Adresse
+3. Timestamp
+
+### Erläutere den Ablaut von Kerberos
+1. Request for Ticket Granting Ticket $c, tgs$
+   - Client an Kerberos Server
+   - Kerberos überprüft, ob Client in Datenbank
+2. Ticket Granting Ticket $K_c[K_{c, tgs}], K_{tgs}[T_{c,tgs}]$
+   - $T_{c,tgs}$ ist Ticket und enthält Schlüssel $K_{c,tgs}$
+3. Request für Server Ticket $s, K_{c, tgs}[A_{c, tgs}], K_{tgs}[T_{c,tgs}]$
+   - $A_{c, tgs} = c,a,t$
+4. Server Ticket $K_{c, tgs}[K_{c,s}], K_s[T_{c,s}]$
+   - $T_{c,s}$ ist ein Ticket und enthält Schlüssel $K_{c,s}$
+5. Request für Service $K_{c,s}[A_{c,s}], K_s[T_{c,s}]$
+   - $A_{c,s} = c,a,t,key,seqNo$
+6. Server Authentication $K_{c,s}[t, key, seqNo]$
+
+### Skizziere, wie Multi-Domain-Kerberos abläuft
+https://github.com/batzner/unistuff/raw/master/LMU/IT-Sicherheit/img/kerberos-multi-domain.png
+
+### Was sind zwei Probleme bei Multi-Domain-Kerberos?
+1. Beide Domänen müssen sich vertrauen
+2. n Realms fordern n(n-1)/2 Schlüssel
+
