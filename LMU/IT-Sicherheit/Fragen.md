@@ -687,3 +687,103 @@ Prüfsumme wird auf Daten generiert und mit privatem Key signiert
 3. Wiederverwendbarkeit - Verhindert (nur möglich mit Private Key)
 4. Abschlussfunktion - Dokument nicht veränderbar (nur möglich mit Private Key)
 5. Beweisfunktion - Nicht zu leugnen (durch Public Key eindeutig)
+
+## 9 - Kryptographische Hashfunktionen
+
+### Wozu dienen kryptographische Hashfunktionen?
+Integritätssicherung - Manipulationen an einer Nachricht sollen erkannt werden können
+
+### Was ist der Unterschied zwischen einer Hashfunktion und einer kryptographischen Hashfunktion?
+Kollisionsresistenz = Ähnliche Eingaben sollen nicht denselben Hashwert haben
+
+### Was ist der Unterschied zwischen einer schwachen und einer starken Hashfunktion?
+- Schwach: für einen gegebenen Hashwert ist es praktisch unmöglich, eine Nachricht mit selbem Hash zu finden
+- Stark: Schwach + es ist allgemein praktisch unmöglich, eine Kollision zu finden
+
+### Beschreibe, wie kryptographische Hashfunktionen konstruiert sind
+- Kompressionsfunktion G wird wiederholt auf Block Mi und bisherigen Hashwert angewandt
+- Benötigt IV und Padding
+
+### Beschreibe grob die Funktionsweise von MD5
+- Eingabe: 512-bit Blöcke
+- Ausgabe: 128 bit
+- Padding: 0en + Länge der Eingabe
+- Fixer IV
+- Vier Runden für einen 512-bit Block
+
+### Evaluiere die Sicherheit von MD5 und nenne eine Alternative
+- Für jeden IV lassen sich in einer Stunde zwei Paare von Blöcken finden, die denselben Hash produzieren
+- Ist unabhängig davon, was davor kommt und was danach kommt
+- Zwei Daten sind gleich außer in je zwei aufeinanderfolgenden Blöcken
+- Lösung: SHA-256, hat längeren Hash
+
+### Wie funktionierte der MD5 CA Angriff? Skizziere die Vorgehensweise
+- Verwendete Rouge CA Zertifikat zum Signieren falscher Zertifikate
+- Route CA Zertifikat wurde aus validem Webseiten Zertifikat erstellt
+
+### Nenne die Schritte bei der Zertifizierung bei HTTPS
+1. Server schickt CA seinen Public Key und Identität
+2. CA überprüft Identität
+3. CA erstellt Zertifikat und signiert mit seinem Private Key und schickt resultierendes X.509 Certificate an Server
+4. Client initiiert HTTPS mit Server
+5. Server schickt X.509 Zertifikat an Client (enthält eigenen Public Key)
+6. Client überprüft X.509 Zertifikat mit Public Key von CA (schon im Voraus als CA Root Certificate installiert)
+
+### Nenne 6 Eigenschaften von SHA-3 / Keccak
+- Sponge-Funktion mit absorbing und squeezing
+- Addition von Rundenkonstanten
+- Nichtlinear
+- Diffusion
+- Variable Output-Länge -> kann als PRNG für Stream Ciphers genutzt werden
+- Noch weniger von Kryptanalytikern untersucht
+- Effiziente Implementierung möglich
+
+## 10 - Sicherheitsmechanismen
+
+### Reicht Verschlüsselung zur Wahrung der Integrität? Beschreibe eine bessere Alternative!
+- Nein, da Daten blind modifiziert werden
+- Hashwert gegen Modifikation, muss auch verschlüsselt übertragen werden (z.B. signiert)
+- Hashwert + gesicherte Sequenznummern / Zeitstempel gegen Replay-Angriff
+
+### Nenne drei Arten der Authentisierung
+1. Datenursprung
+2. Benutzer
+3. Peer Entity (Client - Server)
+
+### Nenne fünf Möglichkeiten der Authentisierung
+1. Wissen
+2. Besitz
+3. Persönliche Eigenschaft
+4. Kombination aus 1-3
+5. Delegation (z.B. CA)
+
+### Nenne drei Kategorien der Benutzerauthentisierung und jeweils ein Beispiel
+1. Wissen -> Passwort, PIN
+2. Besitz -> Smartcard, Private Key
+3. Eigenschaft -> Biometrie
+
+### Was ist die Motivation hinter Einmalpasswörtern?
+- Abgehörtes Passwort soll für Angreifer möglichst nutzlos sein -> nicht wiederverwendbar, begrenzte Dauer, und nachfolgendes Passwort nicht ableitbar
+
+### Erläutere die Schritte bei S/Key
+1. Client schickt N (Anzahl gewünschter Passwörter) an Server
+2. Server schickt Seed an Client
+3. Client berechnet nachfolgende Passwörter über Kette von MD4 Hashes
+4. Client nutzt Passwörter in umgekehrter Reihenfolge
+5. Client übersetzt ein Passwort in 6 Wörter über ein fixes Wörterbuch
+6. Server verifiziert Passphrase
+
+### Was ist die Schwachstelle von S/Key?
+Per se anfällig für Man in the Middle Angriffe -> Simulation des Servers
+
+### Erläutere OTP
+Änderungen zu S/Key:
+- Passwort kann nur ein einziges Mal verwendet werden -> keine parallelen Sessions mit gleichem Passwort
+- MD5 und SHA unterstützt
+
+### Nenne zwei Angriffe auf OTP bzw. S/Key
+- Man in the Middle, kann über IPSec Authentifizierung des Servers vermieden werden
+- Wenn Hashes im Klartext abgefangen werden, kann man Passwort erraten
+
+### Wie funktioniert RSA SecurID?
+- Jede Minute neue Zahl, die nur zentraler Authentifizierungsserver 
