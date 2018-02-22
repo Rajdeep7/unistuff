@@ -173,21 +173,27 @@ Angriff:
 
 ## Authentisierungsprotokoll Needham Schröder
 - Third Party teilt mit jedem Kommunikationspartner eigenen Schlüssel
+- $R$ = Einmalige Zufallszahl (Nonce) verhindert Replayattacken
+- $E$ = Symmetrische Verschlüsselung
+- $K$ = Sitzungsschlüssel
 
 Ablauf:
-1. Alice schickt eigene Adresse, Zieladresse und Zufallszahl an TTP
-2. TTP schickt verschlüsselt Sitzungsschlüssel K an Alice zurück
-3. TTP schickt außerdem den für Bob verschlüsselten Sitzungsschlüssel K, den Alice nicht lesen aber weiterleiten kann
-4. Alice kommuniziert mit Bob über K
+1. Alice schickt eigene $A, B, R_A$ an TTP
+2. TTP schickt verschlüsselt $[R_A, B, K, E_B[K, A]]$ an Alice zurück
+3. Alice schickt Bob $E_B[K, A]]$
+4. Bob schickt Alice $K[R_B]$
+4. Alice schickt Bob $K[R_B-1]$
 
-Problem: Replay-Angriff, K bleibt gültig
+Problem: 
+- Replay-Angriff
+- K bleibt gültig
+- Wenn ein altes K geknackt wird, kann Mallory einfach nochmal $E_B[K, A]]$ schicken
 
 Lösung: Sequenznummern / Timestamps / begrenzte Gültigkeitsdauer
 
 ## Kerberos
 - Kerberos-Server (TTP) kennt Schlüssel aller Clients
-- Authentisierung basiert auf IP-Adresse
-- Symmetrische Verschlüsselung
+- Authentisierung basiert auf symmetrischer Verschlüsselung
 - Single-Sign-On über Kooperation mehrerer Server
 
 ### Authentisierungsdaten
@@ -209,16 +215,16 @@ Kerberos Server und TGS Server sind zusammen in "sicherem Bereich", Server s ist
 - $t$ = Zeitstempel
 
 1. Request for Ticket Granting Ticket $c, tgs$
-  - Client an Kerberos Server
-  - Kerberos überprüft, ob Client in Datenbank
+   - Client an Kerberos Server
+   - Kerberos überprüft, ob Client in Datenbank
 2. Ticket Granting Ticket $K_c[K_{c, tgs}], K_{tgs}[T_{c,tgs}]$
-  - $T_{c,tgs}$ ist Ticket und enthält Schlüssel $K_{c,tgs}$
+   - $T_{c,tgs}$ ist Ticket und enthält Schlüssel $K_{c,tgs}$
 3. Request für Server Ticket $s, K_{c, tgs}[A_{c, tgs}], K_{tgs}[T_{c,tgs}]$
-  - $A_{c, tgs} = c,a,t$
-4. Server Ticket $K_{c, tgs}[K_{c,s}], K_s[T_{c,s}]
-  - $T_{c,s}$ ist ein Ticket und enthält Schlüssel $K_{c,s}$
+   - $A_{c, tgs} = c,a,t$
+4. Server Ticket $K_{c, tgs}[K_{c,s}], K_s[T_{c,s}]$
+   - $T_{c,s}$ ist ein Ticket und enthält Schlüssel $K_{c,s}$
 5. Request für Service $K_{c,s}[A_{c,s}], K_s[T_{c,s}]$
-  - $A_{c,s} = c,a,t,key,seqNo$
+   - $A_{c,s} = c,a,t,key,seqNo$
 6. Server Authentication $K_{c,s}[t, key, seqNo]$
 
 ### Multi-Domain-Kerberos
@@ -242,13 +248,13 @@ Kerberos Server und TGS Server sind zusammen in "sicherem Bereich", Server s ist
 
 ### Zugriffskontrollstrategien
 1. Discretionary Access Control (z.B. chmod auf Datei für Yuxiang)
-  - Eigentümerprinzip - Eigentümer spezifiziert die Berechtigungen an seinen Objekten
-  - Auf Basis der Objekte
+   - Eigentümerprinzip - Eigentümer spezifiziert die Berechtigungen an seinen Objekten
+   - Auf Basis der Objekte
 2. Mandatory Access Control
-  - Regelbasierte Festlegung der Rechte, z.B. über Sicherheitsklassen 
-  - Systemglobal
+   - Regelbasierte Festlegung der Rechte, z.B. über Sicherheitsklassen 
+   - Systemglobal
 3. Role-based Access Controll (z.B. chmod auf Datei für Administratoren)
-  - Subjekt -> Aufgabe / Rolle -> Berechtigungen
+   - Subjekt -> Aufgabe / Rolle -> Berechtigungen
   
 ### Referenzmonitor / Access Control Monitor
 - Regelt Zugriff auf Objekte
@@ -260,10 +266,10 @@ Kerberos Server und TGS Server sind zusammen in "sicherem Bereich", Server s ist
 
 Zwei Stufen:
 1. Personalisierung 
-  - Ermittlung der Real-World Identität
-  - Vergabe einer digitalen ID (Benutzername)
+   - Ermittlung der Real-World Identität
+   - Vergabe einer digitalen ID (Benutzername)
 2. Identifikation
-  - Verbindung beider mit Informationen, die nur die Entität kennt (Passwort)
+   - Verbindung beider mit Informationen, die nur die Entität kennt (Passwort)
   
 ### Certification Authority
 - Realm = Alle Nutzer, die der CA vertrauen
@@ -280,8 +286,8 @@ Zwei Stufen:
 ### Benutzerzertifizierung Ablauf
 1. Schlüsselgenerierung
 2. Personalisierung, Certification Request
-  - Feststellung der Identität
-  - Benutzer beweist Besitz des privaten Schlüssels
+   - Feststellung der Identität
+   - Benutzer beweist Besitz des privaten Schlüssels
 3. Zertifikat generieren
 4. Zertifikat signieren
 
