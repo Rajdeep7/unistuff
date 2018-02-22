@@ -501,3 +501,79 @@ Nachteile:
 5. Chosen-plaintext
 
 ## 7 - Symmetrische Kryptosysteme
+
+### Nenne zwei Forderungen an Kryptosysteme and erkläre, was sie bedeuten
+- Konfusion - es kann möglichst wenig von Chiffretext auf Klartext geschlossen werden
+- Diffusion - kleine Inputänderungen -> große Outputänderungen
+
+### Was für ein Chiffre ist DES? Mit wie viel Bit? Wie lang ist der Schlüssel?
+- Blockchiffre mit 64 Bit
+- Schlüssellänge 64 Bit, davon 8 Paritätsbits (jedes 8.)
+
+### Welche Operationen nutzt DES?
+Permutation, Substitution und XOR
+
+### Aus welchen 3 groben Schritten besteht DES?
+1. Initialpermutation
+2. 16 Schlüsselabhängige Iterationen mit je einem 48 Bit Teilschlüssel
+3. Inverse Initialpermutation
+
+### Wozu dient die Initialpermutation bei DES?
+- Verteilt Bits gleichmäßig auf linke und rechte Hälfte
+- Verbessert die Sicherheit nicht, nur die Hardware-Implementierung
+
+### Skizziere eine DES Iteration
+https://github.com/batzner/unistuff/raw/master/LMU/IT-Sicherheit/img/des-iteration.png
+
+### Aus welchen 4 Schritten besteht die DES Funktion?
+1. Expanson (fix)
+2. XOR mit Teilschlüssel
+3. S-Box Substitution von 6 zu 4 Bit
+4. Permutation (fix)
+
+### Skizziere die DES Funktion
+https://github.com/batzner/unistuff/raw/master/LMU/IT-Sicherheit/img/des-funktion.png
+
+### Wie werden die Teilschlüssel bei DES generiert?
+1. Kürzung auf relevante Bits
+2. Permutation
+3. Aufteilen in C und D
+4. Zyklisches shiften nach links der Blöcke
+5. C(i) und D(i) nach jedem Shift zusammenfügen
+6. Aus C(i)+D(i) bestimmte Bits entfernen und nochmal permutieren
+
+### Was ist bei der DES Entschlüsselung anders?
+- Schlüsselreihenfolge ist umgekehrt
+
+### Nenne drei Stärken von DES
+1. Avalanche-Effekt durch S-Boxen und Permutation. Ein Bit verursacht Änderung von durchschnittlich 50% der Ausgabe
+2. 16 Iterationen - Brute Force ist genauso effizient wie known-plaintext bei 16+ Iterationen
+3. Hardware-effizient, da Iterationen und ähnliche Ver- / Entschlüsselung
+
+### Nenne drei Schwächen von DES
+1. Teilweise geheimes Design
+2. Zu geringe Schlüssellänge
+3. Optimiert auf Implementierung in Hardware, IP und IIP verbessern die Sicherheit nicht
+
+### Wie funktioniert 3DES?
+Verschlüsseln, entschlüsseln mit zweitem Key und verschlüsseln mit drittem Key
+
+### Nenne 5 Eigenschaften von Feistel-Chiffren
+1. Symmetrisch
+2. Zerlegung des Eingabeblocks in zwei Teile
+3. n Runden mit Rundenschlüsseln
+4. Funktion f ist nicht umkehrbar
+5. Alternierende Substitutionen und Permutationen für Konfusion und Diffusion
+
+### Wie funktionieren Blockchiffren? Wie wird mit Input variabler Länge umgegangen?
+- Feste Blocklänge
+- Ciphertext = Konkatenation der Output-Blöcke
+- Padding, Länge des Paddings muss hinterlegt werden
+
+### Wie funktionieren Stromchiffren?
+- Kleine Einheiten werden mit Keystream XOR verknüpft
+- Keystream wird aus PRNG erzeugt
+- PRNG wird mit Shared Secret initialisiert
+
+### Was ist Electronic Codebook Mode? Nenne zwei Nachteile
+- Jeder Block wird mit demselben Schlüssel verschlüsselt -> identische Ciphertext-Blöcke
