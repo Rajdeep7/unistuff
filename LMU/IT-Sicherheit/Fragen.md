@@ -577,3 +577,113 @@ Verschlüsseln, entschlüsseln mit zweitem Key und verschlüsseln mit drittem Ke
 
 ### Was ist Electronic Codebook Mode? Nenne zwei Nachteile
 - Jeder Block wird mit demselben Schlüssel verschlüsselt -> identische Ciphertext-Blöcke
+- Nachteile:
+  1. Angreifer können Blöcke Löschen, Vertauschen und Einfügen
+  2. Erlaubt Rückschlüsse auf Klartext
+  
+### Was ist Cipher Block Chaining?
+- Klartext-Block wird **vor** der Verschlüsselung mit letztem Ciphertext-Block XOR verknüpft
+- Keine Fortpflanzung von Übertragungsfehlern über den nächsten Block hinaus :)
+
+### Wie berechnet sich die Rundenanzahl in AES?
+max(Blockbit, Schlüsselbit) / 32 + 6
+
+### Nenne die Schritte der Verschlüsselung bei AES
+1. Addition des Rundenschlüssels
+2. Byte-Substitution
+3. Zeilenshift
+4. Außer in letzter Runde: Spaltenmix
+5. Addition des Rundenschlüssels
+6. Zurück zu 2
+
+### Nenne die Schritte der Entschlusselung bei AES
+1. Addition des Rundenschlüssels 
+2. Inv. Zeilenshift
+3. Inv. Byte-Substitution
+4. Addition des Rundenschlüssels
+5. Außer in letzter Runde: Inv. Spaltenmix
+6. Zurück zu 2
+
+### Wie funktioniert die Bytesubstitution bei AES?
+- Aktueller Byteinhalt gibt Zeile und Spalte der Lookup-Tabelle vor
+- Größe ändert sich nicht, nur Inhalt
+
+### Wie funktioniert der Zeilenshift bei AES?
+- Zeile i (beginnend bei 1) wird um i-1 nach links geshiftet
+
+### Wie funktioniert der Spaltenmix bei AES?
+- $s' = A s$
+- $A = ((02, 03, 01, 01), ...)$ geshiftet nach links pro Reihe
+
+### Wie wird der Rundenschlüssel bei AES addiert?
+- Rundenschlüssel wird in Worte unterteilt
+- Jedes Wort wird auf eine Spalte addiert
+- Schlüssel wird rotiert und mit S-Box Bytesubstituiert, abhängig von Rundenkonstante
+
+### Nenne vier Vorteile von AES
+1. Design-Kriterien offen gelegt, kein geheimes Design
+2. Rundenschlüsselgenerierungsvorteile (siehe unten)
+3. Diffusion: Nach 2 Runden hängen 50% der Output-Bits von jedem Input-Bit ab
+4. Keine Angriffe bekannt, die besser als Brute Force sind ab 8+ Runden
+
+### Nenne drei Vorteile der Rundenschlüsselgenerierung bei AES
+- S-Box verhindert, dass mit Teilen des Schlüssels der Rest berechnet werden kann
+- S-Box verhindert, dass zwei ähnliche Schlüssel viele gemeinsame Rundenschlüssel haben
+- Rundenkonstante verhindert Symmetrien im Prozess
+
+### Nenne drei Protokolle, die AES einsetzen
+WPA2, SSH, IPsec
+
+### Nenne drei Programme, die AES einsetzen
+FileVault, Skype, ZIP
+
+## 8 - Asymmetrische Kryptosysteme
+
+### Nenne die Schritte einer Asymmetrischen Verschlüsselung
+1. Erzeugung von Schlüsselpaaren
+2. Austausch / Öffentlichmachung öffentlicher Schlüssel
+3. Verschlüsselung mit öffentlichem Schlüssel
+4. Entschlüsselung mit privatem Schlüssel
+
+### Nenne die Schritte bei der Erzeugung eines RSA Schlüsselpaares
+1. Wähle Primzahlen p, q
+2. n = pq = RSA-Modul
+3. $\Phi(n) = (p-1)(q-1)$
+4. Wähle $1 < e < \Phi(n)$, z.B. 65537
+5. Public Key = (n, e)
+6. $d = e^{-1} \text{ mod } \Phi(n) = Euklid(e, \Phi(n))
+7. Private Key = (n, d)
+
+### Erkläre die Ver- und Entschlüsselung bei gegebenem RSA Schlüsselpaar und Nachricht m
+- $c = m^e mod n$
+- $m = c^d mod n$
+
+### Erkläre vier Angriffe auf RSA
+1. Brute Force - Zerlege n in p und q
+2. Chosen-Ciphertext funktioniert supa
+3. Timing Angriff - Laufzeit der Entschlüsselung verrät d. Lösung Entschlüsselung mit zusätzlicher Zufallszahl
+4. Angriff auf Signaturen. Man kann Dokument aus korrekt signierten Teildokumenten zusammensetzen aufgrund von Multiplikativität von RSA
+
+### Wie viel Bit Schlüssel konnten bereits faktorisiert werden bei RSA?
+1039
+
+### Wie viel Bits of Security haben gängige RSA Schlüssellängen?
+- 1024 -> 80 AES
+- 2048 -> 112 AES
+- 3072 -> 128 AES
+
+### Wie viel Bits of Security werden aktuell empfohlen?
+Bis 2022 100, danach 120
+
+### Nenne drei Hybride Verfahren, die RSA nutzen
+SSL/TLS, PGP, SSH
+
+### Wie funktioniert eine Digitale Signatur?
+Prüfsumme wird auf Daten generiert und mit privatem Key signiert
+
+### Nenne 5 Anforderungen an eine Signatur und erkläre, ob sie die elektronische Signatur erfüllt
+1. Perpetuierungsfunktion - Fälschungssicher und dauerhaft (gegeben, falls private Key private bleibt)
+2. Echtheitsfunktion - Authentizität (gegeben, durch CA [Public Key -> Name]
+3. Wiederverwendbarkeit - Verhindert (nur möglich mit Private Key)
+4. Abschlussfunktion - Dokument nicht veränderbar (nur möglich mit Private Key)
+5. Beweisfunktion - Nicht zu leugnen (durch Public Key eindeutig)
