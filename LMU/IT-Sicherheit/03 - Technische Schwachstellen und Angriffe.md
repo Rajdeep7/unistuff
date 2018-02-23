@@ -94,6 +94,21 @@ Virus-Signatur: Byte-Sequenz, die in einer Virus-Datei enthalten ist. Hilft Vire
 ### Wurm
 - Eigenständiges Programm, benötigt keinen Wirt
 - Selbstreplikation
+- Warhol-Wurm: infiziert in 15 Minuten viele Hosts (wie auch immer), z.B. SQL Slammer
+
+### Wurm-Verbreitung
+1. Random Scanning -> Zufällige IP-Adressen
+  - Vorteil: Wenig Code, Tod von Wurm-Instanzen ist nicht schlimm
+  - Nachteil: Redundanz, Ineffizient, falls es wenige angreifbare Hosts gibt
+2. Topological Scanning -> Information auf dem Host nutzen, z.B. Logs Parsen
+  - Vorteil: Effizient, Unauffällig
+  - Nachteil: Erreicht keine Saturation, Viel Code
+3. Hit-List Scanning -> Vordefinierte Liste an angreifbaren Hosts
+  - Vorteil: Schnelle Ausbreitung
+  - Nachteil: Große Liste, Teilweise Redundanz für Fehlertoleranz nötig
+4. Permutation Scanning -> Vordefinierte Permutation von IP-Adressen (z.B. durch 32 bit Cipher)
+  - Vorteil: Wenig Code, Keine Redundanz (wenn System schon infiziert, springt er mehrere IPs weiter), Perfekte Fehlertoleranz
+  - Nachteil: Ineffizient, falls es wenige angreifbare Hosts gibt
 
 ### Trojaner
 - Eigenständiges Programm
@@ -106,7 +121,25 @@ Virus-Signatur: Byte-Sequenz, die in einer Virus-Datei enthalten ist. Hilft Vire
 - Wird per Registry-Eintrag geladen
 - Unsichere Kommunikation mit Command and Control Server -> Malware kann von Dritten gesteuert werden
 
-Gegenmaßnahmen:
+### Malicious Code Erkennung
+- Signatur-basiert
+  - Erkennt Malware, falls exakte Folge an Codebefehlen im Programm erkannt wird
+  - Vorteil: Gut gegen alte noch aktive Malware
+  - Nachteil: Veröffentlichung dauert teilweise lange, Kann leicht umgangen werden
+- Heuristisch/Anomalie-basiert
+  - Sucht nach auffälligem Verhalten, z.B. Registering for Autostart, Installing rootkits etc.
+  - Statische Analyse
+  - Vorteil: Schützt gegen neue Malware Attacken
+- Emulations-basiert
+  - Dynamische Analyse
+  - Nachteil: Malware kann erkennen, dass sie in einer Sandbox läuft, Langsamer, oft Cloud-basiert
+  
+### Tricks von Malware
+- Garbage Instruction
+- Instruction Reordering
+- Interchangeable Instructions
+
+### Gegenmaßnahmen
 - Antiviren-Software
 - Keine Software zweifelhafter Herkunft installieren
 - Daten-Backups
@@ -118,14 +151,17 @@ Gegenmaßnahmen:
 
 ### Spamfilter
 Unterschiedlich schnell / granular
-1. Blacklist / Whitelist:  
-  Blockieren von Mail-Servern und Mail-Domänen, die üblicherweise von Spammern benutzt werden
+1. Blacklist / Whitelist:
+  - Blockieren von Mail-Servern und Mail-Domänen, die üblicherweise von Spammern benutzt werden
+  - RHSBL: Enthält Domains anstatt IPs, Name kommt von DNS recht vom @
 2. Regelbasiert im Header und Body
 3. Filtersoftware lernt (NN, Bayes)
 
 Greylisting: 
 - Jede Email mit unbekanntem Tripel (Absender, Quell-Mailserver, Empfänger) ablehnen und Fehlermeldung zurückschicken
 - Erst nach Wartezeit erneute Versuche zulassen
+
+Gesetzliche Lage: Wenn eine Mailadresse für den geschäftlichen Verkehr eröffnet ist, muss täglich der Spam-Ordner kontrolliert werden.
 
 ## 4. Mobile Code
 - Typischerweise in Webseiten eingebettet -> Webseitenbetreiber sind böse
@@ -138,8 +174,9 @@ Problem mit HTML5: Web Storage API, WebSockets API, Cross-Origin Resource Sharin
 ## 5. Systemnahe Angriffe
 
 ### Buffer Overflow Variante: Stack Smashing
-- Ziel: Ausführen von Code auf fremdem Rechner unter fremden Rechten
+- Ziel: Ausführen von Code auf fremdem Rechner oder unter fremden Rechten (SUID)
 - Überschreiben von Programmpuffer (z.B. durch Eingabe, Dateien, Datenpakete eines Protokolls) 
+- Stack wächst nach unten, Variablen werden nach oben beschrieben
 - Manipulation der Rücksprungadresse
 
 Erinnerung:
@@ -153,18 +190,27 @@ From https://stackoverflow.com/questions/79923/what-and-where-are-the-stack-and-
 <img src="https://github.com/batzner/unistuff/raw/master/LMU/IT-Sicherheit/img/buffer-overflow-stack.png" width=500/>
 
 **Hürden**
+- strcpy bricht bei Nullbytes (0x00) ab
 - Rücksprungadresse ist absolut - Lösung: NOPs vor Schadcode
 - Wenig Speicher in Stack-Segment - Lösung: Dynamisches Nachladen von Schadcode
 - Quellcode von proprietärer Software nicht verfügbar - Lösung: Fuzzing (Kucken, was bei Fehleingaben / Edge Cases passiert)
 
 **Beispiele**
-- Nachbildung von `system("/bin/sh")`, um die Shell mit root-Rechten nutzen zu können
-- *return-to-libc* -> keinen eigenen Code einfügen, sondern Funktionen der Standard-Funktionsbibliothek nutzen, z.B. `system()`
+- Shellcode: Nachbildung von `system("/bin/sh")` in Assembler, um die Shell mit root-Rechten nutzen zu können
+- *return-to-libc* 
+  - Keinen eigenen Code einfügen, sondern Funktionen der Standard-Funktionsbibliothek nutzen, z.B. `system()`
+  - Parameter für die `system` Funktion werden über den Eintrag mit der Rücksprungadresse geschrieben
 
 **Gegenmaßnahmen**
 - Sicheres Programmieren - `strncpy` statt `strcpy`
-- Stack-Guarding - Mehrere Kopien von Rücksprungadresse machen, bevor die Unterfunktion aufgerufen wird
-- Nicht-ausführbare Stacks - Keinen Code im Stack ausführen (NX bit), schützt nicht gegen return-to-lib
+- Stack-Guarding 
+  - Vor Rücksprungsadresse ein Canary ablegen und danach prüfen, ob es noch intakt ist
+  - Kann vom Compiler automatisch generiert werden, Prüfwert wird in globaler Variable gespeichert
+  - Variante: Mehrere Kopien von Rücksprungadresse machen, bevor die Unterfunktion aufgerufen wird
+- Nicht-ausführbare Stacks - Keinen Code im Stack ausführen (NX bit), schützt nicht gegen return-to-libc
+- Address Space Layout Randomization
+  - Auch Speicheradressen der Systemfunktionen werden zufällig erteilt
+  - Schützt gegen return-to-libc
 
 ### Weiter Buffer-Overflow Attacken
 - Heap Corruption (Datenstrukturen werden überschrieben)
