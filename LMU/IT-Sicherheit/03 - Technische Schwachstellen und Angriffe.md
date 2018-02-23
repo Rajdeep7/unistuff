@@ -98,17 +98,17 @@ Virus-Signatur: Byte-Sequenz, die in einer Virus-Datei enthalten ist. Hilft Vire
 
 ### Wurm-Verbreitung
 1. Random Scanning -> Zufällige IP-Adressen
-  - Vorteil: Wenig Code, Tod von Wurm-Instanzen ist nicht schlimm
-  - Nachteil: Redundanz, Ineffizient, falls es wenige angreifbare Hosts gibt
+   - Vorteil: Wenig Code, Tod von Wurm-Instanzen ist nicht schlimm
+   - Nachteil: Redundanz, Ineffizient, falls es wenige angreifbare Hosts gibt
 2. Topological Scanning -> Information auf dem Host nutzen, z.B. Logs Parsen
-  - Vorteil: Effizient, Unauffällig
-  - Nachteil: Erreicht keine Saturation, Viel Code
+   - Vorteil: Effizient, Unauffällig
+   - Nachteil: Erreicht keine Saturation, Viel Code
 3. Hit-List Scanning -> Vordefinierte Liste an angreifbaren Hosts
-  - Vorteil: Schnelle Ausbreitung
-  - Nachteil: Große Liste, Teilweise Redundanz für Fehlertoleranz nötig
+   - Vorteil: Schnelle Ausbreitung
+   - Nachteil: Große Liste, Teilweise Redundanz für Fehlertoleranz nötig
 4. Permutation Scanning -> Vordefinierte Permutation von IP-Adressen (z.B. durch 32 bit Cipher)
-  - Vorteil: Wenig Code, Keine Redundanz (wenn System schon infiziert, springt er mehrere IPs weiter), Perfekte Fehlertoleranz
-  - Nachteil: Ineffizient, falls es wenige angreifbare Hosts gibt
+   - Vorteil: Wenig Code, Keine Redundanz (wenn System schon infiziert, springt er mehrere IPs weiter), Perfekte Fehlertoleranz
+   - Nachteil: Ineffizient, falls es wenige angreifbare Hosts gibt
 
 ### Trojaner
 - Eigenständiges Programm
@@ -245,26 +245,42 @@ Maßnahmen:
 - Überprüfung der offenen Ports und aktiven Netzdienste
 - Suche nach ungewöhnlichen SUID-Programmen
 
-### Rootkits
+## Rootkits
 1. Angreifer kompromittiert Maschine und erlangt root
 2. Angreifer installiert Rootkit
   - bereinigt Spuren
   - öffnet Backdoors
+  
+### Bestandteile
+- Droper -> Wird von User gestartet, startet Loader und entfernt sich
+- Loader -> Sorgt für BufferOverflow und lädt das Rootkit in den Speicher
+- Rootkit
 
-1. Generation:
+### 1. Generation: Application-Rootkits
 - Ersetzt Systembefehle (ls, top, find, netstat, passwd etc.) mit eigenen Varianten
 - Verstecken Prozesse, Dateien etc. des Angreifers
 - Gegenmaßnahme: Rootkitscanner `chkrootkit`
 
-2. Generation:
+### 2. Generation: Kernelmode-Rootkits
 - Modifiziert den Kernel, um Dateien vor **allen** Systemprogrammen zu verstecken
 - z.B. durch Loadable Kernel Module unter Linux -> ersetzt Systemfunktionen
 - Gegenmaßnahme: LKM deaktivieren
 
-Moderne Ausprägungen
+### Usermode-Rootkits
+- Benötigen keinen Zugriff auf den Kernel
+- Klinken sich in alle Prozesse ein
+- Leiten Auführung von API-Funktionen auf sich um
+- Unter Windows Populär
+
+### Moderne Ausprägungen
 - Hypervisor-level Rootkits: Ursprüngliches OS läuft als virtuelle Maschine
 - Bootkits: Bootloader wird durch Malware ersetzt
 - Hardware / Firmware-Rootkits: BIOS / Firmware der Netzwerkkarte
+
+### Anti-Forensik-Maßnahmen
+- Data Destruction - Möglichst wenig Spuren / Beweise hinterlassen
+- Data Concealment - Hinterlassene Spuren sollten schwer zu entdecken sein
+- Data Fabrication - Hinterlasse falsche Spuren
 
 ## 6. Web-basierte Angriffe
 ### Cross Site Scripting
@@ -282,9 +298,15 @@ Einbetten von Schadcode in vertrauenswürdigen anderen Code
 Gegenmaßnahme:
 - Webserver muss Script-Code entfernen oder escapen
 - Client-seitig JavaScript deaktivieren
+- HTTPOnly -> Attribut bei HTTP Cookies, sodass JavaScript nicht auf den Cookie zugreifen kann
 
 ### SQL Injection
 `ID=42;DROP+TABLE+students;--`
+
+### Cross-Site-Request-Forgery
+- Problem: Ein mal authentisiert, schickt der Browser implizit jedes Mal seine Sitzungsdaten an den Server
+- Angreifer bewirkt HTTP-Anfrage ohne Wissen des Opfers (z.B. RESTApi Call, der die Rechte eines Nutzers ändert)
+- Z.B. über falsche URL bei einem img Tag oder über tinyurl per Mail
 
 ## Netzbasierte Angriffe
 ### Sniffing
