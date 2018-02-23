@@ -9,6 +9,7 @@ Passive Angriffe  (keine Interaktion mit Opfer)
 - Über Schulter schauen
 - Durchsuchen von Papiertonnen
 - Liegenlassen präparierter USB-Sticks (baiting)
+
 Aktive Angriffe
 - Pretexting - Als Mitarbeiter etc. ausgeben
 - Phishing
@@ -24,6 +25,19 @@ Kategorien:
   - Phishing
   - Baiting
   - Forensic analysis (Elektronik-Dumpster diving)
+  
+## Phishing
+- Spear Phishing - Zielen auf bestimmte Personen ab, Angreifer sammelt erst Informationen
+- Clone Phishing 
+  - Kopiert Email und schickt veränderten Anhang / Inhalt (Hier ist die aktualisierte Version)
+  - Funktioniert gut über bereits kompromittierte Maschinen
+- Whaling - Angriff auf Senior Executives
+
+### Elemente einer Phishing Attacke
+- Link-Spoofing (angezeigter Link != tatsächlicher Link)
+- Ähnliche Absender Adresse (1 und l vertauschen z.B.)
+- Vertrauen etablieren (ähnliches Design etc.)
+- Call to Action
 
 ## Gegenmaßnahmen
 - Aktenvernichtung
