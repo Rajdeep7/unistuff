@@ -49,6 +49,23 @@ Zusätzliche Ziele:
 **ISO/IEC 27001**
 - Mindestanforderungen an Information Security Management Systems
 - Beschreibt risikogetriebenen [Plan - Do - Check - Act] Zyklus
+- Beschreibt:
+  - Organisation der Informationssicherheit
+  - Personalsicherheit
+  - Verwaltung der Werte
+  - Kryptographie
+  - Physische Sicherheit
+  - etc.
+  
+**Information Security Management System**
+- Aufstellung von Verfahren und Regeln
+- Innerhalb eines Unternehmens
+- Dienen zur Definition, Steuerung, Kontrolle und Verbesserung von Informationssicherheit
+
+**Risikomanagement**
+- = Risikoeinschätzung -> Risikobehandlung OR Risikoakzeptanz
+- Risikoeinschätzung = Risikoanalyse -> Risikobewertung
+- Risikoanalyse = Identifikation -> Klassifikation
 
 ### Security vs. Safety
 - **Safety**: Funktionssicherheit / Ausfallsicherheit bei sicherheitskritischen Programmen
