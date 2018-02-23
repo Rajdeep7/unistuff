@@ -17,7 +17,7 @@ Datenbeschaffung
 ### §202c StGB Vorbereitung von 202a oder 202b (Hackerparagraph)
 Vorbereitung durch **Passwörter oder Computerprogramme**
 - Herstellung
-- Verschaffung
+- Sich oder einem anderen verschaffen
 - oder Zugänglich machen
 
 Offizialdelikt!
@@ -37,6 +37,11 @@ Offizialdelikt!
 - Versuch und Vorbereitung strafbar
 
 ## Datenschutz
+### Datenarten
+- Nutzungsdaten -> Identifikation des Nutzers + Metadaten über Nutzung
+- Bestandsdaten -> Vertragliche Daten eines Nutzers -> Bei Anfang, Änderung und Ende des Vertrags erhoben
+- Inhaltsdaten -> Inhalt einer Kommunikation
+
 Grundprinzipien
 - Generelles Verbot mit Erlaubnisvorbehalt
 - Datenvermeidung / Datensparsamkeit
