@@ -211,7 +211,8 @@ Problem:
 Lösung: Sequenznummern / Timestamps / begrenzte Gültigkeitsdauer
 
 ## Kerberos
-- Kerberos-Server (TTP) kennt Schlüssel aller Clients
+- Kerberos-Server (TTP) kennt Schlüssel aller Clients und Server
+- Dient zur Third Party Authentisierung zwischen zwei Parteien
 - Authentisierung basiert auf symmetrischer Verschlüsselung
 - Single-Sign-On über Kooperation mehrerer Server
 
@@ -220,6 +221,7 @@ Lösung: Sequenznummern / Timestamps / begrenzte Gültigkeitsdauer
   - Nur für einen Server gültig
   - Wird vom Ticket Granting Server erstellt
   - Speichert Client, Server, Lifetime und Timestamp und symmetrischen Schlüssel
+  - Kann nie vom Client gelesen werden
 2. Authenticator
   - Vom Client erstellt
   - Wir zusammen mit Ticket verschickt
@@ -244,7 +246,11 @@ Kerberos Server und TGS Server sind zusammen in "sicherem Bereich", Server s ist
    - $T_{c,s}$ ist ein Ticket und enthält Schlüssel $K_{c,s}$
 5. Request für Service $K_{c,s}[A_{c,s}], K_s[T_{c,s}]$
    - $A_{c,s} = c,a,t,key,seqNo$
+   - key und seqNo verhindern Replay-Attacken
 6. Server Authentication $K_{c,s}[t, key, seqNo]$
+
+Aufteilung von Kerberos Server und TGS
+- Erlaubt Skalierung von Ticket Granting Servern
 
 ### Multi-Domain-Kerberos
 - TGS der fremden Realm wird "normaler" Server
@@ -258,8 +264,8 @@ Kerberos Server und TGS Server sind zusammen in "sicherem Bereich", Server s ist
 - IP-Spoofing u.U. möglich
 - Kerberos-Schlüssel wird aus Passwort abgeleitet -> Sicherheit hängt davon ab
 - Synchronisation über lose gekoppelte globale Zeit
-- Kerberos-Server und TGS sind "Single Point of Failure"
-- Verlässt sich auf vertrauenswürdige Software -> Problem Trojaner
+- Kerberos-Server und TGS sind "Single Point of Failure" -> Wenn die nicht verfügbar sind geht gar nichts
+- Verlässt sich auf vertrauenswürdige Software -> Problem Kerberos-Trojaner
 
 ## Autorisierung und Zugriffskontrolle
 - Autorisierung: Vergabe von Berechtigungen
@@ -320,3 +326,5 @@ Zwei Stufen:
 - SubjectPublicKeyInfo (Algorithmus, Schlüssel, Verwendung, Länge, Exponent)
 - Alternativer Name (mittlerweile wichtig für mehrere Domains)
 - Signature (signiert alles obere)
+
+Problem mit Certificate Revocation Lists: Werden immer nur länger, da alle Revocations gespeichert werden.
