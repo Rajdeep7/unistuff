@@ -1,4 +1,10 @@
 # Sicherheitsmechanismen
+Für
+1. Vertraulichkeit
+2. Integrität
+3. Authentisierung
+4. Autorisierung und Zugriffskontrolle
+5. Identifikation
 
 ## Vertraulichkeit
 - Verschlüsselung!
@@ -7,7 +13,7 @@
 - Hashwerte gegen Modifikation
 - Hashwert + gesicherte Sequenznummern + Zeitstempel gegen Duplikate (**Replay-Angriff**)
 - Verschlüsselung allein schützt nicht die Integrität! Daten können blind modifiziert werden
-- Lösung: Hashwert und Sequenznummern ebenfalls verschlüsseln
+- Lösung: Hashwert und Sequenznummern verschlüsseln, Nachricht nicht
 
 ## Authentisierung
 ### 3 Arten
@@ -29,25 +35,32 @@
 
 ### Einmalpasswörter
 - Abgehörtes Passwort soll für Angreifer möglichst nutzlos sein
+- Gut für Internet-Cafes
 
 ### S/Key
+Server und Client kennen beide Clients Passwort
 1. Client schickt N (Anzahl gewünschter Passwörter) an Server
-2. Server schickt Seed an Client
-3. Client berechnet nachfolgende Passwörter über Kette von MD4 Hashes
+2. Server schickt Seed und N an Client
+3. Client berechnet nachfolgende Passwörter über Kette von MD4 Hashes (Client gibt sein Passwort bei Stelle 0 ein)
 4. Client nutzt Passwörter in umgekehrter Reihenfolge (N, N-1, N-2 ...)
 5. Client übersetzt ein Passwort in 6 Wörter über ein fixes Wörterbuch
 6. Server verifiziert Passphrase
 
-Anfällig für Man in the Middle (Angreifer simuliert Server)
+Kritik:
+- Anfällig für Man in the Middle 
+  - Angreifer kennt N und seed -> Dictionary Attack
+  - Server wird nicht authentisiert
 
 ### One Time Password System
 Änderungen zu S/Key:
 - Ein Passwort kann nur ein einziges Mal verwendet werden -> nicht für parallele Sessions
 - MD5 und SHA unterstützt
+- Empfiehlt IPSec
 
 Angriffe:
 - Wie oben, M.i.t.M., kann aber über IPSec Authentifizierung des Servers vermieden werden
-- Wenn Hashes im Klartext abgefangen werden, kann man Passwor erraten
+- Wenn Hashes im Klartext abgefangen werden, kann man Passwort erraten
+- Hängt also vom Passwort ab (sollte nicht in Dictionary sein)
 
 ### Smartcards
 Zugangsdaten werden auf Karte gespeichert oder erzeugt
@@ -59,7 +72,10 @@ Zugangsdaten werden auf Karte gespeichert oder erzeugt
 - Hardwaremanipulation führt zu Hardwarebeschädigung
 
 ### Biometrie
-- Matching Score regelt FN und FP Rate
+- Extrahiert Master-Charakteristika
+- Matching Score regelt FN und FP Rate (Acceptance und Rejection)
+- 1:N -> Man muss keinen Benutzer spezifizieren, sucht einfach nach Match
+- 1:1 -> Verfizierung, Problem: erkennt keine Duplikate in der Datenbank
 
 ## Datenursprung Authentisierung
 Möglichkeiten
@@ -142,6 +158,7 @@ Nachteile:
 - Empfang kann nicht bewiesen werden
 
 ### 5.3 Nachricht + Signierter Hash
+- Standardverfahren der Digitalen Signatur
 - Ziemlich kacke, aber erfüllt Authentisierung von Alice
 
 ### 5.4 Symmetrisch Verschlüsselte [Signierter Hash + Nachricht]
@@ -149,6 +166,7 @@ Nachteile:
 - Authentisierung des Datenursprungs
 - Sendung kann nicht geleugnet werden
 - Integrität
+- Wird von allen fast Protokollen, die Authentisierung und Vertraulichkeit benötigen, verwendet (SSL etc.)
 
 Nachteil:
 - Empfang kann nicht bewiesen werden
@@ -168,6 +186,7 @@ Angriff:
 
 ### Hashed MAC (HMAC)
 - Keine symmetrische Verschlüsselung wie bei MAC, sondern Hash-Funktion
+- Hashs sind normalerweise schneller als symm. Verfahren
 - Problem: Hash-Funktionen nutzen keinen Schlüssel
 - Schlüssel wird verarbeitet und dann mit Nachricht konkateniert -> Dann gehasht
 
