@@ -6,27 +6,35 @@
 - Auf allen Schichten des ISO/OSI
 
 ### VPN auf Schicht 1
-Virtual Private Wire Service - Provider bietet Punkt zu Punkt Verbindung, die Kunde selber nutzen darf
+- Virtual Private Wire Service 
+- Provider bietet Punkt zu Punkt Verbindung, die der Kunde selber nutzen darf
 
 ### VPN auf Schicht 2
-- VLAN
+- VLAN -> Mehrere Netze werden über denselben physischen Link betrieben, aber sind getrennt voneinander
 - Virtual Private LAN Services - verbindet physisch getrennte LANs
 - Point to Point Verbindungen
 
-### VPN auf Schicht 3
+### VPN auf Schicht 3 und höher
 - IPSec
 - SSL/TLS
-. OpenVPN
+- OpenVPN
+- Peer to Peer Anwendung (Schicht 7)
 
-## VLAN
-- LAN-Infrastruktur über mehrere Switches hinweg
-- Definiert über IEEE 802.1Q
-- Ethernet-Frame wird um VLAN-ID erweitert, 4094 verschiedene VLANs möglich
-
+## VLAN / 802.1Q
 ### Reminder: Schicht 2 Aufgaben
 - Fehlerfreie Übertragung von Frames (Prüfsummen)
 - Flusskontrolle
 - CSMA/CD bei Ethernet / CSMA/CA bei WLAN
+
+VLAN:
+- LAN-Infrastruktur über mehrere Switches hinweg -> Broadcasts usw. möglich über gesamtes VLAN Netz
+- Soll aber andere VLAN-Netze, die auf gleicher LAN-Struktur arbeiten, nicht betreffen
+- Definiert über IEEE 802.1Q
+- Ethernet-Frame wird erweitert um 32 Bit Tag:
+  - 16 Bit: 0x8100 für VLAN
+  - 3 Bit: Priority 
+  - 1 Bit: Canonical Format Indicator (Ethernet oder Token Ring)
+  - 12 Bit: VLAN-ID -> 4094 verschiedene VLANs möglich
 
 ## PPP
 - Punkt-zu-Punkt Protokoll
@@ -39,30 +47,44 @@ Virtual Private Wire Service - Provider bietet Punkt zu Punkt Verbindung, die Ku
   
 ### PAP
 - Überträgt Passwörter im Klartext. WOW.
+- Server kennt ID und Passwort aller Clients und schickt ACK
+- Keine Authentisierung des Authenticators durch den Client :(
 
 ### CHAP
 - Shared Secret zwischen A und B
-- Zu Authentsierung werden öffentliche Infos (id, Zufallszahl, Name) mit Shared Secret gehasht und übertragen
+- Zu Authentisierung werden öffentliche Infos (id, Zufallszahl, Name) mit Shared Secret gehasht und übertragen
 - Sicher gegen Replay-Angriffe
 - Implementierungen unterstützen leider immer noch PAP als Fallback -> Einfacher M.i.t.M. Angriff
+- Keine Authentisierung des Authenticators durch den Client :(
 
 ### EAP 
-- Bietet Aushandlungsmechanismen für konkretes Verfahren, also quasi ein Meta-Protokoll
+- Bietet Aushandlungsmechanismen für konkretes Verfahren, also eher ein Framework
 
 ### Point to Point Tunneling Protocol
 - PPP wurde für direkt verbundene Systeme entwickelt
 - PPTP schickt seine Pakete durch das Internet und realisiert einen Tunnel
+- Simuliert ein Kabel zwischen zwei Systemen
+- Voluntary Tunneling -> Client setzt PPTP aktiv ein
+- Compulsory Tunneling -> Client denk, es ist eine PPP Verbindung
+
+### MS-CHAPv1 - Microsoft PPTP Implementierung
+- Sau viele Sicherheitslücken
+- Zentral: ermöglicht Known-Plaintext, da Challenge C im Klartext übertragen wurde und dann zurück entschlüsselt übertragen wurde.
+
+### MS-CHAPv2 Änderungen
+- Sau kompliziert
+- Hängt von Benutzerpasswortsicherheit ab
 
 ## IEEE 802.1X
-- 802.1Q für Virtual Bridged LANs
 - 802.1X = Port Based Network Access Control
-  - Authentisierung und Autorisierung in IEEE 802 Netzen
-  - z.B. in WLANs
+- Authentisierung und Autorisierung in IEEE 802 Netzen (WLANs, Bluetooth, Ethernet, VLAN etc.)
+- Definiert kein eigenes Protokoll, sondern nutzt EAP, EAP-TLS und RADIUS
+- Authentisierung ist immer Ende zu Ende -> Authenticator kann nicht mitlesen -> Eduroam
 
 ### Rollen
 - Supplicant: 802.1X Gerät, das sich authentisieren möchte
-- Authenticator: Gerät, an dem der Supplicant angebunden ist (Switch, oder WLAN AP)
-- Authentication Server: z.B. RADIUS-Server
+- Authenticator: Gerät, an dem der Supplicant angebunden ist (Switch oder WLAN AP)
+- Authentication Server: z.B. RADIUS-Server -> Macht eigentliche Authentisierung
 - Port Access Entity (PAE): Port, an dem Supplicant angeschlossen ist
   - Uncontrolled Port für Authentisierung
   - Controlled Port für Kommunikation
