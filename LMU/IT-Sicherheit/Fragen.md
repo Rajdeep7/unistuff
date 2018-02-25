@@ -447,30 +447,30 @@ Angriff, der eine unbekannte / soeben erst bekannt gewordene / unbeseitigte Sich
 
 ### Nenne alle bekannten Varianten von den sieben Kategorien für Angriffe
 1. DoS -> Availability zentral
-  1. SMURF
-  2. DNS Amplification
-  3. SYN Flooding
-  4. DDoS
+   1. SMURF
+   2. DNS Amplification
+   3. SYN Flooding
+   4. DDoS
 2. Malicious Code
-  1. Virus
-  2. Wurm
-  3. Trojaner
+   1. Virus
+   2. Wurm
+   3. Trojaner
 3. E-Mail -> Confidentiality, Authenticity
-  1. Hoax
-  2. Spam
-  3. Phishing
+   1. Hoax
+   2. Spam
+   3. Phishing
 4. Mobile Code - JavaScript, HTML, Flash
 5. Systemnahe Angriffe
-  1. Buffer Overflow / Stack Smashing
-  2. Rootkits
-  3. Password Cracking
-  4. Back Doors
+   1. Buffer Overflow / Stack Smashing
+   2. Rootkits
+   3. Password Cracking
+   4. Back Doors
 6. Web-basierte Angriffe
-  1. XSS
-  2. SQL Injection
+   1. XSS
+   2. SQL Injection
 7. Netzbasierte Angriffe
-  1. Sniffing
-  2. Port Scanning
+   1. Sniffing
+   2. Port Scanning
 
 ## 4 - Social Engineering
 
@@ -1318,3 +1318,20 @@ Port Based Network Access Control
 Eduroam kann mit eduroam-spoofing angegriffen werden, ist aber einfach zu erkennen, da falsches Zertifikat
 
 ## 12 - Netzsicherheit - WLAN-Sicherheit
+
+### Nenne vier Anforderungen an WLAN Protokolle
+1. Vertraulichkeit
+2. Integrität
+3. Authentisierung
+4. Zugriffskontrolle
+
+### Was ist der Unterschied zwischen einem BSS und einem ESS?
+- Basic Service Set -> STAs, die denselben AP nutzen
+- Extendes Service Set -> gleiche SSID, Netz aus mehreren BSS (z.B. Eduroam in München = 1 ESS)
+
+### Wie funktioniert WEP?
+- PRNG = RC4
+- 24-bit IV + 40-bit K = 64-bit Seed -> Keystream
+- C = (M + CRC) XOR Keystream
+- C und IV werden übertragen
+
