@@ -1399,3 +1399,125 @@ Temporal Key Integrity Protocol
 AES anstatt RC4
 
 ## 13 - Netzsicherheit - IPSec
+
+### Welche zwei Spezifikationen hat IPSec? Welche Sicherheitsziele erfüllen sie jeweils? Welche Protocol-Werte haben sie?
+- IP Authentication Header (51)
+  - Integrität
+  - Authentisierung des Datenursprungs
+  - Optional: Anti-Replay durch Sequenznummer
+- IP Encapsulating Security Payload (50)
+  - Vertraulichkeit
+  - Integrität
+  - Authentisierung der Security Association
+  - Anti-Replay Dienst
+
+### Welche zwei Betriebsmodi hat IPSec?
+- Transport Mode -> Ende zu Ende
+- Tunnel Mode -> Nur Gateways müssen wissen, was IPSec ist
+
+### Wie erfüllt der Authentication Header Sicherheitsziele
+- Integrität durch ICV = HMAC-MD5( gesamtes Paket, Key )
+  - Nicht auf TTL, Header Checksum und natürlich Authentication Data
+- Authentisierung durch gemeinsamen Schlüssel und HMAC
+- Anti-Replay durch Sequenznummer
+
+### Wie ist ein AH Header aufgebaut?
+- 8 Next Header -> =TCP / =IP etc. wird von originalem IP Paket übernommen
+- 8 AH Length -> für unterschiedliche ICVs 
+- 16 Reserved
+- 32 Security Parameter Index -> Legt verwendete Verfahren fest
+- 32 Sequence Number
+- Variabel: Integrity Check Value
+
+### Wie sind AH-Header und restliche Daten im Transport Mode strukturiert?
+IP-Header | AH-Header | Daten
+
+### Wie sind AH-Header und restliche Daten im Tunnel Mode strukturiert?
+IP-Header neu | AH-Header | IP Header alt | Daten
+
+### Wie sind die proto und next Werte angeordnet beim AH Tunnel Mode?
+- Äußerstes IP hat AH
+- AH hat IP wegen innerem IP
+- Inneres IP unverändert
+
+### Welche Daten sind im AH Tunnel Mode durch den Hash gesichert?
+Alle! Auch die des neuen IP Headers (da wieder TTL und Header Checksum ausgeschlossen)
+
+### Wie ist der ESP Header (+ Trailer) aufgebaut?
+- 32 SPI
+- 32 Sequence Number
+- Variabel: verschlüsselter Payload
+- 0-255 Bytes: Padding
+- 8 Pad Length
+- 8 Next Header -> Verweist auf Inhalt der Daten (z.B. TCP oder IP im Tunnel Mode)
+- Variabel: ICV [optional]
+
+### Wie sind die Daten im ESP Transport Mode strukturiert?
+IP-Header | ESP-Header | Daten | ESP-Trailer | Authentication Data
+
+### Wie sind die Daten im ESP Tunnel Mode strukturiert?
+IP-Header | ESP-Header | IP-Header alt | Daten | ESP-Trailer | Authentication Data
+
+### Was wird alles im ESP Transport Mode gehasht? Was nicht?
+- ESP-Header
+- Verschlüsselte Daten
+- ESP-Trailer
+- IP-Header und ICV nicht
+
+### Was wird alles im ESP Tunnel Mode gehasht? Was nicht?
+- ESP-Header
+- IP Header alt
+- Verschlüsselte Daten
+- ESP-Trailer
+- Neuer IP-Header und ICV nicht
+
+### Was wird im ESP Transport Mode verschlüsselt?
+Daten + ESP-Trailer (Padding)
+
+### Was wird im ESP Tunnel Mode verschlüsselt?
+IP Header alt + Daten + ESP-Trailer (Padding)
+
+### Warum wird beim ESP Tunnel Mode der alte IP Header verschlüsselt?
+Um Traffic Analysen zu verhindern
+
+### Wie verhindert IPSec Replay Attacken?
+- Sequenznummern
+- Sliding Window für eingehende Pakete
+
+### Nenne zwei Verfahren, die für ESP Encryption eingesetzt werden können
+- AES-CBC
+- 3DES
+
+### Nenne ein Verfahren, das für IPSec Authentication eingesetzt werden kann
+HMAC-MD5-96
+
+### Wie sind die Daten strukturiert, wenn AH Transport am Endsystem und ESP Transport am SGW eingesetzt werden?
+IP Header | ESP Header | AH Header | Daten | ESP Trailer
+
+### Wie sind die Daten strukturiert, wenn ESP Transport am Endsystem und AH Transport am SGW eingesetzt werden?
+IP Header | AH Header | ESP Header | Daten | ESP Trailer
+
+### Wie sind die Daten strukturiert, wenn AH Transport am Endsystem und ESP Tunnel am SGW eingesetzt werden?
+IP Header neu | ESP Header | IP Header | AH Header | Daten | ESP Trailer
+
+### Wozu dient Diffie-Hellman?
+Austausch eines Schlüssels über unsicheren Kanal
+
+### Wie funktioniert Diffie-Hellman?
+- Primzahl p und primitive Wurzel g werden öffentlich gemacht
+- A wählt x aus [1, p-2]
+- B wählt y aus [1, p-2]
+- A schickt g^x mod p
+- B schickt g^y mod p
+- Key = g^xy mod p
+
+### Wie berechnet man die primitive Wurzel einer Primzahl?
+(-)
+
+### Wofür steht SA bei IPSec? 
+Security Association -> Parameter für die Verschlüsselungs- und Authentisierungsalgorithmen
+
+### Was sind die drei Schritte bei IKE?
+1. IKE_INIT
+2. IKE_AUTH -> Authentisierung
+3. IKE_CHILD_SA -> Aushandeln weiterer SAs
