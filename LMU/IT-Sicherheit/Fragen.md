@@ -1,14 +1,41 @@
+## 1 - Einführung
+
+### Wie schnell hat sich der SQL Slammer in der ersten Minute ausgebreitet? Wie schnell waren wie viele Hosts infiziert? 
+- Verdopplung alle 8 Sekunden
+- 90% nach 10 Minuten
+- 75.000 nach 30 Minuten
+
+### Wie hat sich der SQL Slammer ausgebreitet? Welche Form von Scanning hat er verwendet? Wie hoch war die Probing Rate?
+- 376 UDP Paket
+- Buffer Overflow Bug -> Konnte Registry öffnen
+- Random Scanning
+- 26,000 Scans pro Sekunde
+
+### Wie viele Infektionsversuche hat der SQL Slammer insgesamt nach 1 Minute pro Sekunde durchgeführt?
+- 26,000 Scans pro Sekunde
+- 8 Verdopplungen in der ersten Minute -> 256 Hosts * 26,000 Scans = 6,6 Mio
+
 ## 2 - Grundlagen
 
-### Was sind die Ziele der Informationssicherheit? Beschreibe jeweils, worum es geht, und nenne eine gebräuchliche Maßnahme. Nenne zudem ein zusätzliches Ziel.
-1. Confidentiality / Vertraulichkeit - Daten können nur von Berechtigten genutzt werden - Verschlüsselung
+### Was sind die Ziele der Informationssicherheit? Beschreibe jeweils, worum es geht, und nenne eine gebräuchliche Maßnahme. Nenne zudem zwei zusätzliche Ziele.
+1. Confidentiality / Vertraulichkeit - Geschützte Daten können nur von Berechtigten genutzt werden - Verschlüsselung
 2. Integrity / Integrität - Geschützte Daten können nicht unbemerkt und unautorisiert modifiziert werden - Prüfsummen
 3. Availability / Verfügbarkeit - Berechtigte können störungsfrei Berechtigungen wahrnehmen - Redundanz
-4. Authentizität / Nicht-Abstreitbarkeit - Informationen wurden von dem übertragen, der als Absender angegeben ist
+4. Authentizität - Subjekte sind die, für die sie sich ausgeben / Betrug kann leicht erkannt werden - CA
+5. Nicht-Abstreitbarkeit - Digitale Signaturen
+
+### Beschreibe das Bell LaPadula Modell. Welche Form von Zugriffskontrolle implementiert es? Was ist eine Dominance Relation?
+- Setzt Mandatory Access Control um
+- Schützt die Vertraulichkeit von Daten
+- Dominance Relation = Inverse von [Information]-Can-Flow Relation
+- Drei Regeln
+  1. No-Read-Up - Tiefe Personen dürfen nicht Dateien von hohen Personen lesen
+  2. No-Write-Down - Hohe Personen dürfen nicht in Dateien von tiefen Personen schreiben -> Können nicht Informationen leaken
+  3. Access-Control Matrix definiert Zugriff von Subjekt auf Objekt
 
 ### Nenne zwei Dimensionen zur Einordnung von Sicherheitsmaßnahmen und ihre Werte.
-1. technisch / organisatorisch
-2. präventiv / detektiv / reagierend
+1. Technisch /organisatorisch
+2. Präventiv / detektiv / reagierend
 
 ### Was ist die ISO/IEC 27000 und was sind ihre Ziele?
 Richtlinie, wendet Grundprinzipien des QM auf das IT-Sicherheitsmanagement an
@@ -18,11 +45,29 @@ Ziele:
 2. Organisationen sollen Engagement nachweisen können
 3. Organisationen sollen organisationsübergreifend vergleichen können
 
-### Was beschreibt die ISO/IEC 27001?
-1. Mindestanforderungen an IT-Sicherheit Management Systeme
-2. Risikogetriebener Plan - Do - Check - Act Zyklus
+### Was beschreibt die ISO/IEC 27001? Aus welchen Elementen besteht sie?
+- Mindestanforderungen an IT-Sicherheit Management Systeme
+- Risikogetriebener Plan - Do - Check - Act Zyklus
+- Elemente:
+  - Organisation der Informationssicherheit
+  - Verwaltung der Werte
+  - Kryptographie
+  - Physische Sicherheit
+  - Personal Sicherheit
+  - etc.
 
-### Grenze die Begriffe Security und Safety voneinander ab.
+### Was ist ein Information Security Management System?
+- Aufstellung von Verfahren und Regeln
+- Innerhalb eines Unternehmens
+- Zur Definition, Steuerung, Kontrolle und Verbesserung von Informationssicherheit
+
+### Nenne die 4 Schritte des Risikomanagements
+1. Identifikation
+2. Klassifikation
+3. Risikobewertung / Gewichtung
+4. Risikobehandlung oder Risikoakzeptant
+
+### Grenze die Begriffe Security und Safety voneinander ab und nennen sie zwei Beispiele pro Themengebiet
 - Safety = Funktionssicherheit / Ausfallsicherheit
 - Security = Informationssicherheit = Hardware, Software und Netzbasierte Angriffe und Gegenmaßnahmen
 - IT-Sicherheit ist ein Teil von Security ist ein Teil von Safety
@@ -35,7 +80,7 @@ Ziele:
 - Carol, Dave zusätzliche Partner
 - Eve = Eavesdropper (passiv)
 - Mallory = Angreifer
-- Trent = TTP
+- Trent = Trusted Third Party
 - Walter = Wächter
 
 ### Nenne vier Eigenschaften zur Differenzierung von Angriffen, deren verschiedenen Ausprägungen. Nenne zu jeder Ausprägung ein Beispiel.
@@ -48,8 +93,9 @@ Ziele:
   - Passiv (Kryptoanalyse)
 3. Direkt / Indirekt
   - Direkt (Stack Smashing)
-  - Indirekt (Indirekt)
+  - Indirekt (-)
 4. Einstufig / Mehrstufig
+  - Einstufig (-)
   - Mehrstufig (Stuxnet)
 
 ### Nenne sieben Kategorien von Angriffsvarianten und jeweils ein Beispiel.
@@ -67,12 +113,12 @@ Denial of Service durch
 2. Fehlersituation
 3. Absturz durch Ausnutzung von Programmfehlern
 
-### Nenne drei beschränkte Ressourcen eines OS.
+### Nenne drei beschränkte Ressourcen eines OS
 - CPU-Zeit
 - Speicher
 - Bandbreite
 
-### Nenne drei DoS Attacken, die die Bandbreite aufbrauchen
+### Nenne vier DoS Attacken, die die Bandbreite aufbrauchen
 1. DDoS
 2. SMURF
 3. SYN-Flooding
@@ -122,15 +168,12 @@ Nein, da beim Verbindungsaufbau von TCP sichergestellt wird, dass die Anfrage au
   - 3 Bit MSS "Code"
   - 5 Bit Zeit für Timeout
   - 24 Bit gehashte IP, Port, eigene IP, eigener Port und Zeit aus 5 Bit
-- Wenn ACK eintrifft, Zeit checken, Hash checken und tatsächliche MSS nachschauen
-
-### Wann funktionieren SYN Cookies nicht?
-Wenn ACK von Alice verloren geht und Alice auf Nachrichten vom Server wartet (z.B. bei SSH)
+- Wenn ACK eintrifft, Zeit checken, Hash checken und tatsächliche MSS nachschauen -> SYN Queue Eintrag rekonstruieren
 
 ### Nenne drei Nachteile von SYN Cookies
 - Nur 8 verschiedene MSS Werte pro Server möglich
-- Keine TCP Options
-- Wenn ACK verloren geht
+- Keine TCP Options möglich
+- Wenn ACK von Alice verloren geht, denkt Alice, die Verbindung ist zustande gekommen. Bei SSH z.B. wartet Alice dann auf Daten von Bob, aber der sendet weder Daten noch wiederholt er sein SYN+ACK, da er keinen SYN Queue Eintrag angelegt hat -> Application Layer Timeout, was relativ lang dauern kann
 
 ### Nenne die Schritte eines DDoS Angriffs
 1. Angreifer kompromittiert eine oder mehrere Masters
@@ -150,9 +193,26 @@ Wenn ACK von Alice verloren geht und Alice auf Nachrichten vom Server wartet (z.
 Byte-Sequenz, die in einer Virus-Datei enthalten ist. Hilft Virenprogrammen bei der Erkennung
 
 ### Nenne 1 Unterschied und 2 Gemeinsamkeiten von Viren und Würmern
-1. = Selbstreplikation
-2. = Schädlicher Code
+1. == Selbstreplikation
+2. == Schädlicher Code
 3. != Wurm ist ein eigenständiges Programm
+
+### Was ist ein Warhol Wurm?
+Infiziert in 15 Minuten viele Hosts (wie auch immer), z.B. SQL Slammer
+
+### Erkläre 4 Arten der Wurm-Verbreitung und nenne jeweils einen Vorteil und einen Nachteil
+1. Random Scanning -> Zufällige IP-Adressen
+   - Vorteil: Wenig Code, Tod von Wurm-Instanzen ist nicht schlimm
+   - Nachteil: Redundanz, Ineffizient, falls es wenige angreifbare Hosts gibt
+2. Topological Scanning -> Information auf dem Host nutzen, z.B. Logs Parsen
+   - Vorteil: Effizient, Unauffällig
+   - Nachteil: Erreicht keine Saturation, Viel Code
+3. Hit-List Scanning -> Vordefinierte Liste an angreifbaren Hosts
+   - Vorteil: Schnelle Ausbreitung
+   - Nachteil: Große Liste, Teilweise Redundanz für Fehlertoleranz nötig
+4. Permutation Scanning -> Vordefinierte Permutation von IP-Adressen (z.B. durch 32 bit Cipher)
+   - Vorteil: Wenig Code, Keine Redundanz (wenn System schon infiziert, springt er mehrere IPs weiter), Perfekte Fehlertoleranz
+   - Nachteil: Ineffizient, falls es wenige angreifbare Hosts gibt
 
 ### Was ist ein Trojaner? Wie unterscheidet er sich von Viren und Würmern?
 Programm mit Nutzfunktionalität und gleichzeitigem Malicious Code, der unbemerkt ausgeführt wird
@@ -167,6 +227,27 @@ Programm mit Nutzfunktionalität und gleichzeitigem Malicious Code, der unbemerk
 1. Virus
 2. Trojaner
 3. Wurm
+
+### Erkläre drei Arten zur Erkennung von Malicious Code. Nenne jeweils Vorteile und Nachteile
+- Signatur-basiert
+  - Erkennt Malware, falls exakte Folge an Codebefehlen im Programm erkannt wird
+  - Vorteil: Gut gegen alte noch aktive Malware
+  - Nachteil: Veröffentlichung dauert teilweise lange, Kann leicht umgangen werden
+- Heuristisch/Anomalie-basiert
+  - Sucht nach auffälligem Verhalten, z.B. Registering for Autostart, Installing rootkits etc.
+  - Statische Analyse
+  - Vorteil: Schützt gegen neue Malware Attacken
+- Emulations-basiert
+  - Dynamische Analyse
+  - Nachteil: Malware kann erkennen, dass sie in einer Sandbox läuft, Langsamer, oft Cloud-basiert
+  
+### Was ist ein polymorpher Virus?
+Virus, der seinen Code bei der Selbstreplikation ändert, um nicht über Signaturen erkannt zu werden.
+  
+### Nenne drei Methoden, die Malware nutzt, um nicht von Virenscannern erkannt zu werden
+- Garbage Instruction
+- Instruction Reordering
+- Interchangeable Instructions
 
 ### Was ist ein Hoax?
 Falsche Geschichte, die rum geht. Im Endeffekt eine Lüge, die per E-Mail verbreitet wird.
@@ -184,6 +265,9 @@ Versuch, Daten unberechtigt zu erlangen, indem Nutzer zu einer Aktivität gelock
 3. Machine Learning (NN, Naive Bayes)
   - Vorteil: Lernt dazu
   - Nachteil: Computationally expensive
+  
+### Welche rechtlichen Probleme ergeben sich aus der Nutzung von Spam Filtern?
+Wenn eine Mailadresse für den geschäftlichen Verkehr eröffnet ist, muss täglich der Spam-Ordner kontrolliert werden.
 
 ### Wozu dient Greylisting und wie funktioniert es?
 Mail von unbekanntem Tupel (Absender, Quell-Mailserver, Empfänger) ablehnen und Fehlermeldung zurückschicken. Erst nach Wartezeit neue Versuche zulassen.
@@ -199,29 +283,38 @@ Mail von unbekanntem Tupel (Absender, Quell-Mailserver, Empfänger) ablehnen und
 
 ### Was ist Stack Smashing und wie funktioniert es? 
 - Programm erwartet Eingabe
-- Programmpuffer wird druch zu große Eingabe / Datenpakete überschrieben
+- Programmpuffer wird durch zu große Eingabe / Datenpakete überschrieben
 - Dadurch werden Rücksprungadresse und der Stackinhalt darüber überschrieben
 - Rücksprungadresse wird so manipuliert, dass sie auf eingefügtes Programm im überschriebenen Stackinhalt verweist
 
-### Was sind die verwendeten Kommandos im Schadcode bei Stack Smashing?
-- `system("/bin/sh")` -> Shell mit root-Rechten nutzen
-- return-to-libc
+### Was sind zwei mögliche verwendete Kommandos im Schadcode bei Stack Smashing?
+- Shellcode: Nachbildung von `system("/bin/sh")` in Assembler, um die Shell mit root-Rechten nutzen zu können
+- *return-to-libc* 
+  - Keinen eigenen Code einfügen, sondern Funktionen der Standard-Funktionsbibliothek nutzen, z.B. `system()`
+  - Parameter für die `system` Funktion werden über den Eintrag mit der Rücksprungadresse geschrieben
 
 ### Was ist return-to-libc?
 - Schleust keinen eigenen Code ein, sondern nutzt Funktionen der Standard-Funktionsbibliothek, z.B. system() / `system("/bin/sh")`
 
 ### Was für Hürden gibt es beim Stack Smashing für einen Angreifer und was ist die jeweilige Lösung? 
-- Rücksprungadresse ist absolut -> NOPs Einfügen
-- Überschreibbarer Speicher ist begrenzt -> Schadcode dynamisch nachladen
-- Quellcode von proprietärer Software nicht verfügbar -> Fuzzing
+- strcpy bricht bei Nullbytes (0x00) ab - Lösung: String Encoder verwenden
+- Rücksprungadresse ist absolut - Lösung: NOPs vor Schadcode
+- Wenig Speicher in Stack-Segment - Lösung: Dynamisches Nachladen von Schadcode
+- Quellcode von proprietärer Software nicht verfügbar - Lösung: Fuzzing (Kucken, was bei Fehleingaben / Edge Cases passiert)
 
 ### Was ist Fuzzing?
 Kucken was passiert bei Fehleingaben / Edge Cases, wenn proprietärer Quellcode nicht verfügbar ist.
 
-### Nenne drei Gegenmaßnahmen gegen Stack Smashing
-- Sicheres Programmieren - `strncpy` anstatt `strcpy` 
-- Stack Guarding - Mehrere Kopien der Rücksprungadresse speichern, bevor Funktion aufgerufen wird
-- Nicht ausführbare Stacks (NX bit)
+### Nenne vier Gegenmaßnahmen gegen Stack Smashing
+- Sicheres Programmieren - `strncpy` statt `strcpy`
+- Stack-Guarding 
+  - Vor Rücksprungsadresse ein Canary ablegen und danach prüfen, ob es noch intakt ist
+  - Kann vom Compiler automatisch generiert werden, Prüfwert wird in globaler Variable gespeichert
+  - Variante: Mehrere Kopien von Rücksprungadresse machen, bevor die Unterfunktion aufgerufen wird
+- Nicht-ausführbare Stacks - Keinen Code im Stack ausführen (NX bit), schützt nicht gegen return-to-libc
+- Address Space Layout Randomization
+  - Auch Speicheradressen der Systemfunktionen werden zufällig erteilt
+  - Schützt gegen return-to-libc
 
 ### Was ist das NX bit? Wann hilft es? Wann hilft es nicht?
 - Nicht ausführbare Stacks / Kein Code im Stack
@@ -250,13 +343,14 @@ Kucken was passiert bei Fehleingaben / Edge Cases, wenn proprietärer Quellcode 
 3. Slow Hash Functions
 4. Shadow Password System - Nur Root kann Passwörter lesen
 
-### Nenne drei Varianten, eine Back Door zu installieren
+### Was ist eine Back Door? Nenne drei Varianten, eine Back Door zu installieren
+Dauerhafter Zugang zu kompromittierten Maschine durch
 1. Versteckter Netzdienst, der hin und wieder auf Kommandos wartet
 2. Eintrag in .rhosts bzw authorized_keys
 3. SUID-root Programm austauschen mit Schadfunktionalität
 
 ### Was ist SUID?
-Set Owner User ID upon execution
+Set Owner User ID upon execution - Wenn ein Nutzer eine Datei ausführt hat er die Rechte des Eigentümers der Datei
 
 ### Nenne zwei Gegenmaßnahmen gegen Back Doors
 1. Überprüfung der offenen Ports und aktiven Netzwerkdienste
@@ -265,19 +359,46 @@ Set Owner User ID upon execution
 ### Nenne die zwei Schritte bei einem Rootkit Angriff
 1. Angreifer kompromittiert die Maschine und erlangt root
 2. Angreifer installiert Rootkit
+  - bereinigt Spuren
+  - öffnet Backdoors
+  
+### Erkläre die drei Bestandteile eines Rootkits
+- Droper -> Wird von User gestartet, startet Loader und entfernt sich
+- Loader -> Sorgt für BufferOverflow und lädt das Rootkit in den Speicher
+- Rootkit
 
 ### Was ist der Unterschied zwischen Rootkits der 1. und der 2. Generation? Nenne jeweils eine Gegenmaßnahme
 1. Generation: Systembefehle wurden ersetzt. Verstecken Prozesse, Dateien, etc. des Angreifers. Gegenmaßnahme: Rootkitscanner chkrootkit
 2. Generation: Modifiziert den Kernel, um Dateien vor allen Systemprogrammen zu verstecken. Gegenmaßnahme: Loadable Kernel Modules deaktivieren
+
+### Erkläre drei unterschiedliche Rootkit-Modi
+1. Application Rootkits -> 1. Generation
+2. Kernelmode Rootkits -> 2. Generation
+3. Usermode Rootkits
+  - Benötigen keinen Zugriff auf den Kernel
+  - Klinken sich in alle Prozesse ein
+  - Leiten Auführung von API-Funktionen auf sich um
+  - Unter Windows Populär
+  
+### Nenne drei Anti-Forensik-Maßnahmen eines Rootkits
+- Data Destruction - Möglichst wenig Spuren / Beweise hinterlassen
+- Data Concealment - Hinterlassene Spuren sollten schwer zu entdecken sein
+- Data Fabrication - Hinterlasse falsche Spuren
 
 ### Was ist CSS? Erläutere drei verschiedene Arten.
 1. DOM-basiertes (lokales) XSS - über JavaScript und URL Parameter
 2. Reflexives (nicht-persistentes) XSS - über PHP und URL Parameter
 3. Persistentes (stored) XSS - wird bei jeder Anfrage ausgeliefert
 
-### Nenne zwei Gegenmaßnahmen gegen CSS
+### Nenne drei Gegenmaßnahmen gegen CSS
 1. Escapen von Inputs 
 2. JavaScript deaktivieren
+3. HTTPOnly -> Attribut bei HTTP Cookies, sodass JavaScript nicht auf den Cookie zugreifen kann
+
+### Wie funktioniert Cross-Site-Request-Forgery?
+- Problem: Ein mal authentisiert, schickt der Browser implizit jedes Mal seine Sitzungsdaten an den Server
+- Angreifer bewirkt HTTP-Anfrage ohne Wissen des Opfers (z.B. RESTApi Call, der die Rechte eines Nutzers ändert)
+- Z.B. über falsche URL bei einem img Tag oder über tinyurl per Mail
 
 ### Nenne zwei Arten Web-basierter Angriffe
 1. XSS
@@ -324,13 +445,13 @@ Bob'; DROP TABLE students;--
 ### Was ist ein Zero-Day Exploit?
 Angriff, der eine unbekannte / soeben erst bekannt gewordene / unbeseitigte Sicherheitslücke ausnutzt
 
-### Ordne alle bekannten Varianten von den sieben Kategorien für Angriffe je C, I, A und Au zu.
+### Nenne alle bekannten Varianten von den sieben Kategorien für Angriffe
 1. DoS -> Availability zentral
   1. SMURF
   2. DNS Amplification
   3. SYN Flooding
   4. DDoS
-2. Malicious Code -> alle
+2. Malicious Code
   1. Virus
   2. Wurm
   3. Trojaner
@@ -338,7 +459,7 @@ Angriff, der eine unbekannte / soeben erst bekannt gewordene / unbeseitigte Sich
   1. Hoax
   2. Spam
   3. Phishing
-4. Mobile Code - JavaScript, HTML, Flash -> Integrity, Confidentiality
+4. Mobile Code - JavaScript, HTML, Flash
 5. Systemnahe Angriffe
   1. Buffer Overflow / Stack Smashing
   2. Rootkits
@@ -397,6 +518,19 @@ Computer-based:
 3. Verstärkung
 4. Öffentlichkeit
 
+### Erkläre drei Varianten des Phishing
+- Spear Phishing - Zielen auf bestimmte Personen ab, Angreifer sammelt erst Informationen
+- Clone Phishing 
+  - Kopiert Email und schickt veränderten Anhang / Inhalt (Hier ist die aktualisierte Version)
+  - Funktioniert gut über bereits kompromittierte Maschinen
+- Whaling - Angriff auf Senior Executives
+
+### Was sind 4 Elemente einer Phishing Attacke?
+- Link-Spoofing (angezeigter Link != tatsächlicher Link)
+- Ähnliche Absender Adresse (1 und l vertauschen z.B.)
+- Vertrauen etablieren (ähnliches Design etc.)
+- Call to Action
+
 ### Was ist ein Penetration Test?
 White-Hat Hacker identifizieren und melden unbekannte Sicherheitslücken
 
@@ -432,6 +566,11 @@ Datenveränderung
 
 ### Was regelt der §303b StGB?
 Computersabotage
+
+### Nenne und erkläre 3 verschiedene Arten von Daten
+- Nutzungsdaten -> Identifikation des Nutzers + Metadaten über Nutzung
+- Bestandsdaten -> Vertragliche Daten eines Nutzers -> Bei Anfang, Änderung und Ende des Vertrags erhoben
+- Inhaltsdaten -> Inhalt einer Kommunikation
 
 ### Nenne 4 Grundprinzipien der Datenschutz-Gesetzgebung
 1. Generelles Verbot mit Erlaubnisvorbehalt
@@ -473,7 +612,7 @@ Nachrichtentransport über nicht erkennbares Medium
 (K, M, C, e, d)
 
 ### Nenne drei Symmetrische Verfahren
-DES, AES, Blowfish
+DES, AES, Serpent, Blowfish
 
 ### Nenne drei Asymmetrische Verfahren
 RSA, ElGamal, DSA
@@ -486,6 +625,7 @@ RSA, ElGamal, DSA
 ### Was sind One-Time Pads? Was sind die Nachteile?
 - Schlüssel wird niemals wiederverwendet
 - Schlüssel ist mindestens genauso lang wie der Klartext
+- Schlüssel wird auf Nachricht modulo 26 addiert
 
 Nachteile:
 - Schlüsselmanagement aufwendig
@@ -502,7 +642,7 @@ Nachteile:
 
 ## 7 - Symmetrische Kryptosysteme
 
-### Nenne zwei Forderungen an Kryptosysteme and erkläre, was sie bedeuten
+### Nenne zwei Forderungen an Kryptosysteme und erkläre, was sie bedeuten
 - Konfusion - es kann möglichst wenig von Chiffretext auf Klartext geschlossen werden
 - Diffusion - kleine Inputänderungen -> große Outputänderungen
 
@@ -535,12 +675,12 @@ https://github.com/batzner/unistuff/raw/master/LMU/IT-Sicherheit/img/des-iterati
 https://github.com/batzner/unistuff/raw/master/LMU/IT-Sicherheit/img/des-funktion.png
 
 ### Wie werden die Teilschlüssel bei DES generiert?
-1. Kürzung auf relevante Bits
+1. Kürzung auf relevante Bits -> 56 Bit
 2. Permutation
 3. Aufteilen in C und D
 4. Zyklisches shiften nach links der Blöcke
 5. C(i) und D(i) nach jedem Shift zusammenfügen
-6. Aus C(i)+D(i) bestimmte Bits entfernen und nochmal permutieren
+6. Aus C(i)+D(i) bestimmte Bits entfernen und nochmal permutieren -> 48 Bit
 
 ### Was ist bei der DES Entschlüsselung anders?
 - Schlüsselreihenfolge ist umgekehrt
@@ -557,6 +697,11 @@ https://github.com/batzner/unistuff/raw/master/LMU/IT-Sicherheit/img/des-funktio
 
 ### Wie funktioniert 3DES?
 Verschlüsseln, entschlüsseln mit zweitem Key und verschlüsseln mit drittem Key
+
+### Was für Keying Options gibt es bei 3DES?
+1. Alle drei Schlüssel unterschiedlich
+2. K1 = K3 -> besser als 2DES
+3. Alle gleich -> Backwards Kompatibilität mit DES
 
 ### Nenne 5 Eigenschaften von Feistel-Chiffren
 1. Symmetrisch
@@ -637,6 +782,10 @@ WPA2, SSH, IPsec
 ### Nenne drei Programme, die AES einsetzen
 FileVault, Skype, ZIP
 
+### Nenne zwei Nachteile von symmetrischen Verschlüsselungsverfahren
+1. Schlüssel müssen sicher ausgetauscht werden / vor der Kommunikation bekannt sein
+2. Quadratische Anzahl an Schlüsseln bei linearen Kommunikationspartnern
+
 ## 8 - Asymmetrische Kryptosysteme
 
 ### Nenne die Schritte einer Asymmetrischen Verschlüsselung
@@ -660,7 +809,7 @@ FileVault, Skype, ZIP
 
 ### Erkläre vier Angriffe auf RSA
 1. Brute Force - Zerlege n in p und q
-2. Chosen-Ciphertext funktioniert supa
+2. Chosen-Ciphertext - (-)
 3. Timing Angriff - Laufzeit der Entschlüsselung verrät d. Lösung Entschlüsselung mit zusätzlicher Zufallszahl
 4. Angriff auf Signaturen. Man kann Dokument aus korrekt signierten Teildokumenten zusammensetzen aufgrund von Multiplikativität von RSA
 
@@ -688,6 +837,10 @@ Prüfsumme wird auf Daten generiert und mit privatem Key signiert
 4. Abschlussfunktion - Dokument nicht veränderbar (nur möglich mit Private Key)
 5. Beweisfunktion - Nicht zu leugnen (durch Public Key eindeutig)
 
+### Skizziere den Ablauf einer Signatur und deren Verifikation
+
+https://github.com/batzner/unistuff/raw/master/LMU/IT-Sicherheit/img/certification-steps.png
+
 ## 9 - Kryptographische Hashfunktionen
 
 ### Wozu dienen kryptographische Hashfunktionen?
@@ -701,7 +854,7 @@ Kollisionsresistenz = Ähnliche Eingaben sollen nicht denselben Hashwert haben
 - Stark: Schwach + es ist allgemein praktisch unmöglich, eine Kollision zu finden
 
 ### Beschreibe, wie kryptographische Hashfunktionen konstruiert sind
-- Kompressionsfunktion G wird wiederholt auf Block Mi und bisherigen Hashwert angewandt
+- Kompressionsfunktion G wird wiederholt auf Block M_i und bisherigen Hashwert angewandt
 - Benötigt IV und Padding
 
 ### Beschreibe grob die Funktionsweise von MD5
@@ -763,7 +916,7 @@ Kollisionsresistenz = Ähnliche Eingaben sollen nicht denselben Hashwert haben
 3. Eigenschaft -> Biometrie
 
 ### Was ist die Motivation hinter Einmalpasswörtern?
-- Abgehörtes Passwort soll für Angreifer möglichst nutzlos sein -> nicht wiederverwendbar, begrenzte Dauer, und nachfolgendes Passwort nicht ableitbar
+Abgehörtes Passwort soll für Angreifer möglichst nutzlos sein -> nicht wiederverwendbar, begrenzte Dauer, und nachfolgendes Passwort nicht ableitbar
 
 ### Erläutere die Schritte bei S/Key
 1. Client schickt N (Anzahl gewünschter Passwörter) an Server
@@ -774,12 +927,15 @@ Kollisionsresistenz = Ähnliche Eingaben sollen nicht denselben Hashwert haben
 6. Server verifiziert Passphrase
 
 ### Was ist die Schwachstelle von S/Key?
-Per se anfällig für Man in the Middle Angriffe -> Simulation des Servers
+Anfällig für Man in the Middle 
+- Angreifer kennt N und seed -> Dictionary Attack
+- Server wird nicht authentisiert
 
 ### Erläutere OTP
 Änderungen zu S/Key:
 - Passwort kann nur ein einziges Mal verwendet werden -> keine parallelen Sessions mit gleichem Passwort
 - MD5 und SHA unterstützt
+- Empfiehlt IPSec
 
 ### Nenne zwei Angriffe auf OTP bzw. S/Key
 - Man in the Middle, kann über IPSec Authentifizierung des Servers vermieden werden
@@ -790,6 +946,25 @@ Per se anfällig für Man in the Middle Angriffe -> Simulation des Servers
 - 2 Faktor-Authentisierung zusammen mit Benutzerpasswort
 - Berechnung über AES mit echtem Zufalls-Seed + Vergangene Sekunden seit 1986
 - Hardwaremanipulation führt zu Hardwarebeschädigung
+
+### Was würden Sie einem Unternehmen zur Benutzerauthentifizierung empfehlen, dessen Mitarbeiter auf auf Dienstreisen -> in Internet-Cafes sind?
+- Biometrie kommt nicht in Frage 
+- Falls Mitarbeiter auch ohne ihren Laptop Zugriff zum Firmennetz haben müssen: 
+  - Wissen -> Einmalpasswörter über OTP -> Problem des Man in the Middle Angriff -> Muss Server Zertifikat signiert mit Root CA laden
+  - Besitz -> RSA SecurID
+- Falls Mitarbeiter nur eigene Laptops verwenden -> Haben Zertifikate der Firmenserver bereits vorinstalliert
+
+### Nenne zwei Nachteile von Smartcard / OTP-Token-basierten Lösungen
+1. Abhängig von Besitz -> Kann verloren gehen
+2. Hohe Anschaffungskosten im Vergleich zu Software-basierten Lösungen
+
+### Welche beiden Fehlerarten gibt es bei biometrischer Benutzerauthentisierung?
+- False Acceptance
+- False Rejection
+
+### Was ist der Unterschied zwischen 1:1 und 1:N Authentifizierung? Nenne jeweils einen Nachteil
+- 1:N -> Man muss keinen Benutzer spezifizieren, sucht einfach nach Match
+- 1:1 -> Verfizierung, Problem: erkennt keine Duplikate in der Datenbank
 
 ### Nenne vier Möglichkeiten, um den Datenursprung zu Authentisieren
 1. Verschlüsselung (Shared Secret)
@@ -885,15 +1060,18 @@ Nachteile
 
 ### Wie funktionieren Message Authentication Codes?
 - Wird aus Nachricht und Shared Secret berechnet
-- AES im CBC Mode mit Rundenschlüssel = immer gleiches Shared Secret
+- Entweder mit Hash-Funktion, die Nachricht und Schlüssel zusammen hasht
+- Oder z.B. AES im CBC Mode mit Schlüssel pro Block = Shared Secret
 
-### Was ist ein Angriff auf MACs?
+### Was ist ein Angriff auf MACs, die über Hash-Funktionen erzeugt wurden?
 Length Extension - Bei Merkle-Damgard-Konstruktion können 0en ohne Kenntnis des Shared Secret eingefügt werden
 
-### Wie funktionieren Hashed MACs?
-- Keine symmetrische Verschlüsselung wie bei MAC, sondern Hash-Funktion
+### Wie funktionieren Hashed MACs? Warum kann man nicht einfach den Schlüssel mithashen?
+- Keine symmetrische Verschlüsselung, sondern Hash-Funktion
 - Problem: Hash-Funktionen nutzen keinen Schlüssel
+- Problem: Einfache Konkatenierung erlaubt Length Extension Attack (z.B. bei SHA-1(k||m))
 - Schlüssel wird verarbeitet und dann mit Nachricht konkateniert -> Dann gehasht
+- Hash wird nochmal gehasht mit konkateniertem Schlüssel, um das Ende der Nachricht zu sichern
 
 ### Nenne zwei Authentisierungsprotokolle
 1. Needham Schröder
@@ -927,7 +1105,7 @@ Length Extension - Bei Merkle-Damgard-Konstruktion können 0en ohne Kenntnis des
 2. Client-Adresse
 3. Timestamp
 
-### Erläutere den Ablaut von Kerberos
+### Erläutere den Ablauf von Kerberos
 1. Request for Ticket Granting Ticket $c, tgs$
    - Client an Kerberos Server
    - Kerberos überprüft, ob Client in Datenbank
@@ -941,6 +1119,12 @@ Length Extension - Bei Merkle-Damgard-Konstruktion können 0en ohne Kenntnis des
    - $A_{c,s} = c,a,t,key,seqNo$
 6. Server Authentication $K_{c,s}[t, key, seqNo]$
 
+### Wie wird das Nutzerpasswort in Kerberos überprüft?
+Implizit, da die Antwort des Kerberos Servers mit dem Nutzerpasswort verschlüsselt ist. Passwörter werden nie verschickt! 
+
+### Warum werden Kerberos Server und TGS oft getrennt?
+Erlaubt Skalierung von Ticket Granting Servern, die öfter gebraucht werden als Kerberos Server
+
 ### Skizziere, wie Multi-Domain-Kerberos abläuft
 https://github.com/batzner/unistuff/raw/master/LMU/IT-Sicherheit/img/kerberos-multi-domain.png
 
@@ -948,3 +1132,189 @@ https://github.com/batzner/unistuff/raw/master/LMU/IT-Sicherheit/img/kerberos-mu
 1. Beide Domänen müssen sich vertrauen
 2. n Realms fordern n(n-1)/2 Schlüssel
 
+### Nenne vier Schwächen von Kerberos
+1. IP-Spoofing ist u.U. möglich, Authentisierung basiert auf IP-Adresse
+2. Kerberos-Schlüssel wird aus Passwort abgeleitet -> Sicherheit hängt davon ab
+3. Kerberos-Server und TGS sind Single Point of Failure -> Wenn die nicht verfügbar sind geht gar nichts
+4. Verlässt sich auf vertrauenswürdige Software -> Problem Kerberos-Trojaner
+
+### Was ist Autorisierung und was ist Zugriffskontrolle?
+- Autorisierung: Vergabe von Berechtigungen
+- Zugriffskontrolle: Durchsetzung dieser Berechtigungen
+
+### Erkläre drei Zugriffskontrollstrategien
+1. Discretionary Access Control (z.B. chmod auf Datei für Yuxiang)
+   - Eigentümerprinzip - Eigentümer spezifiziert die Berechtigungen an seinen Objekten
+   - Auf Basis der Objekte
+2. Mandatory Access Control
+   - Regelbasierte Festlegung der Rechte, z.B. über Sicherheitsklassen 
+   - Systemglobal
+3. Role-based Access Controll (z.B. chmod auf Datei für Administratoren)
+   - Subjekt -> Aufgabe / Rolle -> Berechtigungen
+  
+### Nenne drei Aufgaben eines Referenzmonitors / Access Control Monitor
+- Regelt Zugriff auf Objekte
+- Kann Subjekte authentisieren 
+- Kann Objektzugriff unterbrechen / verhindern
+
+### Was ist Identifikation? Was sind die zwei impliziten Stufen?
+- Verbindung von digitaler ID und Real-World Entity
+
+Zwei Stufen:
+1. Personalisierung 
+   - Ermittlung der Real-World Identität
+   - Vergabe einer digitalen ID (Benutzername)
+2. Identifikation
+   - Verbindung beider mit Informationen, die nur die Entität kennt (Passwort)
+  
+### Was ist der Realm einer Certification Authority?
+Realm = Alle Nutzer, die der CA vertrauen
+
+### Nenne 4 CA Aufgaben
+- Generierung von C
+- Speicherung von C
+- Widerruf und Sperrung von C 
+- Aktualisierung von C
+- Beglaubigung von Verträgen (wie Notar)
+
+### Welche zwei Methoden gibts es für den Widerruf von Zertifikaten?
+1. Certificate Revocation Lists
+2. Online Certificate Status Protocol
+
+### Was sind die 4 Schritte einer Benutzerzertifizierung?
+1. Schlüsselgenerierung
+2. Personalisierung, Certification Request
+   - Feststellung der Identität
+   - Benutzer beweist Besitz des privaten Schlüssels
+3. Zertifikat generieren
+4. Zertifikat signieren
+
+### Nenne die wichtigen X.509 Attribute
+- Version
+- SerialNumber
+- SignatureAlgorithm `SHA-256 mit RSA`
+- Issuer
+- Validity
+- Subject
+- SubjectPublicKeyInfo (Algorithmus, Schlüssel, Verwendung, Länge, Exponent)
+- Alternativer Name (mittlerweile wichtig für mehrere Domains)
+- Signature (signiert alles obere)
+
+### Was ist das Problem mit CRLs?
+Problem mit Certificate Revocation Lists: Werden immer nur länger, da alle Revocations gespeichert werden.
+
+### Wie läuft OCSP ab?
+1. Client schickt Hash des Zertifikats
+2. Responder prüft und antwortet mit Good / Revoked / Unknown 
+
+### Welche zwei Schutzmechanismen hat OCSP?
+- Replay Protection über Zufallszahl
+- Client kann Positiv-Antwort fordern -> Responder antworte mit Hash des gültigen Zertifikats
+
+## 11 - Netzsicherheit - Data Link Layer
+
+### Was ist der Sinn eines VPN?
+- Nachbildung eines LAN in beliebigen Topologien / Technologien
+- Vertraulichkeit und Datenintegrität wie in physischem LAN
+
+### Was gibt es für VPN Lösungen auf Schicht 1?
+- Virtual Private Wire Service
+- Virtual Private Line Service
+
+### Was gibt es für VPN Lösungen auf Schicht 2? Was tun diese speziell?
+- VLAN -> Mehrere Netze werden über denselben physischen Link betrieben, aber sind getrennt voneinander
+- Virtual Private LAN Services - verbindet physisch getrennte LANs
+- Point to Point Verbindungen
+
+### Was gibt es für VPN Lösungen auf Schicht 3 und höher?
+- IPSec
+- SSL/TLS
+- OpenVPN
+- Peer to Peer Anwendung (Schicht 7)
+
+### Was regelt der 802.1Q?
+VLAN
+
+### Was ist das Ziel von VLAN?
+- LAN-Infrastruktur über mehrere Switches hinweg -> Broadcasts usw. möglich über gesamtes VLAN Netz
+- Soll aber andere VLAN-Netze, die auf gleicher LAN-Struktur arbeiten, nicht betreffen
+
+### Wie funktioniert VLAN?
+- Ethernet-Frame wird erweitert um 32 Bit Tag:
+  - 16 Bit: 0x8100 für VLAN
+  - 3 Bit: Priority 
+  - 1 Bit: Canonical Format Indicator (Ethernet oder Token Ring)
+  - 12 Bit: VLAN-ID -> 4094 verschiedene VLANs möglich
+
+### Was ist PPP?
+- Punkt-zu-Punkt Protokoll
+- Für Verbindungsaufbau über Wählleitungen: DSL, ISDN, Modem etc.
+- Beinhaltet Link Control Protocol für Verbindungsaufbau, abbau und Aushandeln der Konfiguration
+
+### Welche Möglichkeiten der Authentifizierung bestehen bei PPP?
+- Authentifizierung (optional) Protokolle:
+  - Password Authentication Protocol (PAP)
+  - Challenge-Handshake Authentication Protocol (CHAP)
+  - Extensible Authentication Protocol (EAP)
+
+### Wie funktioniert PAP? Was ist seine Schwäche?
+- Authentifizierungsprotokoll für PPP
+- Überträgt Passwörter im Klartext. WOW.
+- Server kennt ID und Passwort aller Clients und schickt ACK
+- Keine Authentisierung des Authenticators durch den Client :(
+
+### Wie funktioniert CHAP?
+- Shared Secret zwischen A und B
+- Zu Authentisierung werden öffentliche Infos (id, Zufallszahl, Name) mit Shared Secret gehasht und übertragen
+- Sicher gegen Replay-Angriffe
+
+### Ist PAP sicher gegen Replay Angriffe? Was ist mit CHAP?
+PAP nicht. CHAP schon, durch Zufallszahl, die mit Shared Secret gehasht wird
+
+### Nenne zwei Schwächen von CHAP
+- Implementierungen unterstützen leider immer noch PAP als Fallback -> Einfacher M.i.t.M. Angriff
+- Keine Authentisierung des Authenticators durch den Client :(
+
+### Was ist EAP?
+- Authentisierungsmechanismus für PPP
+- Bietet Aushandlungsmechanismen für konkretes Verfahren, also eher ein Framework
+
+### Wozu dient das PPTP? Zwischen welchen Tunneling Modi wird unterschieden?
+- PPP wurde für direkt verbundene Systeme entwickelt
+- PPTP schickt seine Pakete durch das Internet und realisiert einen Tunnel
+- Simuliert ein Kabel zwischen zwei Systemen
+- Voluntary Tunneling -> Client setzt PPTP aktiv ein
+- Compulsory Tunneling -> Client denkt, es ist eine PPP Verbindung
+
+### Was ist MS-CHAP? 
+Microsofts PPTP Implementierung
+
+### Nenne eine Sicherheitslücke von MS-CHAPv1
+Ermöglicht Known-Plaintext, da Challenge C im Klartext übertragen wurde und dann zurück entschlüsselt übertragen wurde.
+
+### Nenne eine Schwäche von MS-CHAPv2
+Hängt von Benutzerpasswortsicherheit ab
+
+### Was regelt der 802.1X? Definiert er ein eigenes Protokoll? Wie wird verschlüsselt?
+Port Based Network Access Control
+- Authentisierung und Autorisierung in IEEE 802 Netzen (WLANs, Bluetooth, Ethernet, VLAN etc.)
+- Definiert kein eigenes Protokoll, sondern nutzt EAP, EAP-TLS und RADIUS
+- Authentisierung ist immer Ende zu Ende -> Authenticator kann nicht mitlesen -> Eduroam
+
+### Erkläre die vier Rollen bei 802.1X
+- Supplicant: 802.1X Gerät, das sich authentisieren möchte
+- Authenticator: Gerät, an dem der Supplicant angebunden ist (Switch oder WLAN AP)
+- Authentication Server: z.B. RADIUS-Server -> Macht eigentliche Authentisierung
+- Port Access Entity (PAE): Port, an dem Supplicant angeschlossen ist
+  - Uncontrolled Port für Authentisierung
+  - Controlled Port für Kommunikation
+  
+### Erkläre den Ablauf von 802.1X
+1. Supplicant fordert Controlled Port
+2. Authenticator fordert Authentisierung
+3. Nach erfolgreicher Authentisierung: Port wird freigeschaltet
+
+### Erkläre einen Angriff auf Eduroam
+Eduroam kann mit eduroam-spoofing angegriffen werden, ist aber einfach zu erkennen, da falsches Zertifikat
+
+## 12 - Netzsicherheit - WLAN-Sicherheit
