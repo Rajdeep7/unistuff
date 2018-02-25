@@ -1335,3 +1335,67 @@ Eduroam kann mit eduroam-spoofing angegriffen werden, ist aber einfach zu erkenn
 - C = (M + CRC) XOR Keystream
 - C und IV werden übertragen
 
+### Nenne zwei Authentisierungsmodi bei WEP und ihre Schwächen
+- Open System Authentication -> Keine oder implizite durch Schlüssel
+- Shared Key -> 4-Way-Challenge-Response, nur einseitig, mit WEP Schlüssel :(
+
+### Hat WEP Zugangskontrolle?
+- Keine standardisierte Zugangskontrolle
+- Teilweise MAC-Adressenbasierte ACLs -> kann einfach mitgelesen und gefälscht werden
+
+### Was für Schlüssellängen gibt es bei WEP?
+40 Bit oder 104 Bit
+
+### Nenne 5 Probleme von WEP
+- Keine Vertraulichkeit: Gleicher K für alle Kommunikationen mit dem AP -> Jeder kann mitlesen
+- Keine Integrität: CRC ist gut zur Zufallsfehlererkennung, ist keine kryptographische Hashfunktion, sinnvolle Kollisionen können leicht erzeugt werden
+- WEP Authentisierung ist keine wirkliche Authentisierung
+- Kein Zugriffskontrolle
+- Schlüsselmanagement: sehr selten gewechselt, 40 Bit oder 104 Bit -> fehleranfällig, da mühsam -> oft einfache Schlüssel gewählt
+
+### Erkläre einen Known-Plaintext-Angriff auf WEP
+- Mallet kennt M und C
+- C = (M|CRC) + RC4(IV,K)
+- -> C1 + C2 = (M|CRC)1 + (M|CRC)2, falls IV gleich
+- -> Man muss nur warten, bis IV nochmal kommt, kann gesteuert werden, durch Daten von außen schicken
+
+### Erkläre den 104-Bit Angriff auf WEP in 60 Sekunden
+- ARP Pakete haben feste Länge -> erkennbar
+- ARP Pakete sind vorhersagbar in den ersten 16 Byte
+- Liefert erste 16 Byte des Keystream
+- Abgehörte ARP Requests ins Netz einspielen -> beschleunigt Angriff, liefert viele IVs
+
+### Was ist das TKIP? Welche Schlüssel gibt es?
+Temporal Key Integrity Protocol
+
+**1. Temporal Key**
+- Für jede Richtung und für jede Station eigene Schlüssel
+- 128 Bit für Verschlüsselung
+- 64 Bit für Integritätssicherung
+- rekey key Nachricht zur Erneuerung
+
+**2. Pairwise Transient Key**
+- Sicherung der Übertragung von TKs
+- Ein Key für rekey nachricht, ein Key für Sicherung des TKs
+- Key für rekey braucht man gegen DoS Angriffe
+
+**3. Pairwise Master Key**
+- Erzeugt von 802.1X Authentication Server, wird vom AP an STA weitergereicht
+- Oder aus Preshared Key abgeleitet
+
+### Nenne drei WPA Schwächen
+- Hardware-Abwärtskompatibel -> Verwendung von RC4 weiterhin problematisch
+- Sicherheit hängt stark von PSK ab bei PSK
+- Passwort kann innerhalb von wenigen Tagen geknackt werden
+
+### Was sind Rainbow Tables?
+- Versuchen, optimalen Tradeoff zwischen Zeit und Speicher zu nutzen
+- Hashfunktion n mal hintereinander auf Wörter anwenden -> Anfangswort und letzten Hash speichern
+- Reduktionsfunktion zwischen den Hashes, um Kollisionen zu vermeiden
+- Bei gegebenem Hash nach Zeile mit gegebenem Hash suchen -> Kette erneut durchlaufen
+- Falls nicht in Tabelle: Reduzieren und dann nochmal hashen, bis gefunden
+
+### Was ist der Unterschied zwischen WPA2 und WPA?
+AES anstatt RC4
+
+## 13 - Netzsicherheit - IPSec
