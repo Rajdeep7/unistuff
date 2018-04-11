@@ -26,7 +26,7 @@
 - Unsupervised is intended to find out properties of the structure of the data
 - Unsupervised might still use a validation set to see how the findings generalize!
 
-### 3 Parts of learning: / Definition of learning
+### 3 Parts of learning / Definition of learning
 1. Task (Image Classification)
 2. Performance measure (Accuracy)
 3. Experience (Data)
