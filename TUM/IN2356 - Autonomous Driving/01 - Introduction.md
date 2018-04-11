@@ -25,3 +25,4 @@ Radars and Neural Networks are not always correct - the goal is to reconcile the
 - The "desired outcome" part on slide 6, lecture 1 will be a guideline for the exam
 - Convoy track (convoy truck) might be a good topic for the exam
 - Throughout the lectures, the lecturer will go through old exam questions, explain why these questions were asked etc. -> more hints about the exam!
+- The exam will probably be on a saturday
