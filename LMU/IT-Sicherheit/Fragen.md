@@ -1511,9 +1511,6 @@ Austausch eines Schlüssels über unsicheren Kanal
 - B schickt g^y mod p
 - Key = g^xy mod p
 
-### Wie berechnet man die primitive Wurzel einer Primzahl?
-(-)
-
 ### Wofür steht SA bei IPSec? 
 Security Association -> Parameter für die Verschlüsselungs- und Authentisierungsalgorithmen
 
