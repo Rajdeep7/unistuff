@@ -1,4 +1,4 @@
-##Notes from the first meeting
+# Notes from the first meeting
 
 [Slides](https://www.sec.in.tum.de/i20/assets/vorlesung/adversarial-and-secure-learning-introduction.pdf)
 
@@ -22,6 +22,7 @@ Attack goals: causative attacks means poisoning the data so that the model learn
   - i.e. no bridging texts between separate parts
 - Document should have 1 title and 2 chapters but completely separated contents
 - You don't need to repeatedly cite the two main papers, but the need to be in the bibliography
+- Personal idea: write a lorem ipsum report and ask instructor if general structure is okay
 
 ## Presentation structure
 - Use one slide for "Introduction to the topic"
