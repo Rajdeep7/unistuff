@@ -30,3 +30,6 @@
 1. Task (Image Classification)
 2. Performance measure (Accuracy)
 3. Experience (Data)
+
+## Notes
+- There might be questions about exercises in the exam
