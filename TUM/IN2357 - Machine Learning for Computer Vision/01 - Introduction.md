@@ -29,8 +29,9 @@ $p(x, y|z) = p(x|z) p(y|z)$
 
 ### Combining Evidence over Time
 - Markov Assumption: a prediction (sensor measurement) does not give more information to the next time step, if we know the actual state
-  - $p(\hat{y}_{t+1} | y_t, \hat{y}_t) = p(\hat{y}_{t+1} | y_t)$
+  - $p(\hat{y}\_{t+1} | y\_t, \hat{y}\_t) = p(\hat{y}\_{t+1} | y\_t)$
   - So, the prediction errors are independent making the predictions conditionally independent given $y$
+  - We can combine them still with the simple Bayes rule
 
 ## Notes
 - Exam will contain more assignments than needed to reach the highest grade
