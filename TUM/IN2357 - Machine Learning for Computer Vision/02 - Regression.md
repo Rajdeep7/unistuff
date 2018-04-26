@@ -37,3 +37,17 @@
 - $\Rightarrow$ complex model for small dataset :)))
 
 ## Probabilistic Perspective 
+
+### MLE = MSE
+- We assume normally distributed residuals with zero-mean and fixed variance (independent from our weights or the input)
+- We also assume equally probable $x$s, i think?
+- Maximize the log-likelihood -> terms with variance are constant -> MSE / SSE remains
+
+### Maximum A-Posteriori 
+- Posterior $\propto$ Likelihood * Prior
+- When maximizing the Posterior, we can just add the regularizer term for the prior to the negative log-likelihood
+- $\lambda = (\sigma_1 / \sigma_2)^2$, where $\sigma_1$ is the std dev. of the residuals and $\sigma_2$ the std dev. of $p(w)$
+
+### Posterior Distribution
+1. Idea: find distribution over model parameters
+2. Idea: use that to estimate prediction uncertainty / predictive distribution
