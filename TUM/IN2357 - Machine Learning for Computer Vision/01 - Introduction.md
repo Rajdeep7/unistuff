@@ -58,11 +58,11 @@ Assumptions:
 
 ### Bayes Filter Algorithm
 1. For sensor measurement:
-  1. Keep running sum of new Bel's as normalization factor
-  2. Calculate new Bel by integrating over $x$ in current Bel and multiplying with $p(z|x)$
+   1. Keep running sum of new Bel's as normalization factor
+   2. Calculate new Bel by integrating over $x$ in current Bel and multiplying with $p(z|x)$
 2. For action:
-  1. Iterate over $x$ in new Bel
-  2. For each $x$, integrate over probability of each old $x'$ combined with the action $p(x|u, x')$
+   1. Iterate over $x$ in new Bel
+   2. For each $x$, integrate over probability of each old $x'$ combined with the action $p(x|u, x')$
 
 ### Bayes Filter Applications
 1. Kalman filters
