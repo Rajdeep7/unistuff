@@ -14,6 +14,7 @@
 
 ### What does secondary structure refer to?
 - Denotes if the aminoacid is in a Helix or beta strand
+- Is 1D information -> each aminoacid gets a value
 
 ### What are the two parts that make up an amino acid?
 - Side-chain (different for each amino acid)
@@ -52,3 +53,34 @@
 ### What does the multiple sequence alignment do?
 - Has as input many different proteins and aligns them in a way that their domains / subsequents match
 - Problem: similar but different sequences may belong to the same domain
+
+### Why do we compare the sequences instead of 3D structure?
+- For most proteins, we don't have the 3D structure
+- Also, comparing sequences is easier 
+
+### What is the tradeoff between global and local comparison?
+- Deranged red man -> has the same parts but doesn't match globally at all
+- -> matches locally, but problem is, where to stop. You can always go onto a lower level of comparison, where a lot matches (bag of words, for example).
+- Between domains, you will see subsequences that are similar -> why not just make that into a valid domain?
+- What is a valid unit for comparison?
+- Answer: test if the functionality is also the same given that the alignment says that they are similar
+- -> has to differ significantly from background distribution
+
+### How can we compare 3D shapes?
+With 2D matrix comparison
+1. Find the best global superposition (points, where both shapes are the closest)
+2. Compute for each shape the distance matrix between its points (isolated from the other shape)
+3. Compare both matrices -> RMSD (can also compare subregions of the matrix)
+
+### What is a residue?
+An aminoacid in a protein
+
+### Give examples of 1D, 2D and 3D protein structure
+- 1D -> Simple sequence / Secondary structure
+- 2D -> Distance matrix of residues in the protein
+- 3D -> Aminoacids plotted / Helices and beta strands may also be summarized visually
+
+
+
+
+
