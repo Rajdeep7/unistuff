@@ -104,44 +104,72 @@ An aminoacid in a protein
 ### What is a peptide?
 Sequence of residues
 
+### Can all proteins be made into a crystal?
+No.
+
+### Can we predict structure for all protein sequences?
+No. For some, we can.
+
+### Why would we want to predict secondary structure?
+Strands and helices already tell us something about function.
+
+### Name two ways to get to the shape of a protein
+- By experiment (most accurate), for example X-ray crystallography
+- Computational biology -> predict it from the sequence
+
 ### Why is it a bad idea to only match residues that are exactly the same?
 - Some residues are more similar than others (two hydrophobic ones for example)
 - Function might be thus more similar than when switching with a very different aminoacid
+- Different residues can cause the same function
 
 ### What is the difference between local and global alignment?
-- Global -> Force the sequences to match end to end
-- Local -> Find best local match (cut out the two matching subsequences)
+- Global 
+  -> Forced to compare the sequences from end to end
+  -> Assumes that both sequences have a single domain
+  -> Every residue of the subsequence has to be matched to something
+- Local 
+  -> Find best local match (cut out the two matching subsequences)
+  -> Allows ignoring subsequences that would decrease the alignment score
+  -> Good for matching proteins with multiple domains
 
 ### What is homology?
 - Two genes / proteins have a common ancestor
-- Might have similar function
+- -> differ in sequence, but often have similar structure and similar function
 
-### Why does brute force for aligning sequences globally not work? What is the DP solution for this?
-- Have to select the gaps -> factorial down to gap number
-DP:
+### How does brute force work for global alignments?
+- Needleman Wunsch
+- Dynamic programming
 - Write both sequences as row names and column names
 - Write a 1 where two letters match, 0 otherwise
 - Go from top left to (right / down / right and down) and sum up the values
+- Optionally allow gaps in between the proteins and not just at start and end
 - Optionally give a gap penalty for the right and down movement
 
 ### How can you enforce a low number of connected blocks in a global alignment?
 - Instead of linear gap penalty, penalize gap opening and gap extension separately (typically gap opening = 10 * gap extension)
 
 ### What does the Needleman Wunsch algorithm do?
-TODO
+- Dynamic programming
+- Global alignments
+- Write both sequences as row names and column names
+- Write a 1 where two letters match, 0 otherwise
+- Go from top left to (right / down / right and down) and sum up the values
+- Optionally allow gaps in between the proteins and not just at start and end
+- Optionally give a gap penalty for the right and down movement
 
 ### What does the Smith Waterman algorithm do?
-TODO
+- Local alignments 
 
 ### How can you decide, which alignment is best?
 - Ultimately, you can see if the structure is the same / the function is the same
-- But more directly, you look at how many other proteins match with this alignment (GQ for example) and evaluate, how meaningful this alignment is
+- But more directly, you look at how many other proteins match with this alignment (GQ for example) and evaluate, how meaningful this alignment is -> again, signal values of proteins, which we know they have similar structure, vs background distribution in database
 
 ### What is a scoring matrix? Give an example and explain how it was created
 - Gives the alignment score for two amino acids in a sequence alignment
 - Example BLOSUM62
   - Took a bunch of proteins for which they knew that they had similar structure
-  - Compute log odds (observed frequency of AB at same indey / expected frequency of AB at same index)
+  - Go through all pairs of proteins
+  - Compute log odds (observed frequency of AB at same index / expected frequency of AB at same index = M / p)
   - -> Aminoacid with high number on diagonal (W=17) almost never occurred instead of another aminoacid
 
 ### Why does the Blosum62 matrix have different values on the diagonal?
@@ -149,20 +177,21 @@ TODO
 - Some diagonal values even lower than in non-diagonal cells, because the exact match for this AA is not as important as matching the two others
 
 ### What are issues with using DP for the alignments?
-- Complexity is (length of protein)^2 -> No problem for two proteins, but a problem when you have to compare a protein to a whole databse
+- Complexity is in the order of (sequence length)^2 -> No problem for two proteins, but a problem when you have to compare a protein to a whole databse
+- Per year, x 2 entries in database and x 20 needed comparisons
 - How to choose parameters (gap penalty)?
 
 ### How can you speed up the alignments, when you have millions of proteins in the database and get thousands of queries per day?
 - Small improvement: paralellization
 - Big improvement: hashing / BLAST
-  - Look for seeds of size 3 for example
-  - Then only compare with sequences that also have these seeds
+  1. Don't align the entire sequence, but only small words that match exactly
+  2. Extend the matches locally -> few much smaller subproblems than one big problem on full sequence
+  3. Ignore the gaps between the extended matches
+  4. Use BLOSUM or other matrix for scoring
   
-### How do you decide the seed size of BLAST?
-- You try it out and then see if the BLAST matches actually also produce high alignment scores
-- A seed size of 2 is mostly meaningless -> It is no better than just the scores when aligning random sequences with each other -> "background score distribution of the database"
+### How do you decide the word / seed size of BLAST?
+- You try it out and then see if the BLAST scores are actually meaningful
+- Run sequence against the entire database -> background distribution
+- See if positive outliers (high scores / hits) exist
 
-### What does BLAST do?
-TODO 
-
-# 2
+# Sequence Alignments 2
