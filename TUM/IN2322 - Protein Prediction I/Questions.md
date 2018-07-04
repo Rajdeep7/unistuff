@@ -9,11 +9,17 @@
 ### What is the difference between eukaryotes and prokaryotes?
 - Eukaryotes have a nucleus
 
-### How many different proteins are in a human? How many proteins are known in total?
-- Around 20K in a human, 110M known in total
+### How many different proteins are in a human? 
+Around 20K in a human
+
+### How many proteins are known in total?
+110M known in total
+
+### What is the length of the shortest and the longest protein?
+From 35 to 35K residues
 
 ### What does secondary structure refer to?
-- Denotes if the aminoacid is in a Helix or beta strand
+- Denotes if the aminoacid is in a Helix or beta strand etc.
 - Is 1D information -> each aminoacid gets a value
 
 ### What are the two parts that make up an amino acid?
@@ -35,12 +41,13 @@
 - A region in the DNA that is cut out -> not used to build proteins
 
 ### What is an exon?
-- Area in the DNA that is used for building the protein (in between the start and the end block)
+- Area in the DNA that is used for building the protein (between the start and the end block)
 
 ### What is a domain?
 - Region in the protein denoting the evolutional context of the protein (?)
 - Subsequence in the protein sequence 
 - -> many different proteins have that or a similar subsequence -> maybe is a domain
+- folds independently of other sequences in the protein
 
 ### How many proteins have a single domain?
 - Less than 30%
@@ -51,20 +58,20 @@
 - -> Join these sequences in the genome to save time
 
 ### What does the multiple sequence alignment do?
-- Has as input many different proteins and aligns them in a way that their domains / subsequents match
+- Has as input many different proteins and aligns them in a way that their domains / subsequences match
 - Problem: similar but different sequences may belong to the same domain
 
 ### Why do we compare the sequences instead of 3D structure?
-- For most proteins, we don't have the 3D structure
+- For most proteins, we don't have the 3D structure (Only for 120K proteins)
 - Also, comparing sequences is easier 
+- 3D structure comparison would be better, because the structure does not have to be similar for similar sequences
 
 ### What is the tradeoff between global and local comparison?
 - Deranged red man -> has the same parts but doesn't match globally at all
 - -> matches locally, but problem is, where to stop. You can always go onto a lower level of comparison, where a lot matches (bag of words, for example).
-- Between domains, you will see subsequences that are similar -> why not just make that into a valid domain?
+- Between different domains, you will see subsequences that are similar -> why not just make that into a valid domain?
 - What is a valid unit for comparison?
-- Answer: test if the functionality is also the same given that the alignment says that they are similar
-- -> has to differ significantly from background distribution
+- Answer: score has to differ significantly from background distribution for proteins where you know that they are functionally or structurally similar (from one family)
 
 ### How can we compare 3D shapes?
 With 2D matrix comparison
@@ -79,6 +86,10 @@ An aminoacid in a protein
 - 1D -> Simple sequence / Secondary structure
 - 2D -> Distance matrix of residues in the protein
 - 3D -> Aminoacids plotted / Helices and beta strands may also be summarized visually
+
+### Do you lose information when going from 3D to 2D?
+- No, you can reconstruct 3D information
+- You only lose the information if it is the protein or a mirrored version of the protein. But usually, one of the two versions occurs more frequently in nature, so you can guess, which version you have in front of you.
 
 # Sequence Alignments 1
 -> You find a new protein in a new disease and you want to know what it does
