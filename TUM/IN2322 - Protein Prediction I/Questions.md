@@ -80,7 +80,78 @@ An aminoacid in a protein
 - 2D -> Distance matrix of residues in the protein
 - 3D -> Aminoacids plotted / Helices and beta strands may also be summarized visually
 
+# Sequence Alignments 1
+-> You find a new protein in a new disease and you want to know what it does
+-> Alignments answer the question "how similar are proteins?"
 
+### Why compare 3D shapes, why not function?
+- Shape determines function
+- Sometimes similar structure implies similar function
+- Shape is more easy to measure and compare than function
+- -> Predict function from shape
 
+### What is a peptide?
+Sequence of residues
+
+### Why is it a bad idea to only match residues that are exactly the same?
+- Some residues are more similar than others (two hydrophobic ones for example)
+- Function might be thus more similar than when switching with a very different aminoacid
+
+### What is the difference between local and global alignment?
+- Global -> Force the sequences to match end to end
+- Local -> Find best local match (cut out the two matching subsequences)
+
+### What is homology?
+- Two genes / proteins have a common ancestor
+- Might have similar function
+
+### Why does brute force for aligning sequences globally not work? What is the DP solution for this?
+- Have to select the gaps -> factorial down to gap number
+DP:
+- Write both sequences as row names and column names
+- Write a 1 where two letters match, 0 otherwise
+- Go from top left to (right / down / right and down) and sum up the values
+- Optionally give a gap penalty for the right and down movement
+
+### How can you enforce a low number of connected blocks in a global alignment?
+- Instead of linear gap penalty, penalize gap opening and gap extension separately (typically gap opening = 10 * gap extension)
+
+### What does the Needleman Wunsch algorithm do?
+TODO
+
+### What does the Smith Waterman algorithm do?
+TODO
+
+### How can you decide, which alignment is best?
+- Ultimately, you can see if the structure is the same / the function is the same
+- But more directly, you look at how many other proteins match with this alignment (GQ for example) and evaluate, how meaningful this alignment is
+
+### What is a scoring matrix? Give an example and explain how it was created
+- Gives the alignment score for two amino acids in a sequence alignment
+- Example BLOSUM62
+  - Took a bunch of proteins for which they knew that they had similar structure
+  - Compute log odds (observed frequency of AB at same indey / expected frequency of AB at same index)
+  - -> Aminoacid with high number on diagonal (W=17) almost never occurred instead of another aminoacid
+
+### Why does the Blosum62 matrix have different values on the diagonal?
+- Different values on diagonal, because some amino acids are more important to match than others
+- Some diagonal values even lower than in non-diagonal cells, because the exact match for this AA is not as important as matching the two others
+
+### What are issues with using DP for the alignments?
+- Complexity is (length of protein)^2 -> No problem for two proteins, but a problem when you have to compare a protein to a whole databse
+- How to choose parameters (gap penalty)?
+
+### How can you speed up the alignments, when you have millions of proteins in the database and get thousands of queries per day?
+- Small improvement: paralellization
+- Big improvement: hashing / BLAST
+  - Look for seeds of size 3 for example
+  - Then only compare with sequences that also have these seeds
+  
+### How do you decide the seed size of BLAST?
+- You try it out and then see if the BLAST matches actually also produce high alignment scores
+- A seed size of 2 is mostly meaningless -> It is no better than just the scores when aligning random sequences with each other -> "background score distribution of the database"
+
+### What does BLAST do?
+TODO 
 
 
