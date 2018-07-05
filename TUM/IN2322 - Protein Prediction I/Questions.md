@@ -455,8 +455,34 @@ Because it makes no assumptions
 Padding input unit
 
 ### How can you get more data than PHDsec as input?
-- Use evolutionary information, for example 
-- TODO
+- Use evolutionary information
+- Evolution tells you what works -> only the changed that work are observed
+- Evolutionary profile captures history of an individual protein  
+  -> tells us how important what aminoacid at which position is
+  -> the residues that are the same across the family for a specific position are not chosen randomly. they might seem randomly distributed in 1D but in 3D they often act / stick together
+  -> on the one hand, often 63% of the residues of a protein can be changed to another aminoacid, but if you change 5 at random you will very likely change the structure!
+- Instead of one-hot encoding, feed the log probability vector from the profile as input -> inputs = 21 * (3 bits coding for profile)
+- Predicted probability also strongly correlates with actual accuracy!
+
+### What is the whole process from sequence to profile?
+1. Sequence
+2. Align it against database (BLAST)
+3. Find the ones that belong to the same family
+4. Extract alignment / profile
+5. Put into one-level or two-level system (PHDsec)
+
+### How can the prediction of a single network be improved?
+- Jury decision -> differently trained networks
+- As long as there is only white noise (-> errors that are not systematic), the performance improves
+
+### Why does PROFsec still predict some proteins worse than random guessing?
+- Very strange features (the prevention of freezing protein for example)
+- No / low profile
+- But: not scientific, because we also would have to check that other proteins with strange features / low profile perform that bad!
+ 
+# Secondary structure 2
+
+
 
 
 
