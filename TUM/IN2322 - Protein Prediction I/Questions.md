@@ -248,6 +248,7 @@ TODO
   3. Compile statistics -> Find the scores that are meaningful
   4. Collect all pairs and build profile
   5. Iterate (find new matches using new profile) -> Query database with profile
+- Output is a Profile -> used today to generate profiles
   
 # Comparative Modeling
 
@@ -461,7 +462,7 @@ Padding input unit
   -> tells us how important what aminoacid at which position is
   -> the residues that are the same across the family for a specific position are not chosen randomly. they might seem randomly distributed in 1D but in 3D they often act / stick together
   -> on the one hand, often 63% of the residues of a protein can be changed to another aminoacid, but if you change 5 at random you will very likely change the structure!
-- Instead of one-hot encoding, feed the log probability vector from the profile as input -> inputs = 21 * (3 bits coding for profile)
+- Instead of one-hot encoding, feed the log probability vector from the profile as input -> # inputs per position = 21 remains the same!
 - Predicted probability also strongly correlates with actual accuracy!
 
 ### What is the whole process from sequence to profile?
@@ -482,7 +483,89 @@ Padding input unit
  
 # Secondary structure 2
 
+### What else can you put in in addition to the profile?
+- The current position
+- How surprising is it that I have these residues in the aligned sequences at a specific position -> based on the biophysical features
 
+### What needs to be satisfied to say method A is better than method B?
+- Measure needs to be higher
+- Use the same measure
+- Use the same dataset
+- Careful with train test split!! There must not be highly similar proteins pairs with one in the train and one in the test split, where comparative modeling would work! 
+- Std error intervals don't overlap
+- Is one of them older and 
+  - there is new data available?
+  - was found to have made a mistake?
+  
+### What is a pre-release test?
+Use data added after both methods had been developed
 
+### What types of significance are there?
+- Scientific significance -> Scientific expert evaluates how meaningful the score difference is based on experience
+- Statistical significance 
+  -> standard error (= sigma / sqrt(proteins))
+  -> age doesn't matter, only the numbers!
+  
+### You try out a hyperparameter that performed worse in validation and it turned out to perform better on the test set. What do you do?
+- If you trust your process, your validation set is the best way to pick the hyperparameter, so you reporting the test error was the right method. It is then likely that the difference is not significant or something is flawed between the val and test set.
+- Never use the test set for any decision!! Only to report the number
 
+# Transmembrane Helix Prediction
+- There is more than one membrane for eukaryotes! -> inner membrane and outer membrane
 
+### Why is a membrane important?
+- Keep malicious things away and keep important things inside
+- Garbage disposal
+- Communication with the environment
+
+### What is the lipid bilayer?
+- Makes up the cell membrane and also the cell nucleus membrane
+- Separates inside and outside
+- Keeps proteins where they should be
+- Hydrophobic inside, hydrophobic outside 
+- Hydrophobic is sticky!
+- When protein goes through membrane, its environment is suddenly no more water but hydrophobic!
+- Easy to pull protein horizontally but hard to get it through the membrane
+
+### Why do most drugs targets tend to be found in membranes or are extra-cellular?
+- Because its the easiest point to get to
+- As soon as you get through the membrane, other processes kick in, which you also have to target
+
+### Why are so little membrane proteins modelled?
+- It is very hard to measure them
+- They form at the membrane -> when you get them out of the membrane they fall apart
+
+### Why does membrane protein prediction go wrong? What is the solution?
+- Because membrane proteins have a different composation than non-membrane proteins
+- Membrane proteins have hydrophobic residues on outside AND inside!
+- Solution: just focus on hydrophobic residues and see, how they form structure
+
+### What is the solution for using the standard protein prediction method on membrane proteins?
+- Find hydrophobic residues in the protein and only based on that predict the (number of) transmembrane helices
+- Problem: two thresholds:
+  - Higher one says ok if it is that hydrophobic, it is a transmembrane helix
+  - Lower one says ok if it is only that hydrophobic but is more than 20 residues long, it is a transmembrane helix
+- Refine thresholds (and also pick the hydrophobicity scale) by trying it out -> Predict transmembrane helices and see how correct the predictions are
+- How do you define a correct prediction? How many membrane helices there are is likely more important than predicting them exactly!
+
+Then: 
+- You train the network only on membrane helices or on (proteins with membrane helices and non-membrane helices)
+- You don't have HEL anymore as output, you have membrane / not membrane as binary output
+
+### Why does the second level now work too well? Solution?
+- It predicts too long helices than ground truth (usually twice as long)
+- Solution: https://youtu.be/ZIQjVzvBN3E?list=PLg46T0OlBIJ9abbsmUL-ux24DCpoUlC1J&t=2305
+- TODO
+
+### What is the positive inside rule? How does it help?
+- For transmembrane proteins there are more positively charged residues in parts that go inside the cell (intra-cytoplasmic)
+- You can use this to predict the orientation of the transmembrane helix
+
+### What is a hydrophobicity scale?
+- Gives each aminoacid a hydrophobicity value
+
+### How can you decide which hydrophobicity scale is the best?
+- Predict helices with them 
+
+### What is a transmembrane helix?
+- Helix that goes through the membrane, usually more about 20 residues long
