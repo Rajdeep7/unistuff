@@ -195,3 +195,58 @@ Strands and helices already tell us something about function.
 - See if positive outliers (high scores / hits) exist
 
 # Sequence Alignments 2
+
+### What are the different zones?
+- Do all vs all comparison of sequences and structure in PDB
+- Scale from 0 to 100
+- TP -> pairs of proteins with similar structure
+- FP -> pairs of proteins with different structure
+- Daylight Zone (40 to 100)
+  - sequence similar => structure similar
+  - TP > FP
+  - sequence sequence
+- Twilight Zone (20 to 40)
+  - sequence not so similar, structure sometimes similar
+  - TP increase, FP explode
+  - sequence - profile
+- Midnight Zone 
+  - No significant prediction ability
+  - FP >> TP
+  - profile - profile
+
+### How is a similar structure in 3D defined?
+- < 0.2nm rmsd -> same
+- > 0.5nm rmsd -> different
+
+### Should you just run All vs All on PDB? What is the purpose of doing that
+- Purpose would be to find the different zones -> TP and FP depending on the alignment score -> find out what scores are meaningful
+- Should be run on sequence-unique subset, not whole PDB
+- But: not redundancy-reduced vs. redundancy-reduced, because there would be no similar pair left by definition!!
+
+### Why can't you do simply DP for multiple alignments?
+- NP complete, for 3 sequences it is already O(N1 x N2 x N3)
+- Hack 1: do only pairwise comparisons
+- Hack 2: use a tree -> join two and then run alignment on joined version
+- When joining two residues and they differ, take the most likely residue according to the blosum matrix
+
+### What is a PSSM?
+- Position specific scoring matrix
+- Given that we have an multiple sequence alignment, compute the score for each residue at each position
+- -> Specific to a protein family
+
+### What are the steps in computing the PSSM?
+TODO
+
+### What is PSI-Blast?
+- Position-Specific Iterative Basic Local Alignment Tool
+- Steps:
+  1. Fast hashing (BLAST) -> Query database with sequence and substitution metric (BLOSUM)
+  2. Dynamic programming extension between matches (Smith-Waterman)
+  3. Compile statistics -> Find the scores that are meaningful
+  4. Collect all pairs and build profile
+  5. Iterate (find new matches using new profile) -> Query database with profile
+  
+# Comparative Modeling 1
+
+### What is comparative modeling?
+TODO
