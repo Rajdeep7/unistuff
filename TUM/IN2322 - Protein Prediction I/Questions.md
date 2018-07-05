@@ -377,3 +377,86 @@ Or you just say helix, strand (E and B) and other.
 
 ### Why would the same peptide sometimes be in a helix and sometimes in a strand?
 If the binding partner for the strand is missing it might form a helix. Helix is stabilized locally, sheets are not.
+
+### What is a profile?
+- When aligning proteins, the simplest method is to align identity
+- But: you want to consider biophysical features
+- Solution: generic exchange matrix, such as Blosum
+- Better solution if we already have aligned some proteins and they belong to the same family: 
+  - Look at a particular position and look at the distribution of residues at that position
+  - -> "At position X, there is a Alanine that you cannot change!!! But you are free to do so at position Y"
+  
+### What is a family?
+- Everything that has a similar structure
+- Can be defined by different threshold (think twilight zone)
+  
+### What is the first generation / simplest 2nd structure prediction method? When? How good?
+- Proline breaks a helix!
+- Take all proteins with known structure and convert them to 1D with DSSP
+- Count the 2nd structure states for each amino-acid for each protein and build probability distribution for each amino-acid
+- Assign single 2nd structure label to each amino-acid (simply take the most frequent one)
+- From 1957 to 1970s
+- Around 50% accuracy (but always guessing other also gets 50%)
+
+### How can you measure the performance of secondary structure prediction?
+- Q3 (three-state per-residue accuracy) -> simple match accuracy with 3 possible states
+- Compare to baseline: 
+  - random guessing gets 33%
+  - always guessing "other" gets 50% -> weight the three states differently to show that the 1st generation's 50% accuracy tell you more than the constant guessing!
+
+### What is DSSP?
+- Converts 3D structure to secondary structure
+TODO
+
+### What is the second generation 2nd structure prediction method?
+- Also look at the window (segment) instead of just at one aminoacid
+- Pad start and end with additional 21st padding-aminoacid
+- TODO: How the counting works
+
+### Why did people claim that 65% is the maximum for secondary structure prediction?
+- Helix formation is local -> you see that in the windows
+- Strand formation is not -> you don't have the necessary information
+- 35% of secondary structure is determined by long range interactions
+- The 65% number came from: people tried for many years all kinds of ideas and ML and they all hit against the 65% limit.
+
+### What were problems of secondary structure prediction after the 2nd generation / before 1994?
+- Hit against 65% mark -> must me max
+- On beta-strands, the accuracy was only 40% -> slightly above random -> must be non-local
+- Often short segments in predictions that contradict what we know -> you don't know how to use it
+
+### What would be shorter ways of encoding the network input than sparse coding / one-hot? What way performs best?
+- 5 units -> binary coding of aminoacids
+- 1 unit -> real value (simply the number)
+- biophysical features
+- old best: simple one-hot
+- new best: one-hot PLUS biophysical features
+
+### Why did sparse input encoding work better than the other simple encoding methods?
+Because it makes no assumptions 
+-> the others all introduce correlations that don't completely reflect reality
+-> the model first has to learn to untangle the correlations
+
+### What is the difference between balanced and unbalanced training?
+- Unbalanced directly gives the samples from the database -> more "other" training examples than helix and strand
+- Balanced gives 3 examples (each from one class) at a time -> loss is summed
+- Unbalanced scores 62% overall accuracy and scores "other" examples best
+- Balanced scores 60% accuracy and predicts the three classes equally well -> 2% less, because a method that focuses on predicting the "other" well scores more
+- Debunked the "beta strands are non-local => 40%" claim from the 2nd generation!! Because the balanced method does equally well on all three states -> 60% for every class -> no preference for one class on balanced data
+
+### What is PHDsec?
+- structure to structure network
+- 2nd level network that has output of previous network -> per position 3 inputs + padding input
+- 2nd level has 17 positions as input
+- 2nd level is trained after 1st level
+- 2nd level network (hopefully) learns things like HLHL doesn't exist or helices have at leask k length -> better segment prediction
+- still only 60% accuracy
+
+### What is a spacer unit?
+Padding input unit
+
+### How can you get more data than PHDsec as input?
+- Use evolutionary information, for example 
+- TODO
+
+
+
