@@ -15,6 +15,9 @@ Around 20K in a human
 ### How many proteins are known in total?
 110M known in total
 
+### How many protein structures are known?
+120,000
+
 ### What is the length of the shortest and the longest protein?
 From 35 to 35K residues
 
@@ -198,7 +201,7 @@ Strands and helices already tell us something about function.
 
 ### What are the different zones?
 - Do all vs all comparison of sequences and structure in PDB
-- Scale from 0 to 100
+- Scale from 0 to 100% sequence identity
 - TP -> pairs of proteins with similar structure
 - FP -> pairs of proteins with different structure
 - Daylight Zone (40 to 100)
@@ -246,7 +249,131 @@ TODO
   4. Collect all pairs and build profile
   5. Iterate (find new matches using new profile) -> Query database with profile
   
-# Comparative Modeling 1
+# Comparative Modeling
 
 ### What is comparative modeling?
-TODO
+- Background: similar sequences have similar structure
+- (Nobel prize for: same sequence always folds into the same structure)
+- Want to predict structure for target protein
+- Steps:
+  1. Identify template / database search (BLAST / PSI-BLAST etc.)
+  2. Align target and template (DP, profile-profile)
+  3. Build model
+     - simplest model: just take template's coordinates and insert the target's residues
+     - problem with simplest model: 
+       - if the other one has one residue inserted it completely destroys the rest of the fitting (however, that is usually covered by the alignment!!)
+       - if the alignment was wrong, it breaks
+       - might not correspond to the actual secondary structure
+  4. Assess model
+  5. Refine
+  
+### What are typical comparative modeling errors?
+- Mis-alignment -> breaks
+- Template was wrong
+
+### What are loops? Solution?
+- Target sequence has additional residues inserted in comparison with template
+- -> you have two anchor points, between that you have no idea how the structure looks like
+- Solutions: 
+  - Molecular simulation
+  - Search database for loop sequence
+
+### Name two methods for comparative modeling
+- MODELLER
+- SWISS-MODEL
+  
+### What does MODELLER do?
+- Comparative modeling -> very accurate
+- Find template with BLAST / PSI-BLAST
+- Align target and template (DP, profile-profile, etc.)
+- Build model -> deal with loops that are missing in template etc.
+- Assess model
+- Refine
+  
+### What does SWISS-MODEL do?
+- Comparative modeling for non-experts
+- Find template with BLAST / PSI-BLAST
+- Copy co-ordinates
+
+### What is CASP?
+- Critical Assessment of Structure Prediction
+- Challenge, where not even the Organizers know the test targets (structures)
+- Participants give their predictions
+
+### What is the current state of the art of protein structure prediction?
+- Works for some sequences
+- Only homology modeling good
+- No general prediction of 3D from sequence possible yet
+
+### Where do the known protein structures come from?
+- 90% of 120,000 from Xray
+- 9% of 120,000 from NMR
+- 1% of 120,000 from Electron Microscopy
+
+### What are the steps of X-ray crystallography?
+1. Crystallize
+2. Diffraction pattern with x-rays
+3. Electron density map
+4. Fit atomic model
+5. Refine step 2 and iterate
+
+### How long takes X-ray crystallography?
+- From diffraction to result: days
+- Getting the diffraction pattern: more than a year
+
+### How does NMR work?
+- Nuclear Magnetic Resonance
+- Take protein from its environment, put it in tube, put the tube under a magnet
+- Does not modify the protein!
+- Measurements only give constraints -> Models have to be fitted -> Several models as output that are compatible with the data 
+- -> is uncertain -> might be due to dynamic regions of the protein (b factors)
+- X-ray dudes say: you just can't measure it right. NMR dudes say: what we show is motion and you guys don't see that with your method
+- Even the fitting after you have the experimental data takes months
+- Limitation: because NMR cannot distinguish between "was it the aminoacid at position 5 or 15", it becomes impossible to to NMR with proteins of length > 200 and most human proteins have such a long length.
+
+### How does Cryo-EM work? What is the disadvantage?
+- Take protein, freeze it, look at it under an EM
+- What is the disadvantage? Often, the resolution is 16-32 Angstrom -> is not the exact structure, only the rough shape
+
+### Can two different proteins have the same surface?
+Yes!
+
+### How is secondary structure stabilized / determined?
+With hydrogen bonds.
+
+### What is a beta strand?
+Two sequences of the same protein join (might be far away in sequence space) and stick together via the hydrogen bonds.
+
+### What are two ways to annotate 1D secondary structure from 3D coordinates?
+- DEFINE: look at the shape and see if it looks like a helix
+- DSSP: look at the hydrogen bonding patterns (rules described by Pauling) and thus assign the likely secondary structure
+
+### In comparative modeling, what is the difference between target and template?
+- Target: protein to model (predict)
+- Template: protein to model from
+
+### For how many sequences can you predict something about 3D structure? What can we predict for the rest?
+- About half -> 55 million
+- With comparative modeling
+- For 55 million sequences, there is one **region**, where I can reliably predict something about 3D structure
+- For the rest, we can predict 1D secondary structure
+
+# Secondary Structure 1
+
+### What are the states of secondary structure?
+DSSP secondary assignment has 8 states:
+1. H = Helix
+2. E = Extended (strand)
+3. B = Beta-bridge
+4. T = Turn
+5. S = Bent
+6. " " = Loop
+
+Or you just say helix, strand (E and B) and other.
+
+### What is a difference between Helix and Sheet / Strand?
+- Helix is stabilized locally
+- Sheet is not
+
+### Why would the same peptide sometimes be in a helix and sometimes in a strand?
+If the binding partner for the strand is missing it might form a helix. Helix is stabilized locally, sheets are not.
