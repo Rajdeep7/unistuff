@@ -569,3 +569,81 @@ Then:
 
 ### What is a transmembrane helix?
 - Helix that goes through the membrane, usually more about 20 residues long
+
+# Intrinsically Disordered Proteins
+
+### What are Natively / Intrinsically Disordered / Unstructured Proteins?
+- Unbound, the protein is wobbling (not a fixed structure) -> if you take two photos of it you won't see the same structure
+- Upon binding, the protein adopts a fixed structure -> if you take two photos of it it will always be the same structure
+
+### What is the fly casting analogy?
+- IDP is a line wobbling around -> like a fly at the end of a string
+- Upon contact with its target, a weak contact is established, which pulls the rest in
+- Then the IDP folds around the target upon approach
+- -> increases reach of protein
+- -> can bind to different target proteins
+
+### What is NORS?
+- No regular secondary structure
+- Defined as less than 5% helix or strand in over 70 residues
+
+### What are the types of NORS?
+- Connecting loops
+- Floppy ends
+- Wrapping loops 
+- Floppy domains
+
+### What is "loopy" disorder?
+- Many proteins have long regions where we see no regular secondary structure (Helix or Strands)
+
+### Where would you put the b-value threshold?
+- You measure proteins and take a look at where they move how much -> gives you the b-value
+- Then you want binary classifcation (flexible or not flexible) -> need b-value threshold
+- Don't put the threshold at the peak, because every experiment makes some error -> if you put the threshold at the peak, the tiniest mistake has the strongest possible effect. That makes it the hardest for the ML device to learn.
+- You can also not put the threshold at an extreme value, because then you don't have enough points left from the one class (unbalanced data!)
+- Therefore, the solution lies somewhere in the middle
+
+### How can you predict residue flexibility?
+- PROFbval
+- Solve the threshold problem for the b-values
+- Then use the same 1st level network from secondary structure prediction with profile as input
+
+### What are two methods of predicting NORS?
+- Predict b-values / flexibility.
+  - needs experimental data (but not experimental disorder data, only dynamics. that we can measure (NMR))
+  - Caution: protein dynamic doesn't directly imply protein disorder!
+- Predict short NORS regions / distinguish unstructured from well-structured loops
+
+### Method 2
+- Simply predict secondary structure 
+- Then define NORS as less than 5% regular structure in over 70 residues
+- Problem: We also want to find NORS in peptides of like 30 residues. By definition, we cannot do that in this way. Making the 70 to 30 -> the method finds a lot of false positives (positive being NORS)
+- Solution: positive = all regions with < 5% in > 70, negative = whole PDB
+- Problems:
+  - the set of positives does not contain a single example of what we want to learn (we want to learn 30 residues loops that are disordered)
+  - false negatives. there is a lot of regions in the proteins in the PDB that is actually disordered. this could break the ML system
+- Solution: only the signal is consistent!
+
+### Method 3
+- IUPred
+- Ucon: unstructured regions from contact prediction
+- Predict contact-deprived regions
+- Because on contact, they bind and cannot move anymore -> predict contact to predict movement
+- If subsequent residues are unlikely to form a contact, this might be a NORS
+
+There is no experiment that clearly shows disorder
+-> We cannot measure disorder. What we can measure is what we cannot see
+-> Dunker-Hypothesis: Residues not visible in 3D structures share disorder
+
+Disorder is more difficult to conserve (in an evolutionary sense) than regular secondary structure. Disorder is more sensitive to random changes!
+
+### What is a dark proteome?
+Part in a protein where you know nothing about the 3D structure
+- No comparative modeling possible
+- No experimental structure
+- 15% dark proteins for Eukaryotes. Dark protein -> all dark
+- Why are these proteins dark? Some are disordered, some are ordered, for many we cannot explain why they are dark
+
+### What is a proteome?
+The proteome is the entire set of proteins that is, or can be, expressed by a genome, cell, tissue, or organism at a certain time.
+
