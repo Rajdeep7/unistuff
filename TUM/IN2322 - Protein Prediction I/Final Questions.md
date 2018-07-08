@@ -1,3 +1,5 @@
+# Q1
+
 ### Explain the concept of twilight zones
 - When aligning sequences (for example with BLAST), we get a score for the sequence similarity
 - From sequence similarity, we may be able to infer the structure. But this does not necessarily have to be the case!
@@ -115,13 +117,17 @@ SW:
   3. Use alignment methods for sequence to sequence comparison
   4. Find a protein with high sequence similarity as template (should optimally be in the daylight zone)
   5. Take the 3D coordinates from the template and fill them with the target according to the alignment
-  6. Problem: What to do with gaps in the alignment?
+  6. Assess and refine the model
+  7. Problem: What to do with gaps in the alignment?
 
 ### When can comparative modeling go wrong?
 - When you don't find a template
 - When the template is a false positive (likely if too much in the twilight zone)
 - When there are gaps in the alignment, but there are solutions to this
 - Mis-alignment breaks the prediction
+
+### How can you find out that you picked the wrong comparative modeling template?
+You have a lot of clashes.
 
 ### Why is comparative modeling so easy?
 - Don't have to predict anything
@@ -149,6 +155,7 @@ SW:
 - NMR = Nuclear Magnetic Resonance
 - Put proteins from their environment into a tube -> proteins don't have to be modified!
 - Put the tube under a large magnet
+- Measurements only give constraints -> Models have to be fitted -> Several models as output that are compatible with the data -> is uncertain -> might be due to dynamic regions of the protein (b factors)
 
 ### Why can you not see a protein under the microscope?
 It is too small and too dynamic
@@ -164,9 +171,6 @@ It is too small and too dynamic
   - simply find template with BLAST / PSI-BLAST and copy the coordinates
   - for non-experts
 
-### How can you find out that you picked the wrong comparative modeling template?
-You have a lot of clashes.
-
 ### What is disorder?
 - Usually, proteins have a unique 3D structure in water, otherwise they would not be able to function correctly
 - Disorder = at least a part of the protein is not adopting a unique 3D structure 
@@ -176,7 +180,399 @@ You have a lot of clashes.
 - Adopts to different locks with different structure
 - Flexibility and dynamics enable its function
 
+### How can you encode a profile for a neural network?
+- Instead of one-hot encoding:
+  - Can also input the row of the PSSM -> input still 21 dimensional (with spacer unit)
+  - Or input the corresponding probability vector -> input still 21 dimensional, still sums to 1
+  
+### Why don't we predict the 2D distance map?
+- From that, you can directly compute the 3D structure (except for image <-> mirror distinction)
+- Would need to predict contact of residues
+- ML is not there yet. Can predict useful features but not enough to predict 3D structure
+
+# Q2 
+
+### How can you predict per-residue secondary structure with a neural network? Explain in particular how to code for the sequence.
+- Sliding window through the sequence with residue to predict secondary structure for at the center
+- Figure
+- Training input sequence is a sequence, for which you know the secondary structure
+- One-hot encoding of aminoacids at each position -> does not introduce correlation between aminoacids like putting in the binary code with only 5 input units would
+- Train sample by sample, slide the window through the sample 
+- Don't actually slide the window through! Pre-compute the (input, output) pairs, put them into the database and then iterate them randomly
+- Use a spacer unit -> 21 instead of 20
+
+### What is the reason for a second level structure-to-structure network for predicting secondary structure? 
+- Problem with only 1st level is that the system never learns for example that helices are at least 3 to 4 residues long or HLHL does not exist
+- Take output from 1st level as input to 2nd level
+- Again, add space unit
+- Train after the 1st level
+- Still only 60% accuracy!
+
+### Applying a method for secondary structure prediction fails for proteins with transmembrane helices (TMH). How could you adapt the known solution to the new problem?
+
+TODO
+
+### Given two multiple alignments for a family, how can we assess which one is better?
+- If you have the secondary structure: Which ever one has the lower validation score -> which one predicts better
+- If not: check the reliability index
+- If it is low, then TODO
+- If it is high, then TODO
+
+### What is the reliability index?
+
+TODO
+
+### What contributes to a better profile?
+- More sequences
+- Sequences of similar length
+- Sequences stemming from the same family -> no unrelated proteins in the MSA
+- Diverse sequences -> not always the same sequence
+
+### How can you check that there are no unrelated sequences in the MSA for your profile?
+- Build the profile
+- Predict secondary structure for the sequences in the MSA
+- If some are alpha helices and some are beta strands -> something went wrong
+
+TODO TODO
+
+
 ### Explain simple methods (1st generation, 2nd generation, 3rd generation methods) for secondary structure prediction
+
+1st generation:
+- Proline breaks a helix
+- Take all proteins with known structure and convert them to 1D with DSSP
+- Count the secondary structure states for each amino acid for each protein and build a probability distribution for each amin-acid
+- Assign single secondary structure label to each amino-acid (simply take the most frequent one)
+- From 50s to 70s
+- Around 50% accuracy
+
+2nd generation:
+- Also look at the window (segment) instead of just one aminoacid
+- Pad start and end with additional spacer unit
+- Again, count the secondary structure labels for each segment combination
+
+3rd generation:
+- Use neural network with 2 levels
+- Also encode profile
+
+# Exercise Questions
+
+### Fat, water, loving, hating?
+- Hydro
+- Lipo
+- philic
+- phobic
+
+### What is the central dogma of Molecular Biology?
+1. DNA Replication
+2. Transcription to RNA
+3. Translation to Protein
+
+### What is an ORF?
+- Open Reading Frame
+- DNA sequence that precisely codes for a protein
+- DNA sequence consisting of start codon encoding M, intermediate codons, stop codons (not encoding)
+- In exercises: 1 ORF = 1 protein, but 1 -> N proteins is also possible
+
+### Where do 6 reading frames come from?
+- 3 for different start positions
+- 2 for complementary strand
+
+### What is special for ORF for complementary strand?
+Read in reverse -> always from 5 to 3, but these numbers flip when taking the complement -> have to reverse reading
+
+### What is the central file format?
+>FASTA
+asdf
+1234
+
+### Why do we want to align sequences?
+- Find out how similar they are
+- Similar sequences tend to have similar shapes -> Make conclusions about structure and function
+- Observe patterns of conservation
+- Infer evolutionary relationships
+
+### Name two databases for proteins
+- UniProt for protein sequences
+- PDB for protein structures
+
+### What is a high-level description of DP in general?
+- Divide a problem into consecutive subproblems
+- Solution for each problem is based on its predecessors
+
+### How does Needleman-Wunsch work?
+1. Matrix with rows and columns = the sequences
+2. Insert additional row and column at index 0 and insert 0 at 0,0
+3. Fill first row and column using gap penalty
+4. Take score matrix and gap penalties
+5. For each entry, take max(top left + score, top + gp, left + gp)
+6. Go back from the bottom right cell using cell that check out 
+7. Save all possible paths to get all possible alignments
+
+### How does Smith Waterman work?
+- Matrix cell values are always >= -> fill first row and column with zeros
+- Start traceback at cell with max value and go back to cell with 0 value
+
+### What are the steps in computing a PSSM?
+1. Calculate sequence weights
+2. Count (with weights) observed amino acids and gaps
+3. Redistribute gaps according to background distribution
+4. Add pseudocounts according to amino acid pair frequencies
+5. Normalize to relative frequencies
+6. Divide by background frequencies
+7. Calculate Log-Score
+8. Remove rows corresponding to gaps in the primary sequence (first one in the MSA)
+
+### Why do we want PSSMs?
+1. Help improve alignments (local and global) -> Instead of BLOSUM62
+2. Can be used for search of similar sequences (for example for BLAST)
+3. Condense information about the evolution of a protein -> Important input feature for many prediction methods
+4. Help to find protein homologs in database
+
+### What is a problem of PSI-BLAST?
+False hits can pollute the PSSM
+
+### What is an advantage of PSI-BLAST?
+Can find more distantly related protein sequences.
+
+### What is the typical ML workflow?
+1. Preprocessing
+2. Data Analysis
+3. Model training
+4. Performance evaluation
+
+# Introduction
+
+### What are the nucleotides of DNA and RNA?
+- ACGT
+- ACGU
+
+### How do you get from DNA to a protein?
+- Codon of 3 nucleotides for one amino acid
+
+### What is the difference between eukaryotes and prokaryotes?
+Eukaryotes have a nucleus
+
+### What is the length of the shortest and the longest protein?
+35 to 35K residues
+
+### What are the two parts that make up an amino acid?
+- Side chain (different for each amino acid)
+- Backbone (same for all amino acids)
+
+### What are some biophysical features?
+- Polar
+- Hydrophilic
+- Hydrophobic
+- Positively charged
+- Negatively charged
+
+### What is an intron? What an exon?
+- Intron is a DNA region that is cut out -> not used to build proteins
+- Exon is a DNA region that is used (given that it is between the start and end codon)
+
+### What is a domain?
+- A sequence of residues that folds independently of other sequences in the protein
+- A protein can have multiple domains
+- < 30% have a single domain
+- Domains often contain evolutionary information -> different proteins have the same or a similar subsequence with the same structure
+
+### Why would evolution decide to merge two protein (domains)?
+- Because protein A and B have to act together -> have to bind locally together
+- By constructing C = A + B, the proteins don't need to meet anymore
+- -> Join these sequences in the genome to save time
+
+### Why do we compare the sequences instead of 3D structure?
+- For most proteins, we don't have the 3D structure (Only for 120K proteins)
+- Also, comparing sequences is easier
+- 3D structure comparison would be better, because the structure does not have to be similar for similar sequences
+
+### How can we compare 3D shapes?
+With 2D matrix comparison
+1. Find the best global superposition (points where both shapes are the closest)
+2. Compute for each shape the distance matrix between its points (isolated from the other shape)
+3. Compare both matrices -> RMSD 
+Can also compare matrix subregions
+
+### Give examples of 1D, 2D and 3D protein structure
+- 1D -> Simple sequence / Secondary structure
+- 2D -> Distance matrix of residues in the protein
+- 3D -> Aminoacids plotted / Helices and beta strands may also be summarized visually
+
+### Do you lose information when going from 3D to 2D?
+- No, you can reconstruct 3D information
+- You only lose the information if it is the protein or a mirrored version of the protein. But usually, one of the two versions occurs more frequently in nature, so you can guess, which version you have in front of you.
+
+# Sequence Alignments 1
+
+### Why compare 3D shapes, why not function?
+- Shape determines function
+- Sometimes similar structure implies similar function
+- Shape is more easy to measure and compare than function
+-> Predict function from shape
+
+### What is a peptide?
+Sequence of residues
+
+### Can all proteins be made into a crystal?
+No.
+
+### Can we predict structure for all protein sequences?
+No. For some, we can.
+
+### Why would we want to predict secondary structure?
+Strands and helices already tell us something about function.
+
+### Name two ways to get to the shape of a protein
+- By experiment (most accurate), for example X-ray crystallography
+- Computational biology -> predict it from the sequence
+
+### Why is it a bad idea to only match residues that are exactly the same?
+- Some residues are more similar than others (two hydrophobic ones for example)
+- Function might be thus more similar than when switching with a very different aminoacid
+- Different residues can cause the same function
+
+### What is homology?
+Two genes / proteins have a common ancestor
+-> differ in sequence, but often have similar structure and similar function
+-> Homology is the existence of shared ancestry between a pair of structures
+
+### How can you enforce a low number of connected blocks in a global alignment?
+Instead of linear gap penalty, penalize gap opening and gap extension separately (typically gap opening = 10 * gap extension)
+
+### How can you decide, which alignment is best?
+- Ultimately, you can see if the structure is the same / the function is the same
+- But more directly, you look at how many other proteins match with this alignment (GQ for example) and evaluate, how meaningful this alignment is -> again, signal values of proteins, which we know they have similar structure, vs background distribution in database
+
+### How do you decide the word / seed size of BLAST?
+- You try it out and then see if the BLAST scores are actually meaningful
+- Run sequence against the entire database -> background distribution
+- See if positive outliers (high scores / hits) exist
+
+# Sequence Alignments 2
+
+### How is a similar structure in 3D defined?
+- < 0.2nm rmsd -> same
+- > 0.5nm rmsd -> different
+
+### Should you just run All vs All on PDB? What is the purpose of doing that?
+- Purpose would be to find the different zones -> TP and FP depending on the alignment score -> find out what scores are meaningful
+- Should be run on sequence-unique subset, not whole PDB
+- But: not redundancy-reduced vs. redundancy-reduced, because there would be no similar pair left by definition!!
+
+# Comparative Modeling
+
+### What is the current state of the art of protein structure prediction?
+- Works for some sequences
+- No general prediction of 3D from sequence possible yet
+
+### Where do the known protein structures come from?
+- 90% of 120,000 from Xray
+- 9% of 120,000 from NMR
+- 1% of 120,000 from Electron Microscopy
+
+### What is the big fight between X-ray dudes and NMR dudes?
+X-ray dudes: you just can't measure it right
+NMR dudes: what we show is motion and you guys don't see that with your method
+
+### How does Cryo-EM work? What is the disadvantage?
+- Take protein, freeze it, look at it under an EM
+- Often, the resolution is 16-32 Angstrom -> is not the exact structure, only the rough shape
+
+### Can two different proteins have the same surface?
+Yes!
+
+### How is secondary structure stabilized / determined?
+With hydrogen bonds.
+
+### What is a beta strand?
+Two sequences of the same protein join (might be far away in sequence space) and stick together via the hydrogen bonds.
+
+### What are two ways to annotate 1D secondary structure from 3D coordinates?
+DEFINE: look at the shape and see if it looks like a helix
+DSSP: look at the hydrogen bonding patterns (rules described by Pauling) and thus assign the likely secondary structure
+
+### For how many sequences can you predict something about 3D structure? What can we predict for the rest?
+- About half -> 55 million
+- With comparative modeling
+- For 55 million sequences, there is one region, where I can reliably predict something about 3D structure
+- For the rest, we can predict 1D secondary structure
+
+# Secondary Structure 1
+
+### What is a difference between Helix and Sheet / Strand?
+Helix is stabilized locally
+Sheet is not
+
+### Why would the same peptide sometimes be in a helix and sometimes in a strand?
+If the binding partner for the strand is missing it might form a helix. Helix is stabilized locally, sheets are not.
+
+### What is a family?
+Proteins that have a similar structure
+Can be defined by different threshold (think twilight zone)
+
+### How can you measure the performance of secondary structure prediction?
+- Q3 (three-state per-residue accuracy) -> simple match accuracy with 3 possible states
+- Compare to baseline:
+  - random guessing gets 33%
+  - always guessing "other" gets 50% -> weight the three states differently to show that the 1st generation's 50% accuracy tell you more than the constant guessing!
+
+### Why did people claim that 65% is the maximum for secondary structure prediction?
+- Helix formation is local -> you see that in the windows
+- Strand formation is not -> you don't have the necessary information
+- The 65% number came from: people tried for many years all kinds of ideas and ML and they all hit against the 65% limit.
+- So they thought 35% of secondary structure is determined by long range interactions
+
+### What were problems of secondary structure prediction after the 2nd generation / before 1994?
+- Hit against 65% mark -> must me max
+- On beta-strands, the accuracy was only 40% -> slightly above random -> must be non-local
+- Often short segments in predictions that contradict what we know -> you don't know how to use it For example, helix that consists of only 2 residues
+
+### What would be shorter ways of encoding the network input than sparse coding / one-hot? What way performs best?
+- 5 units -> binary coding of aminoacids
+- 1 unit -> real value (simply the number)
+- biophysical features
+- old best: simple one-hot
+- new best: one-hot PLUS biophysical features
+
+### Why did sparse input encoding work better than the other simple encoding methods?
+Because it makes no assumptions -> the others all introduce correlations that don't completely reflect reality -> the model first has to learn to untangle the correlations
+
+### What is the difference between balanced and unbalanced training?
+- Unbalanced directly gives the samples from the database -> more "other" training examples than helix and strand
+- Balanced gives 3 examples (each from one class) at a time -> loss is summed
+- Unbalanced scores 62% overall accuracy and scores "other" examples best
+- Balanced scores 60% accuracy and predicts the three classes equally well -> 2% less, because a method that focuses on predicting the "other" well scores more
+- Debunked the "beta strands are non-local => 40%" claim from the 2nd generation!! Because the balanced method does equally well on all three states -> 60% for every class -> no preference for one class on balanced data
+
+### What is the whole process from sequence to 2ndary structure?
+1. Sequence
+2. Align it against database (BLAST)
+3. Find the ones that belong to the same family
+4. Extract alignment / profile
+5. Put into one-level or two-level system (PHDsec)
+
+### How can the prediction of a single network be improved?
+- Jury decision -> differently trained networks
+- As long as there is only white noise (-> errors that are not systematic), the performance improves
+
+### Why does PROFsec still predict some proteins worse than random guessing?
+- Pseudo-Science: strange features
+- Actually: we don't know
+
+# Secondary structure 2
+
+### What else can you put in in addition to the profile?
+- The current position
+- How surprising is it that I have these residues in the aligned sequences at a specific position -> based on the biophysical features
+
+
+
+
+
+
+
+
 
 
 
