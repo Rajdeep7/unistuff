@@ -47,6 +47,7 @@ From 35 to 35K residues
 - Area in the DNA that is used for building the protein (between the start and the end block)
 
 ### What is a domain?
+- "A protein domain is a part of a given protein sequence and (tertiary) structure that can evolve, function, and exist independently of the rest of the protein chain."
 - Region in the protein denoting the evolutional context of the protein (?)
 - Subsequence in the protein sequence 
 - -> many different proteins have that or a similar subsequence -> maybe is a domain
@@ -98,6 +99,10 @@ An aminoacid in a protein
 -> You find a new protein in a new disease and you want to know what it does
 -> Alignments answer the question "how similar are proteins?"
 
+### Why do we do alignments?
+- To find out, how similar two proteins are in sequence comparison
+- Similar sequences tend to have similar shapes
+
 ### Why compare 3D shapes, why not function?
 - Shape determines function
 - Sometimes similar structure implies similar function
@@ -138,8 +143,10 @@ Strands and helices already tell us something about function.
 ### What is homology?
 - Two genes / proteins have a common ancestor
 - -> differ in sequence, but often have similar structure and similar function
+- -> Homology is the existence of shared ancestry between a pair of structures
 
 ### How does brute force work for global alignments?
+- The hardcore brute force would be to go through all possible combinations -> combinatorial explosion
 - Needleman Wunsch
 - Dynamic programming
 - Write both sequences as row names and column names
@@ -207,7 +214,7 @@ Strands and helices already tell us something about function.
 - Daylight Zone (40 to 100)
   - sequence similar => structure similar
   - TP > FP
-  - sequence sequence
+  - sequence - sequence
 - Twilight Zone (20 to 40)
   - sequence not so similar, structure sometimes similar
   - TP increase, FP explode
@@ -221,7 +228,7 @@ Strands and helices already tell us something about function.
 - < 0.2nm rmsd -> same
 - > 0.5nm rmsd -> different
 
-### Should you just run All vs All on PDB? What is the purpose of doing that
+### Should you just run All vs All on PDB? What is the purpose of doing that?
 - Purpose would be to find the different zones -> TP and FP depending on the alignment score -> find out what scores are meaningful
 - Should be run on sequence-unique subset, not whole PDB
 - But: not redundancy-reduced vs. redundancy-reduced, because there would be no similar pair left by definition!!
@@ -234,11 +241,8 @@ Strands and helices already tell us something about function.
 
 ### What is a PSSM?
 - Position specific scoring matrix
-- Given that we have an multiple sequence alignment, compute the score for each residue at each position
+- Given that we have a multiple sequence alignment, compute the score for each residue at each position
 - -> Specific to a protein family
-
-### What are the steps in computing the PSSM?
-TODO
 
 ### What is PSI-Blast?
 - Position-Specific Iterative Basic Local Alignment Tool
@@ -277,7 +281,7 @@ TODO
 - -> you have two anchor points, between that you have no idea how the structure looks like
 - Solutions: 
   - Molecular simulation
-  - Search database for loop sequence
+  - Search database for loop sequence and infer its structure
 
 ### Name two methods for comparative modeling
 - MODELLER
@@ -296,8 +300,8 @@ TODO
 - Find template with BLAST / PSI-BLAST
 - Copy co-ordinates
 
-### What is CASP?
-- Critical Assessment of Structure Prediction
+### How can you measure comparative modeling performance?
+- CASP Challenge
 - Challenge, where not even the Organizers know the test targets (structures)
 - Participants give their predictions
 
@@ -319,7 +323,7 @@ TODO
 5. Refine step 2 and iterate
 
 ### How long takes X-ray crystallography?
-- From diffraction to result: days
+- From diffraction patterns to result: days
 - Getting the diffraction pattern: more than a year
 
 ### How does NMR work?
@@ -383,7 +387,7 @@ If the binding partner for the strand is missing it might form a helix. Helix is
 - When aligning proteins, the simplest method is to align identity
 - But: you want to consider biophysical features
 - Solution: generic exchange matrix, such as Blosum
-- Better solution if we already have aligned some proteins and they belong to the same family: 
+- Better solution, if we already have aligned some proteins and they belong to the same family: 
   - Look at a particular position and look at the distribution of residues at that position
   - -> "At position X, there is a Alanine that you cannot change!!! But you are free to do so at position Y"
   
@@ -405,10 +409,6 @@ If the binding partner for the strand is missing it might form a helix. Helix is
   - random guessing gets 33%
   - always guessing "other" gets 50% -> weight the three states differently to show that the 1st generation's 50% accuracy tell you more than the constant guessing!
 
-### What is DSSP?
-- Converts 3D structure to secondary structure
-TODO
-
 ### What is the second generation 2nd structure prediction method?
 - Also look at the window (segment) instead of just at one aminoacid
 - Pad start and end with additional 21st padding-aminoacid
@@ -417,13 +417,14 @@ TODO
 ### Why did people claim that 65% is the maximum for secondary structure prediction?
 - Helix formation is local -> you see that in the windows
 - Strand formation is not -> you don't have the necessary information
-- 35% of secondary structure is determined by long range interactions
 - The 65% number came from: people tried for many years all kinds of ideas and ML and they all hit against the 65% limit.
+- So they thought 35% of secondary structure is determined by long range interactions
 
 ### What were problems of secondary structure prediction after the 2nd generation / before 1994?
 - Hit against 65% mark -> must me max
 - On beta-strands, the accuracy was only 40% -> slightly above random -> must be non-local
 - Often short segments in predictions that contradict what we know -> you don't know how to use it
+  For example, helix that consists of only 2 residues
 
 ### What would be shorter ways of encoding the network input than sparse coding / one-hot? What way performs best?
 - 5 units -> binary coding of aminoacids
@@ -445,7 +446,7 @@ Because it makes no assumptions
 - Debunked the "beta strands are non-local => 40%" claim from the 2nd generation!! Because the balanced method does equally well on all three states -> 60% for every class -> no preference for one class on balanced data
 
 ### What is PHDsec?
-- structure to structure network
+- Adds a structure to structure network
 - 2nd level network that has output of previous network -> per position 3 inputs + padding input
 - 2nd level has 17 positions as input
 - 2nd level is trained after 1st level
@@ -457,7 +458,7 @@ Padding input unit
 
 ### How can you get more data than PHDsec as input?
 - Use evolutionary information
-- Evolution tells you what works -> only the changed that work are observed
+- Evolution tells you what works -> only the changes that work are observed
 - Evolutionary profile captures history of an individual protein  
   -> tells us how important what aminoacid at which position is
   -> the residues that are the same across the family for a specific position are not chosen randomly. they might seem randomly distributed in 1D but in 3D they often act / stick together
@@ -465,7 +466,7 @@ Padding input unit
 - Instead of one-hot encoding, feed the log probability vector from the profile as input -> # inputs per position = 21 remains the same!
 - Predicted probability also strongly correlates with actual accuracy!
 
-### What is the whole process from sequence to profile?
+### What is the whole process from sequence to 2ndary structure?
 1. Sequence
 2. Align it against database (BLAST)
 3. Find the ones that belong to the same family
@@ -480,6 +481,7 @@ Padding input unit
 - Very strange features (the prevention of freezing protein for example)
 - No / low profile
 - But: not scientific, because we also would have to check that other proteins with strange features / low profile perform that bad!
+- we don#t know 
  
 # Secondary structure 2
 
@@ -513,6 +515,10 @@ Use data added after both methods had been developed
 # Transmembrane Helix Prediction
 - There is more than one membrane for eukaryotes! -> inner membrane and outer membrane
 
+### How many percent of the known structures are transmembrane helix proteins? How many of the total proteins out there?
+- Less than 2% of known (only counting unique, then WAY less)
+- About 20% in total!
+
 ### Why is a membrane important?
 - Keep malicious things away and keep important things inside
 - Garbage disposal
@@ -535,27 +541,41 @@ Use data added after both methods had been developed
 - It is very hard to measure them
 - They form at the membrane -> when you get them out of the membrane they fall apart
 
+### What are interesting features of membrane proteins?
+- Number of transmembrane helices
+- Topology -> Orientation
+
 ### Why does membrane protein prediction go wrong? What is the solution?
 - Because membrane proteins have a different composation than non-membrane proteins
 - Membrane proteins have hydrophobic residues on outside AND inside!
 - Solution: just focus on hydrophobic residues and see, how they form structure
+- Problem: how do you define hydrophobicity? -> multiple scales available!
 
 ### What is the solution for using the standard protein prediction method on membrane proteins?
 - Find hydrophobic residues in the protein and only based on that predict the (number of) transmembrane helices
 - Problem: two thresholds:
   - Higher one says ok if it is that hydrophobic, it is a transmembrane helix
   - Lower one says ok if it is only that hydrophobic but is more than 20 residues long, it is a transmembrane helix
-- Refine thresholds (and also pick the hydrophobicity scale) by trying it out -> Predict transmembrane helices and see how correct the predictions are
-- How do you define a correct prediction? How many membrane helices there are is likely more important than predicting them exactly!
+- Refine thresholds (and also pick the hydrophobicity scale) by trying it out -> Predict transmembrane helices for the few membranes, for which we know the structure, and see how correct the predictions are
+- How do you define a correct prediction? How do you tune the threshold parameters and the choice of hydrophobicity scale?
+  - Predict the right number of transmembrane helices
+  - How many membrane helices there are is likely more important than predicting them exactly!
 
-Then: 
+- Define a hydrophobicity index such that you can optimally predict membrane helices (2001 approach) rather than just choosing the known structures to predict the thresholds for hydrophobicity, you choose the hydrophobicity index -> almost like the propensity
 - You train the network only on membrane helices or on (proteins with membrane helices and non-membrane helices)
 - You don't have HEL anymore as output, you have membrane / not membrane as binary output
 
 ### Why does the second level now work too well? Solution?
 - It predicts too long helices than ground truth (usually twice as long)
-- Solution: https://youtu.be/ZIQjVzvBN3E?list=PLg46T0OlBIJ9abbsmUL-ux24DCpoUlC1J&t=2305
-- TODO
+- Solution: DP!
+- Membrane helices have between 15 and 25 helices
+- Create a pool of all segments between 15 and 25 that look like transmembrane helices
+- For each of these, compute the average T probability
+- For mu = 1 to N_pool:
+  - Take the one with the highest average T probability
+  - Take the k-1 next highest that are not conflicting with the ones found (that is not overlapping with the ones already found)
+- You need a stop criterion for adding helices -> for example, when you add one with average probability < 0.5
+- Then you compute the positive inside stuff and get the orientation
 
 ### What is the positive inside rule? How does it help?
 - For transmembrane proteins there are more positively charged residues in parts that go inside the cell (intra-cytoplasmic)
@@ -568,13 +588,14 @@ Then:
 - Predict helices with them 
 
 ### What is a transmembrane helix?
-- Helix that goes through the membrane, usually more about 20 residues long
+- Helix that goes through the membrane, usually more than about 20 residues long
 
 # Intrinsically Disordered Proteins
 
 ### What are Natively / Intrinsically Disordered / Unstructured Proteins?
 - Unbound, the protein is wobbling (not a fixed structure) -> if you take two photos of it you won't see the same structure
 - Upon binding, the protein adopts a fixed structure -> if you take two photos of it it will always be the same structure
+- Can "unlock" different locks -> Adopts to different proteins with a different structure
 
 ### What is the fly casting analogy?
 - IDP is a line wobbling around -> like a fly at the end of a string
