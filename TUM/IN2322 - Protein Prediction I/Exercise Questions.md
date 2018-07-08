@@ -11,6 +11,7 @@
 
 ### What is an ORF?
 - Open Reading Frame
+- DNA sequence that precisely codes for a protein
 - DNA sequence consisting of start codon encoding M, intermediate codons, stop codons (not encoding aminoacids)
 - In exercises we assume 1 ORF = 1 protein, but 1 to N is also possible
 
@@ -26,7 +27,7 @@
 FASTA
 
 ### Name two databases for proteins
-- SwissProt for protein sequences
+- UniProt / SwissProt for protein sequences
 - PDB for protein structures
 
 ### Why do we want to align sequences?
@@ -82,5 +83,43 @@ FASTA
 7. Calculate Log-Score
 8. Remove rows corresponding to gaps in the primary sequence (first one in the MSA)
 
+### Why do we want PSSMs?
+1. Help improve alignments (local and global) -> Instead of BLOSUM62. You can even align two PSSMs
+2. Condense information about the evolution of a protein
+   - Conserved positions are easy spot
+   - Important input feature for many prediction methods
+3. Help to find protein homologs in databases
 
+### What is BLAST?
+- Searches database for similar sequences
+- Uses seeds for hit determination
+- The hits are scored by expanding the matching seeds with local alignment
+- Seed = short sequence (3-gram) that has a high pairwise score to the query sequence  
+  -> Go through 20 x 20 x 20 seeds and find the seeds that score highest when moved over the sequence
+- Database stores, which proteins contain which seeds. Seeds are not matched against the sequence, the sequence needs to contain exactly the seeds!
+- Does not specify what to do with the regions that are not covered by the local alignments
+- Can also do Seed vs PSSM (use row index as sequence position)
 
+### What is PSI-BLAST?
+Iterative BLAST
+1. Use BLOSUM62 scores for first search against database
+2. Build PSSM based on high-scoring hits
+3. Search again using the PSSM
+4. Repeat 2
+
+### What is a problem of PSI-BLAST?
+False hits can pollute the PSSM
+
+### What is an advantage of PSI-BLAST?
+Can find more distantly related protein sequences.
+
+### What numerical types are there?
+- integer
+- interval-scaled (°C)
+- ratio-scaled (0 means absence, e.g. kg or meters)
+
+### What is the machine learning workflow?
+1. Preprocessing
+2. Data Analysis
+3. Training the Network
+4. Performance Evaluation
