@@ -305,14 +305,80 @@ Number of additional samples needed grows exponentially with input dimensionalit
 - Neural networks can represent almost any function
 - Adversarial training forces the network to represent a more robust solution
 
-### Name three methods against adversarial attacks?
+### Name three methods against adversarial attacks
 - Adversarial training with FGSM
 - Virtual Adversarial Training
 - Bayesian learning 
 
-### 
+### What is they key idea of Virtual Adversarial Training? Give the equations (24)
+- Maximize change in class probability distribution when creating the adversarial example
+- Error function penalizes a large possible change within the < epsilon constraint
+- Smoothes the output distribution in virtually adversarial directions
 
+### Give the full algorithm for one SGD mini-batch update with VAT
+1. For each sample x in the batch: generate the perturbation maximizing the divergence
+   - Generate a scaled random unit vector with same dimensionality as input from a Gaussian
+   - Compute the perturbation (25)
+2. With theta and the perturbation given, compute the gradient for each sample w.r.t. theta (26)
+3. Sum the gradients for the mini-batch to update the parameters
 
+# Bayesian Neural Networks
+
+### What are applications of having the correct predictive distribution?
+- Safety
+- Sensor fusion
+- Active learning -> in regions of uncertainty
+- Advserarial attacks
+
+### Give the equation for the model evidence. What can you use it for?
+- 27
+- Can search for optimal model complexity
+- Can tune hyperparameters
+- Can check if model fits data
+- Don't need validation data, can run directly on training data
+
+### What does the predictive distribution model?
+Noise + model uncertainty
+
+### Name four Bayesian Deep Learning methods
+- Bayesian neural networks
+- Laplace approximation
+- Variational inference
+- Sampling-based variational inference
+
+### Derive the Monte Carlo Dropout Model
+
+### What are three interpretations of dropout?
+- Intuitive
+- Ensemble learning
+- Monte Carlo approximation to Variational Inference
+
+### Give the intuitive explanation of dropout
+- Randomly removing neurons avoids highly specialized neurons with high outgoing weights
+- Forces more distributed representations
+- And more balanced weights
+- -> Robust to small changes in the input
+
+### Give the interpretation of dropout as ensemble learning
+- Each model in the ensemble makes an error
+- When taking the average of the predictions, the errors are also averaged
+- For uncorrelated errors, this linearly decreases the variance of the error with the ensemble size
+- Dropout implcitly creates ensemble of various networks, where each network is only trained on one mini-batch
+- Errors are not uncorrelated, but also not completely correlated because of weight inits and random mini-batches
+
+### What are the problems of MC dropout?
+- Still underestimates uncertainty because we search in a restricted family of distributions
+- Still have to check quality of results on test / validation set
+- Hyperparameter dropout rate big impact on result
+
+### Give the equation of Monte Carlo integration (28). What is a problem of it?
+Problem when significant mass of f(z) contentrated over small region and p(z) is not matching them
+
+### What is a heteroscedastic noise model?
+- Model predicts different noise depending on x
+- For example, Gaussiang with parametrized mean AND variance
+
+# Generative Models
 
 
 
