@@ -208,8 +208,109 @@ N_L+1 = ceil(N_l / S)
 
 # Advanced Network Architectures II
 
-### How does Image to Image with Pixelwise Scanning work? Is it good?
-- 
+### How does Image Segmentation with Pixelwise Scanning work? Is it good?
+- Classify one pixel at a time
+- Move network pixelwise over larger images
+- Problem:
+  - Very inefficient at test time
+  - Network reduces spatial resolution -> precise segmentation borders hard
+
+### How can you convolutionalize a fully connected layer?
+- Number of "feature maps" = number of neurons
+- Kernel size is full input
+- Stride 1, padding 0
+
+### What is a fully convolutional network?
+- All layers are convolutional
+- Uses transposed convolution for upsampling
+- The less downsampling layers before the upsampling the better (FCN-8s > FCN-32s)
+
+### What are methods to get a small feature map to a big feature map again?
+- Basic upsampling -> Just add padding in between the cells
+- Transposed Convolution / Deconvolution / Upconvolution 
+  - Upsample input so that after the convolutional layer, it has the expected shape
+  - -> Linear upsampling
+  - Kernel parameters learned
+- Unpooling
+
+### How can you upsample max pooling layers?
+- Remember indices from max pooling layer
+- Put zeros at other cells
+
+### Name three methods for Image Segmentation
+- FCNs
+- SegNet
+- FC-DenseNet
+
+### How does SegNet work?
+- 13 convolutional layers from VGG followed by their transposed counterparts
+- Pixelwise softmax
+
+### How does SegNet compare to FCN?
+- FCN only learns the final transposed convolution parameters followed directly by the softmax
+- SegNet applies hierarchy of convolutional layers after unpooling
+- SegNet is more precise
+
+### How does FC-DenseNet work?
+- U-net architecture with bottleneck
+- Skip connections for high resolution maps
+- Very deep, very few parameters
+- Way better than the other methods
+
+# Adversarial Training
+
+### How can you enhance network performance?
+Work on 
+- Probabilistic model -> prior via weight decay
+- Optimization in point estimate methods -> early stopping, BN...
+- Towards Bayesian Inference
+  - Ensemble methods
+  - Dropout
+
+### General equation for finding an adversarial example (20)
+
+### Specific equation for finding an adversarial example (21)
+
+### Why does FGSM use the sign?
+- Guarantees that maximum pixel change is limited by epsilon
+- Also take the most out of the other pixels while satisfying this constraint
+
+### Why is overfitting not the problem causing adversarial examples?
+Trained with different data and different initial weights, got almost the same adversarial examples
+
+### What causes adversarial examples?
+- Excessive linearity
+- Activity before the softmax is only non-linear for small epsilon
+- Quickly becomes linear -> False classes with high confidence
+
+### Why does data augmentation with noise not help against adversarial attacks?
+Number of additional samples needed grows exponentially with input dimensionality
+
+### What is the FGSM? (22)
+- Fast Gradient Sign Method
+
+### What is the error function for adversarial training? (23)
+
+### What are the benefits of adversarial training?
+- Improves generalization as a regularization method
+- Robust against attacks with the same kind of adversarials
+- Low computational overhead
+- Makes NNs have the best empirical success rate on advserarial examples of any ML model!
+
+### What are drawback of adversarial training?
+- Still vulnerable to adversarial attacks
+- High confidence for false classification
+
+### Why does adversarial training work despite of the excessive linearity problem?
+- Neural networks can represent almost any function
+- Adversarial training forces the network to represent a more robust solution
+
+### Name three methods against adversarial attacks?
+- Adversarial training with FGSM
+- Virtual Adversarial Training
+- Bayesian learning 
+
+### 
 
 
 
