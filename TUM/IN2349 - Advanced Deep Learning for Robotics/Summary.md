@@ -442,6 +442,15 @@ For x ~ p(x,w), draw sample z ~ p(z) and then draw sample from p(x|z,w)
 
 # Reinforcement Learning 1
 
+### What is the basic RL formulation?
+- Agent gets state from Environment
+- Environment gets action from Agent
+- Agent gets reward and next state from Environment
+- Goal: take actions to maximize reward
+
+### What is the Markov property?
+Current state and action completely characterizes the next state of the world
+-> Conditional independence from everything before
 
 
 
