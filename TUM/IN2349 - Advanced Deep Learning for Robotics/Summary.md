@@ -380,5 +380,75 @@ Problem when significant mass of f(z) contentrated over small region and p(z) is
 
 # Generative Models
 
+### Why can't you just directly model p(x) as p(x|w) = y(x,w)?
+For high-dimensional input spaces the data typically lives on low-dimensional submanifold
+-> p(x) = 0 almost everywhere
+-> hard to represent by neural network
+
+### What is ancestral sampling?
+For x ~ p(x,w), draw sample z ~ p(z) and then draw sample from p(x|z,w)
+
+### What is the basic motivation for a VAE?
+- Model p(x|w) = int p(x|z,w)p(z) dz
+- Approximate integral with MC 
+- Sample from p(z|x,w) instead of p(z) to focus on z-regions with probability mass
+
+### Derive the Min-max problem for a VAE (29)
+
+### Derive the ELBO for a VAE (30)
+
+### Derive the loss function for a VAE (31)
+
+### What is the problem of VAEs?
+- Blurry images
+- Likely because of L2 loss (log p(x|z,w) with fixed variance is essentially squared error)
+- Also because decoder variance needs to be high for support of generator and true distribution p(x) to match -> blurry images
+
+### What is the motivation of GANs?
+- VAEs suffer from the disjoint supports of the generator and the true distribution p(x) -> blurry images
+- We need a divergence that can 
+  - robustly handle disjoint supports 
+  - but still be approximated by sampling from p(x) and the generator
+- Two distributions are the same if for every f, both expectations of f(x) with x sampled from one of the distributions are the same
+- Choose the most adversarial f(x)!
+- Wasserstein: restrict f(x) to K-Lipschitz function
+
+### What is the min-max problem for GANs? (32)
+
+### Write the objective function for a Wasserstein GAN (33)
+
+### What is the motivation of WGAN-GP?
+- Clipping weights leads to slow learning and vanishing / exploding gradients
+- -> Directly add gradient penalty to loss function penalizing large gradients in f
+
+### How can you measure the performance of a GAN?
+- Amazon Mechanical Turk
+- Inception Score 
+  - Inception v3 should be able to perform classification on it
+  - Images from all classes should be generated -> p(y) has high entropy
+  
+### How does defense GAN work?
+- Train GAN on same data as classifier
+- During inference, search for z, for which G(z) is closest to x in L2 distance
+- Feed the closest G(z) to the classifier
+
+### Why generative models, when not interested in predictions?
+- Data efficiency / semi-supervised learning
+  - Learn p(class | z) instead of p(class | x)
+  - Take advantage of unlabeled data
+- Model checking by sampling
+- Understanding -> Interpretation of latent variables / Interpolation
+- Further use of latent variables, for example for clustering
+
+# Reinforcement Learning 1
+
+
+
+
+
+
+
+
+
 
 
