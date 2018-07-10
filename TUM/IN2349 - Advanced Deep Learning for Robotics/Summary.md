@@ -448,9 +448,78 @@ For x ~ p(x,w), draw sample z ~ p(z) and then draw sample from p(x|z,w)
 - Agent gets reward and next state from Environment
 - Goal: take actions to maximize reward
 
-### What is the Markov property?
-Current state and action completely characterizes the next state of the world
--> Conditional independence from everything before
+### Give the Markov property? 34
+
+### Define a MDP 35
+
+### How do we handle ranomness (initial state, transition probability etc.) in RL?
+Maximize the expected sum of rewards
+
+### What is the basic objective of RL? 
+sum_{t>=0}gamma^t r-t
+
+### Derive the Bellman equation 36
+
+### What is the value iteration algorithm 37
+
+### What can we use the Q function for?
+Give it all our actions with the current state and select the action with the maximum value
+
+### What is the problem of the value iteration algorithm? What is a solution
+- Not scalable -> We have to compute it for every state-action pair
+- it does not interpolate between states (game pixels)
+- Use function approximator 
+
+### What is the formulation of Q-learning loss? 38
+
+### What is experience replay? What are its benefits?
+- Usually sample from trajectory to train Q-network
+- Highly correlated samples
+- Current parameters determine next training sample -> can lead to feedback loops
+- Solution: 
+  - save (s, a, r, s') transition tuples while playing
+  - train on random mini-batches of transition tuples 
+    - less correlated
+    - tuples can be reused -> greater data efficiency
+
+### What is the problem of Q-learning?
+- Indirect learning of optimal policy via optimal Q-value function
+- Q-function can be very complicated in high-dimensional or continuous state-action spaces
+- How to find the best action in continuous space?
+
+### Derive the policy gradients loss and derivative 
+
+### Give the REINFORCE algorithm
+1. Initialize policy
+2. For each iteration (epoch):
+   1. Sample m trajectories under the current policy
+   2. Initialize the gradients to zero
+   3. For each trajectory:  
+      For each timestep, scale the action's gradient with the final reward and add it to the gradients
+   4. Update the policy parameters with their gradients
+   
+### Compare Q-learning to Policy Gradients
+Q-learning:
+- Indirect method
+- Does not always work, but when it is more sample-efficient
+- Off-policy -> we can use any sample for training
+- Guarantees: no guarantees
+- Problem: high-dimensional state-action spaces
+
+Policy Gradients:
+- Direct method, very general
+- Suffers from high variance -> many samples needed
+- On-policy -> need to execute current policy to learn
+- Guarantee: Converges to local maximum of J()
+- Problem: sample-efficiency
+   
+### What are methods combining Q-learning and PG?
+- Actor-critic algorithm
+- Maximum entropy RL
+
+
+
+
 
 
 
