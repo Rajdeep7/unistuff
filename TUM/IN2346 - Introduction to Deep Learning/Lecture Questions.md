@@ -16,7 +16,8 @@ $J(\theta) = \frac{1}{n} \sum_{i=1}^n (\hat{y}_i - y_i)^2$
 
 ### For univariate linear regression, show that MLE = Least Squares Estimate given that the mean is modeled by the linear regression and the variance is fixed.
 
-### Given that we optimize the parameters of logistic regression with MLE, derive the loss function
+### Give the equation for the binary cross-entropy loss
+L(t, y) = t log y + (1-t) log (1-y)
 
 ### Why should you use the analytical gradient over the numerical gradient?
 Approximate and slow vs. exact and fast
@@ -46,25 +47,34 @@ W_3 (W_2 (W_1 x)) = W' x
 ### Why organize a neural network into layers?
 - Fast to compute with matrix operations
 - Enables weight sharing in CNN layers
+- Comparable architectures
 
 ### Why should you use a computational graph?
 - Can easily modularize complex functions
+- Language agnostic -> create in python, execute in C
 
 ### What happens if there are multiple outputs in a compute node?
+Add the incoming gradients up
 
 ### What happens if there are loops in the graph?
-
-### How do you handle large Jacobians (4000 input, 4000 output, batch size 16)
+Either they are infinite, then the forward pass never ends or they are limited by some condition then they can be expressed as a finite series of nodes -> acyclic graph.
 
 ### Why backpropagation and not forward propagation of gradients?
 
 # 4 - Backpropagation
 
-### Derive the gradients for a two-layer neural network with binary cross-entropy loss
+### Derive the gradients for a two-layer neural network with cross-entropy loss
+
+### Derive the sigmoid function
 
 ### Draw the computational graph for two inputs, no hidden layer, three outputs and squared error
 
-### Why do we only compute the partial derivatives w.r.t. the weights and not the full derivatives?
+### What does w_a,b,c denote?
+- layer a
+- neuron b
+- weight c
+
+### Draw the computational graph for one hidden layer
 
 # 5 - Optimization
 
