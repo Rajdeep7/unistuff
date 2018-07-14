@@ -168,10 +168,19 @@ theta = theta - alpha * m' / (sqrt(v') + epsilon)
 So true.
 
 ### Explain Newton's method
+- Approximates the function by a second-order Taylor series expansion
+- Closed form solution for minimum of expansion
+- No learning rate required
+- Requires computing the Inverse of the Hessian matrix
 
 ### Can you apply Newton's method for linear regression? What do you get as a result?
+Optimal solution after first iteration
 
 ### Why can't you simply use Newton's method for Deep Learning?
+- Requires computing the inverse of the Hessian matrix
+- Hessian matrix has length(theta)^2 elements
+- Computational complexity is O(length(theta)^3) per iteration
+- Also, Newton, L-BFGS etc. don't work well for minibatches
 
 # 6 Optimization 2
 
@@ -180,6 +189,11 @@ So true.
 - lr = (1-t) * lr -> every n steps
 
 ### What happens if the LR is too high? What if too low?
+- too high:
+  - training error increases
+  - or oscillates around local minimum
+- too low:
+  - very slow convergence
 
 ### What are training, validation and test set for?
 Training set:
@@ -208,6 +222,7 @@ When data set is extremely small and / or our model has low training times
 # 7 - Training NNs
 
 ### Write down the Softmax and its MLE loss function
+-log (softmax output for target)
 
 ### Compare L1 to L2 loss as output losses
 L2 Loss:
@@ -223,10 +238,10 @@ L1 Loss:
 - Optimum is the median
 
 ### Give the equations for 4 different output losses
-- L2 Loss
-- L1 Loss
-- Xent softmax loss
-- Hinge loss
+- L2 Loss sum_i^n (y_i - f(x_i))^2
+- L1 Loss sum_i^n |y_i - f(x_i)|
+- Xent softmax loss -log (softmax output for target)
+- Hinge loss sum_j != y_i max(0, s_j - s_y_i + 1) -> overall loss is averaged over samples
 
 ### What is the difference between softmax loss and hinge loss?
 - Softmax loss always wants to improve
@@ -238,16 +253,30 @@ L1 Loss:
 - Output is always positive -> gradient in next layer will either be positive or negative for all weights -> inefficient updates
 
 ### What is the advantage and the disadvantage of the tanh activation function?
+- Advantage: zero centered
+- Disadvantage: saturates, strong gradient only around 0
 
 ### What are the advantages and the disadvantage of the ReLU activation function?
+- Advantages: fast convergence, does not saturate, large and consistent gradients
+- Disadvantage: zero input / output kills the gradient
 
 ### What are the advantages and the disadvantage of the Leaky ReLU activation function?
+- Advantages: does not die, fast convergence, does not saturate, large and consistent gradients
+- Disadvantage: slope hyperparameter needs to be tuned
 
 ### What are the advantages and the disadvantage of the Parametric ReLU activation function?
+- Advantages: does not die, fast convergence, does not saturate, large and consistent gradients
+- Disadvantage: slope parameter needs to be trained and bounded
 
 ### What are the advantages and the disadvantage of Maxout units?
+- Advantages:
+  - Generalization of ReLUs
+  - Linear regimes
+  - Does not die
+  - Does not saturate
+- Disadvantage: Increase of the number of parameters
 
-### Give a quick guide to activation functions?
+### Give a quick guide to activation functions
 - Sigmoid is not really used
 - ReLU is the standard choice
 - Second choice are the variants of ReLU and Maxout
@@ -259,22 +288,46 @@ For images, subtract the mean image.
 # 8 - Training NNs 2
 
 ### Why shouldn't you just initialize the weights with zero?
+Hidden units all compute the same function
+-> Gradients all the same
+-> Need to break symmetry somehow
 
-### Why shouldn't you just randomly initialize the weights with a small standard deviationß
+### Why shouldn't you just randomly initialize the weights with a small standard deviation?
+- Activations quickly become zero, even after only 10 layers
+- Multiplying independent Gaussians with small stddev with each other pushes the values towards zero
+- Gradients vanish because inputs to layers are close to zero
 
-### Derive the Xavier init.
+### What does the Xavier init do?
+- We want our input to have the same variance as our score (before activation function)
+- Var(output) = (n Var(w)) Var(x) 
+- -> scales linearly with number of inputs
+- -> set Var(w) to 1/n
 
 ### When does Xavier fail? What can you do?
+- Fails for ReLU, more and more activations become zero with increasing layers
+- Set Var(w) to 2/n
 
 ### Where in the architecture should the BN layer be applied?
+After the weights (fully connected or convolutional) and before the non-linearity
 
 ### Why do you need gamma and beta for BN?
+- Unit Gaussians everywhere might not be best for the network
+- Enable a layer to undo the BN
 
 ### How does BN work at test time?
+Compute mean and variance by running an exponentially weighted average across training mini-batches 
 
 ### What are the benefits of Batch Normalization?
+- Very deep nets are much easier to train because of more stable gradients
+- Much larger range of hyperparameters works similarly
+- Reduces internal covariate shift
+
+### Add weight decay to E
+E = E + lambda delta^T delta
 
 ### What are the benefits of weight decay?
+- Penalizes large weights
+- Improves generalization
 
 ### Explain methods of data augmentation for images. If necessary, also explain what to do during test time
 - (Random) cropping
@@ -312,6 +365,7 @@ Can be considered as an ensemble of networks:
 Reduces the effective capacity of a model -> larger models need more training time
 
 ### What is the weight scaling inference rule?
+Scale layer's output with dropout rate at test time to keep the expected total activation level the same
 
 # 9 - CNNs
 
