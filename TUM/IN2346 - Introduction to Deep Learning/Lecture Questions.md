@@ -141,7 +141,7 @@ Test set:
 
 ### Name hyperparameters
 - Network architecture (# layers, # weights)
-- # iterations
+- Number of iterations
 - Learning rate / solver paramters
 - Regularization
 - Batch size
@@ -153,12 +153,227 @@ When data set is extremely small and / or our model has low training times
 - Partition data into k subsets, train on k-1 and evaluate performance on the remaining subset
 - Compute mean and standard deviation of the different performance scores
 
-# 7
+# 7 - Training NNs
 
-# 8
+### Write down the Softmax and its MLE loss function
 
-# 9
+### Compare L1 to L2 loss as output losses
+L2 Loss:
+- Sum of squared differences
+- Prone to outliers
+- Compute-efficient
+- Optimum is the mean
 
-# 10
+L1 Loss: 
+- Sum of absolute differences
+- Robust to outliers
+- Costly to compute
+- Optimum is the median
 
-# 11
+### Give the equations for 4 different output losses
+- L2 Loss
+- L1 Loss
+- Xent softmax loss
+- Hinge loss
+
+### What is the difference between softmax loss and hinge loss?
+- Softmax loss always wants to improve
+- Hinge loss saturates
+
+### What are the disadvantages of the sigmoid activation function?
+- Strong gradient only around 0 -> active region for gradient descent
+- Saturated neurons kill the gradient flow
+- Output is always positive -> gradient in next layer will either be positive or negative for all weights -> inefficient updates
+
+### What is the advantage and the disadvantage of the tanh activation function?
+
+### What are the advantages and the disadvantage of the ReLU activation function?
+
+### What are the advantages and the disadvantage of the Leaky ReLU activation function?
+
+### What are the advantages and the disadvantage of the Parametric ReLU activation function?
+
+### What are the advantages and the disadvantage of Maxout units?
+
+### Give a quick guide to activation functions?
+- Sigmoid is not really used
+- ReLU is the standard choice
+- Second choice are the variants of ReLU and Maxout
+- RNNs require tanh or similar
+
+### Name a method used in data preprocessing
+For images, subtract the mean image.
+
+# 8 - Training NNs 2
+
+### Why shouldn't you just initialize the weights with zero?
+
+### Why shouldn't you just randomly initialize the weights with a small standard deviationß
+
+### Derive the Xavier init.
+
+### When does Xavier fail? What can you do?
+
+### Where in the architecture should the BN layer be applied?
+
+### Why do you need gamma and beta for BN?
+
+### How does BN work at test time?
+
+### What are the benefits of Batch Normalization?
+
+### What are the benefits of weight decay?
+
+### Explain methods of data augmentation for images. If necessary, also explain what to do during test time
+- (Random) cropping
+  During test time, no random cropping but a fixed set of crops!
+- Flipping the image
+- Random brightness and contrast changes
+
+### Name regularization techniques
+- Weight decay
+- Data augmentation
+- Early stopping
+- Bagging (different learning algorithm, different objective function etc.)
+- Dropout
+
+### What is a condition for an error decrease caused by ensemble methods?
+Uncorrelated errors -> error will decrease linearly with the ensemble size
+
+### What is the intuition behind dropout?
+Central: reducing co-adaptation between neurons
+
+Causes redundant representations:
+- Randomly removing neurons avoids highly specialized neurons with high outgoing weights
+- Forces more distributed representations and more balanced weights
+- -> Robust to small changes in the input
+
+Can be considered as an ensemble of networks:
+- Efficient bagging method with parameter sharing
+- Dropout implcitly creates ensemble of various networks, where each network is only trained on one mini-batch
+- Each model in the ensemble makes an error
+- When taking the average of the predictions, the errors are also averaged
+- For uncorrelated errors, this linearly decreases the variance of the error with the ensemble size
+- Errors are not uncorrelated, but also not completely correlated because of weight inits and random mini-batches
+
+### What is the disadvantage of dropout?
+Reduces the effective capacity of a model -> larger models need more training time
+
+### What is the weight scaling inference rule?
+
+# 9 - CNNs
+
+### What are the two assumptions of CNNs?
+
+### What are the important parameters of a conv layer?
+
+### What are the important parameters of a pooling layer?
+
+### Give the equation for the number of neurons in a conv layer
+
+### Give the equation for the number of parameters in a conv layer
+
+### Give the equation for the number of operations needed for a forward pass of a conv layer
+
+### Why do you need padding?
+Otherwise:
+- Sizes get small too quickly
+- Corner pixel is only used once
+
+### What is the difference between valid and same padding?
+
+### How can you backprop through CNN layers?
+
+# 10 - CNNs 2
+
+### What architectures came after AlexNet?
+- ZFNet
+- VGG
+- GoogleNet
+- Resnet
+
+### What were the improvements of LeNet? How many parameters did it have?
+- Actual use of conv layers
+- Reduce spatial filter extent while increasing number of filters
+- Use average pooling
+- 60K parameters
+
+### What were the improvements of AlexNet? How many parameters did it have?
+- Use max pooling
+- Use ReLUs
+- Use Dropout
+- Use same padding
+- 60M parameters
+
+### What were the improvements of VGG? How many parameters did it have?
+- Striving for simplicity
+- Smaller filters but more layers
+- Replace larger filters with stack of smaller ones (7x7 -> 3 3x3 filters)
+- Number of filters multiplied by 2 after a pooling layer
+- Analyzed a lot of architectures
+- 138M parameters
+
+### What were the improvements of Resnet?
+- Solves the degradation problem (more layers give larger training and test error)
+- Makes it easy for the residual block to learn a linear mapping, even with great depth
+- Each block only learns a deviation from the linear mapping
+- Skip connections: output = f(Wx + b + input)
+- Use same padding, because we need same dimensions for the addition
+
+### Draw the concept of a Resnet block
+
+### Why do we need 1x1 convolutions?
+- To shrink the number of channels
+- Further adds a non-linearity
+- Combines feature maps for each pixel individually
+- Kind of selecting features to be processed before an expensive convolution
+
+### What were the improvements of GoogleNet? How many parameters did it have?
+- Use multiple filter sizes per inception module
+- Multipath -> process parts of features separately
+- 1x1 convolutions before expensive convolutions and after max pooling to reduce the share of the max pooling layer in the output
+- Concatenate the feature maps of each path
+- Drastically reduces the number of parameters (5M)
+
+### Draw an Inception module
+
+### What does transfer learning do?
+- Use what has been learned for another setting
+- For example use Net from large dataset for small dataset
+
+### When does transfer learning make sense? (From P1 to P2)
+- When task P1 and P2 have the same input (for example an RGB image)
+- When you have more data for task P1 than for task P2
+- When the low-level features of P1 could be useful to learn P2
+
+# 11 RNNs
+
+### When do we need RNNs?
+
+### Give the equations for a basic RNN
+
+### How can you backprop through a RNN?
+
+### What is the problem of the basic RNN?
+- Small weights / eigenvalues < 1 -> vanishing gradient
+- Large weights / eigenvalues > 1 -> exploding gradient
+
+### Draw / compare RNN to LSTM cell
+
+### What are the gates in the LSTM for?
+
+### Why does the LSTM work better than the RNN?
+
+### Give the LSTM equations
+
+
+
+
+
+
+
+
+
+
+
+
