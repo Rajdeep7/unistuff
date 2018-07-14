@@ -97,24 +97,66 @@ theta_k+1 = theta_k - alpha * gradient of loss w.r.t. theta
 - Finding a good learning rate is an art by itself
 
 ### Give the update equation of SGD with Momentum
+velocity = beta * velocity + gradient
+theta = theta - alpha * velocity
 
-### What is the advantage of Nesterov's Momentum?
+or 
+
+v^k+1 = beta * v^k + Nabla_theta L(theta^k)
+theta^k+1 = theta^k - alpha * v^k+1
+
+### Why do we need momentum?
+- Exponentially weighted average of gradient
+- Averages out oscillating gradients
+- Accumulates series of gradients pointing in the same direction
+- Functions per direction!
 
 ### How does Nesterov's Momentum work?
+- Same as momentum, except for the computation of the gradient
+- Compute the gradient at theta_k + v_k instead of theta_k
 
-### Give the update equation of Nesterov's Momentum
+### What does RMSProp do? Give the update equation
+- Divides the learning rate by an exponentially-decaying average of squared gradients
 
-### What does RMSProp do? 
+Average is s:
+s^k+1 = beta * s^k + (1-beta) * squared gradient
+theta^k+1 = theta^k - alpha * gradient / (sqrt(s^k+1) + epsilon)
 
 ### What is the advantage of RMSProp?
+- s can be interpreted as the uncentered variance of gradients -> second momentum
+- Dividing by square gradients:
+  - Division in directions of low variance will be small
+  - Division in directions of high variance will be large
+- -> Dampening the oscillations for high-variance directions
+- -> less likely to diverge
+- -> can increase the learning rate
 
-### What does Adam do?
+### What does Adam do? Give the update equations
+Combines momentum and RMSProp
+m = first momentum (mean of gradients)
+v = second momentum (variance of gradients)
+
+m = beta1 * m + (1-beta1) * gradient
+v = beta2 * v + (1-beta2) * squared gradient
+
+theta = theta - alpha * m / (sqrt(v) + epsilon)
+
+### What doe bias correction mean for Adam?
+m and v are initialized with zero -> bias towards zero
+-> bias-corrected moment updates:
+m' = m / (1-beta1)
+v' = v / (1-beta2)
+
+theta = theta - alpha * m' / (sqrt(v') + epsilon)
 
 ### What is the advantage of Adam?
+- Combines momentum and RMSprop / first and second order momentum
 
-### What does AdaGrad do?
-
-### Why is AdaGrad not used very often?
+### What does AdaGrad do? Why is AdaGrad not used very often?
+- Adapt the learning rate of all model parameters
+- It accumulates gradients from the beginning
+- In theory: more progress in regions where the function is more flat
+- In practice, this results in excessive decrease in the effective learning rate for most DL models
 
 ### Draw a very high learning rate, high learning rate, good learning rate and low learning rate
 
