@@ -370,16 +370,32 @@ Scale layer's output with dropout rate at test time to keep the expected total a
 # 9 - CNNs
 
 ### What are the two assumptions of CNNs?
+TODO
+
+### What are the advantages of Convolutional Layers compared to Fully Connected Layers?
+TODO
 
 ### What are the important parameters of a conv layer?
+- Input size N
+- Spatial filter extent F
+- Number of filters K
+- Padding P
+- Stride S
 
 ### What are the important parameters of a pooling layer?
+- Input size N
+- Spatial filter extent F
+- Padding P (although padding makes no sense according to the lecture)
+- Stride S
 
 ### Give the equation for the number of neurons in a conv layer
+(N + 2*P - F) / S + 1
 
 ### Give the equation for the number of parameters in a conv layer
+F * F * D_in * K + K
 
 ### Give the equation for the number of operations needed for a forward pass of a conv layer
+TODO
 
 ### Why do you need padding?
 Otherwise:
@@ -387,8 +403,11 @@ Otherwise:
 - Corner pixel is only used once
 
 ### What is the difference between valid and same padding?
+Same padding keeps the input and output width / height constant, if stride = 1 -> P = (F - 1) / 2
+Valid uses no padding
 
 ### How can you backprop through CNN layers?
+TODO
 
 # 10 - CNNs 2
 
@@ -455,10 +474,17 @@ Otherwise:
 # 11 RNNs
 
 ### When do we need RNNs?
+- Variable input length
+- And / or variable output length
 
 ### Give the equations for a basic RNN
+A_t = f(theta_c A_t-1 + theta_x x_t)
+h_t = g(theta_h A_t)
 
 ### How can you backprop through a RNN?
+Unroll it as a feedforward net all the way to t=0
+-> weights will be the same in each step
+-> add the derivatives at different times for each weight
 
 ### What is the problem of the basic RNN?
 - Small weights / eigenvalues < 1 -> vanishing gradient
