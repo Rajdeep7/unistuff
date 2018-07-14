@@ -94,7 +94,25 @@ theta_k+1 = theta_k - alpha * gradient of loss w.r.t. theta
   - cannot indepenently scale directions
   - need to have conservative min learning rate to avoid divergence
   - slower than necessary
-- Finding a good learning rate is an art by itself
+  - ravine = klamm / schlucht
+- Finding a good learning rate is difficult -> slow convergence or fluctuation around minimum or even divergence
+- Gets trapped in local minima
+
+### What are the differences between batch, stochastic and mini-batch gradient descent?
+Batch
+- At each step, compute gradient of cost function on entire training set
+- Performs redundant computations for large datasets
+Stochastic
+- At each step, compute gradient of cost function on a single example
+- No redundant computations for large datasets
+- Updates have high variance -> objective function fluctuates heavily -> can jump around
+  - into basins with a better local minimum
+  - but also around a local minimum without converging (need learning rate decay)
+Mini-batch
+- At each step, compute gradient of cost function on multiple examples
+- Reduced variance of parameter updates -> can lead to more stable convergence
+- Makes use of optimized matrix optimizations
+- Reduced redundancy
 
 ### Give the update equation of SGD with Momentum
 velocity = beta * velocity + gradient
@@ -151,12 +169,14 @@ theta = theta - alpha * m' / (sqrt(v') + epsilon)
 
 ### What is the advantage of Adam?
 - Combines momentum and RMSprop / first and second order momentum
+- "Whereas momentum can be seen as a ball running down a slope, Adam behaves like a heavy ball with friction, which thus prefers flat minima in the error surface"
 
 ### What does AdaGrad do? Why is AdaGrad not used very often?
 - Adapt the learning rate of all model parameters
 - It accumulates gradients from the beginning
 - In theory: more progress in regions where the function is more flat
 - In practice, this results in excessive decrease in the effective learning rate for most DL models
+- "Adagrad's main weakness is its accumulation of the squared gradients in the denominator: Since every added term is positive, the accumulated sum keeps growing during training. This in turn causes the learning rate to shrink and eventually become infinitesimally small"
 
 ### Draw a very high learning rate, high learning rate, good learning rate and low learning rate
 
