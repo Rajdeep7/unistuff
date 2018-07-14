@@ -320,6 +320,8 @@ Compute mean and variance by running an exponentially weighted average across tr
 ### What are the benefits of Batch Normalization?
 - Very deep nets are much easier to train because of more stable gradients
 - Much larger range of hyperparameters works similarly
+- Works with (almost) arbitrary weight initialization
+- Works with many, especially saturating activation functions
 - Reduces internal covariate shift
 
 ### Add weight decay to E
@@ -369,11 +371,16 @@ Scale layer's output with dropout rate at test time to keep the expected total a
 
 # 9 - CNNs
 
-### What are the two assumptions of CNNs?
-TODO
+### What are the three assumptions of CNNs?
+- Compositionally: hierarchy of local features
+  - Nearby pixels are correlated
+  - Next layer combines local features to more complex and more global features
+- Weight sharing -> interesting features all over the place
+- Translational invariance
 
 ### What are the advantages of Convolutional Layers compared to Fully Connected Layers?
-TODO
+By assuming compositional / hiarcharchy of local features and translational invariance, the number of parameters can greatly be reduced.
+-> Massively reduces necessary number of training samples
 
 ### What are the important parameters of a conv layer?
 - Input size N
@@ -388,19 +395,22 @@ TODO
 - Padding P (although padding makes no sense according to the lecture)
 - Stride S
 
-### Give the equation for the number of neurons in a conv layer
+### Give the equation for the number of neurons in a conv layer's feature map
 (N + 2*P - F) / S + 1
 
 ### Give the equation for the number of parameters in a conv layer
 F * F * D_in * K + K
 
 ### Give the equation for the number of operations needed for a forward pass of a conv layer
-TODO
+Number of neurons * number of parameters
 
 ### Why do you need padding?
 Otherwise:
 - Sizes get small too quickly
 - Corner pixel is only used once
+
+- Adds strong non-linearity without learnable parameters
+- Max-pooling is hard to generate by normal neurons with linear input and non-linear activation function
 
 ### What is the difference between valid and same padding?
 Same padding keeps the input and output width / height constant, if stride = 1 -> P = (F - 1) / 2
@@ -493,10 +503,30 @@ Unroll it as a feedforward net all the way to t=0
 ### Draw / compare RNN to LSTM cell
 
 ### What are the gates in the LSTM for?
+- Forget gate - decides when to erase the cell state
+- Input gate - decides which values will be updated 
+- Output gate - decides which values will be outputted
 
 ### Why does the LSTM work better than the RNN?
+The addition instead of multiplication of new information and the lack of activation functions in the cell state flow create a highway for the gradient to flow -> less vanishing gradients
 
-### Give the LSTM equations
+### Write down the LSTM equations
+cell update g
+
+f_t = sigm(theta_xf x_t + theta_hf h_t-1 + bf)
+i_t = sigm(theta_xi x_t + theta_hi h_t-1 + bi)
+o_t = sigm(theta_xo x_t + theta_ho h_t-1 + bo)
+g_t = tanh(theta_xg x_t + theta_hg h_t-1 + bg)
+
+C_t = f_t * C_t-1 + i_t * g_t
+h_t = o_t * tanh(C_t)
+
+# Appendix
+
+### Why does DL work so much better?
+- Hierarchy of parameterized non-linear processing units are fundamentally better probabilistic model/prior for real-world data
+- Automatic feature extraction and blurring artificial distinction between feature extraction and classification
+- End-to-end learning in homogeneous architecture
 
 
 
