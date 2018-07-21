@@ -260,7 +260,65 @@ Gesucht: DFA, der $L(M_1) \cap L(M_2)$ akzeptiert (beide DFAs)
 ### Aufgabe: Beweise, dass die akzeptierte Sprache gleich $L(M_1) \cap L(M_2)$ ist
 
 ## Pumping Lemma
-Wie zeigt man, dass eine Sprache regulär ist?
+Wie zeigt man, dass eine Sprache nicht regulär ist?
+
+Für jede Reguläre Sprache $R \subseteq \Sigma^*$
+- gibt es ein $n > 0$
+- sodass jedes Wort $z$ mit $|z| \geq n$ 
+- in $z = uvw$ zerlegen lässt, sodass
+  1. $v \neq \epsilon$
+  2. $|uv| \leq n$
+  3. $\forall i \geq 0. uv^iw \in R$
+  
+### Beweis
+Gegeben sei der DFA, der $R$ erkennt
+- setze $n = |Q|$
+
+Für jedes akzeptierte Wort $z$ mit $|z| = m \geq n$ werden $m$ Kanten abgelaufen, also $> n$ Zustände.
+- Da $n = |Q|$ gibt es mindestens einen Zustand, der doppelt abgelaufen wurde
+- Sei $q_0 = p_0 \overset{a_1} \rightarrow p_1 \overset{a_2} \rightarrow p_2 ... \overset{a_m} \rightarrow p_m$
+- Dann gibt es also $0 \leq i < j \leq n$ mit $p_i = p_j$
+
+Unterteile $z$ in:
+- $u = a_1 ... a_i$
+- $v = a_{i+1} ... a_j$ -> Zyklus
+- $w = a_{j+1} ... a_m$
+
+Dann gilt:
+- $|uv| \leq n$, da $v$ der erste Zyklus ist  
+  -> es wurden maximal $|Q| + 1$ Zustände durchlaufen  
+  -> es wurden maximal $|Q| = n$ Kanten durchlaufen
+- $v \neq \epsilon$, da es einen Zyklus geben muss, da bei $m \geq n$ Kanten $> n$ Zustände abgelaufen werden
+- $$\forall i \geq 0. uv^iw \in R$, da $v$ den Zyklus abläuft
+
+### Pumping-Lemma-Zahl für R
+-> n, für das das Pumping-Lemma gilt  
+-> $|Q_M|$ ist immer eine Pumping-Lemma-Zahl für $L(M) = R$
+
+### $a^ib^i$ ist nicht regulär
+Angenommen, es sei regulär
+- dann gibt es eine Pumping-Lemma-zahl $n$
+- Wähle $z = a^nb^n$
+- Zerlege es in $uvw$
+- Es gilt $|uv| \leq n$ -> $u$ und $v$ bestehen nur aus $a$s, da die ersten $n$ Zeichen $a$s sind
+- Damit muss $uv^0w = uw = a^{n-|v|}b^n \in L$ gelten. Da $v \neq \epsilon$, kann das nicht sein
+
+### $a^{m^2} | m \geq 0$ ist nicht regulär
+TODO: Beweis
+
+### Die Sprache der wohlgeklammerten Ausdrücke über $\\{(, ) \\}$ ist nicht regulär
+TODO: Beweis
+
+### Die Sprache der arithemtischen Ausdrücke ist nicht regulär
+Angenommen, es sei doch regulär
+- Dann gibt es einen DFA
+- Ersetze alle Transitionen, die nicht mit ( oder ) beschriftet sind durch $\epsilon$-Transitionen
+- Dadurch ergibt sich ein $\epsilon$-NFA, der die Sprache der wohlgeklammerten Ausdrücke über $\\{(, ) \\}$ erkennt
+- Dadurch ergibt sich ein NFA und dadurch ein DFA, der die Sprache erkennt
+- Dadurch ergibt sich eine rechtslineare Grammatik -> die Sprache der wohlgeklammerten Ausdrücke über $\\{(, ) \\}$ ist regulär
+- Diese Sprache ist aber nicht regulär
+
+## Entscheidungsverfahren
 
 
 
