@@ -161,3 +161,32 @@ $q_f \in \delta(S, a_1 ... a_n)$
 Falls $S \rightarrow \epsilon$: Mach $q_0$ ebenfalls zum Endzustand
 
 ### Von NFA $N$ zu DFA $M$ / Potenzmengenkonstruktion
+Gegeben: $N = (Q, \Sigma, \delta, q_0, F)$
+
+DFA $M$:
+- $\mathcal{P}(Q)$ Zustände
+- $\Sigma = \Sigma$
+- $\delta_M$
+- $\\{q_0 \\}$ Startzustand
+- $F_M = \\{S \subseteq Q | S \cap F \neq \emptyset \\}$
+
+$w \in L(N)$  
+$\iff \hat{\bar \delta}(\\{q_0\\}, w) \cap F \neq \emptyset$  
+$\iff \hat{\delta_M}(\\{q_0\\}, w) \in F_M$  
+$\iff w \in L(M)$  
+
+### Worst Case Potenzmengenkonstruktion
+Gegeben: $L_k = \\{ w \in \\{0,1\\}^* | \text{das k-letzte Bit von w ist 1} \\}$
+
+TODO: Beweis
+
+**-> Jeder DFA $M$ mit $L(M) = L_k$ hat mindestens $2^k$ Zustände**
+
+## NFAs mit $\epsilon$-Übergängen
+-> Für Produktinen der Gestalt $A \rightarrow B$
+
+
+
+
+
+
