@@ -239,4 +239,30 @@ Falls $\gamma = \alpha^*$
 - Verbinde $q_{0 \gamma}$ und alle $F_\alpha$ mit $q_{0 \alpha}$ über $\epsilon$-Übergänge
 
 ### Reguläre Sprache $\Rightarrow$ Es gibt einen regulären Ausdruck
+TODO: Beweis und Komplexität von Konversionen
+
+## Abschlusseigenschaften Regulärer Sprachen
+Falls $A$ und $B$ reguläre Sprachen sind, dann auch
+- $AB$, $A \cup B$ und $A^*$ (können direkt über Regulären Ausdruck dargestellt werden)
+- $\overline{A} = \Sigma^* - A)$ (vertausche die Endzustände des DFAs)
+- $A \cap B$ ($= \overline{\overline{A} \cup \overline{B}}$)
+- $A - B$ ($= A \cup \overline{B}$)
+
+### Produkt-Konstruktion
+Gesucht: DFA, der $L(M_1) \cap L(M_2)$ akzeptiert (beide DFAs)
+- $Q = Q_1 \times Q_2$
+- $\Sigma = \Sigma$
+- $q_0 = (q_{01}, q_{02})$
+- $F = F_1 \times F_2$
+- $\delta((q_1, q_2), a) = (\delta_1(q_1, a), \delta_2(q_2, a))$
+- -> Läuft beide parallel ab
+
+### Aufgabe: Beweise, dass die akzeptierte Sprache gleich $L(M_1) \cap L(M_2)$ ist
+
+## Pumping Lemma
+Wie zeigt man, dass eine Sprache regulär ist?
+
+
+
+
 
