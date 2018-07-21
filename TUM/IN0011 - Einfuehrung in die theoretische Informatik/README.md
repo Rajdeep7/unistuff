@@ -332,7 +332,7 @@ Angenommen, es sei doch regulär
 Einfach einlesen und ausführen
 
 ### Wortproblem in $\mathcal{O}(|Q|^2|w| + |N|)$ entscheidbar für NFA $N$
-- Wort der Reihe nach durchgehen und $S = \bar{\delta}(S, w_i}$ updaten
+- Wort der Reihe nach durchgehen und $S = \bar{\delta}(S, w_i)$ updaten
 - Kucken, ob $S$ irgendwann was von $F$ enthält
 
 ### Leerheitsproblem in $\mathcal{O}(|Q|^2|\Sigma|)$ entscheidbar für NFA $N$
