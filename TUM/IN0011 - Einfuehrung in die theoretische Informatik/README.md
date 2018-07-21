@@ -88,3 +88,58 @@ Problem, welches das Erkennungsproblem für eine gegebene Grammatik löst
 Gegeben ein Wort $w \in \Sigma^*$ und eine Grammatik $G$, ist $w \in L(G)$?
 
 # 3 - Reguläre Sprachen
+## Deterministischer Endlicher Automat 
+DFA $M = (Q, \Sigma, \delta, q_0, F)$
+- $Q$ = Zustände
+- $\Sigma$ = Eingabealphabet
+- $\delta: Q \times \Sigma \rightarrow Q$ = Übergangsfunktion
+- $q_0$ = Startzustand
+- $F \subseteq Q$ = Endzustände
+
+$\hat{\delta}: Q \times \Sigma^* \rightarrow Q$
+- $\hat{\delta}(q, \epsilon) = q$
+- $\hat{\delta}(q, aw) = \hat{\delta}(\delta(q,a), w)$ 
+- $\Rightarrow \hat{\delta}(q, wa) = \delta(\hat{\delta}(q,w), a)$ 
+- -> Zustand, den man von $q$ mit $w$ erreicht
+
+Akzeptierte Sprahce $L(M) = \\{w \in \Sigma^* | \hat{\delta}(q_0, w) \in F \\}$
+
+## Nichtdeterministischer Endlicher Automat 
+NFA $N = (Q, \Sigma, \delta, q_0, F)$
+- $Q$ = Zustände
+- $\Sigma$ = Eingabealphabet
+- $\delta: Q \times \Sigma \rightarrow \mathcal{P}(Q)$ = Übergangsfunktion
+- $q_0$ = Startzustand
+- $F \subseteq Q$ = Endzustände
+
+### Von Zuständen zu Zuständen
+
+$\bar{\delta}(S,a): \mathcal{P}(Q) \times \Sigma \rightarrow \mathcal{P}(Q) = \bigcup_{q \in S} \delta(q, a)$
+
+$\hat{\bar{\delta}}: \mathcal{P}(Q) \times \Sigma^* \rightarrow \mathcal{P}(Q)$
+- $\hat{\bar{\delta}}(S, \epsilon) = S$
+- $\hat{\bar{\delta}}(S, aw) = \hat{\bar{\delta}}(\bar\delta(S,a), w)$ 
+- -> Zustände, die man von irgendeinem $q \in S$ mit $w$ erreicht
+
+Akzeptierte Sprache $L(N) = \\{w \in \Sigma^* | \hat{\bar{\delta}}(\\{q_0\\}, w) \cap F \neq \emptyset\\}$  
+-> NFA rät richtigen Weg der Zustände
+
+## Rechtslineare Grammatik <-> DFA
+
+### Von DFA $M$ zu rechtslinearer $G$
+Gegeben: $M = (Q, \Sigma, \delta, q_0, F)$
+
+Grammatik $G$:
+- $V = Q$
+- $T = \Sigma$
+- $S = q_0$
+- $P$ enthält
+  - $q_1 \rightarrow aq_2$ für $\delta(q_1, a) = q_2$
+  - $q_1 \rightarrow a$ zusätzlich für $\delta(q_1, a) \in F$ -> kann sich entscheiden aufzuhören
+  - $q_0 \rightarrow \epsilon$, falls $q_0 \in F$
+  
+$\hat{\delta}(q_0, a_1 ... a_n) \in F$  
+gdw  
+$q_0 \rightarrow_G a_1 q_2 \rightarrow_G a_1 a_2 q_3 \rightarrow_G ... \rightarrow_G a_1 ... a_n q_n \rightarrow_G a_1 ... a_n$ eine Ableitung von $G$ ist.
+
+### Von rechtslinearer $G$ zur NFA $M$
