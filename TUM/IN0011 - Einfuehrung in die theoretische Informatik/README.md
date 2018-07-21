@@ -69,7 +69,7 @@ $L(G) = \\{w \in \Sigma^* | S \rightarrow_G^* w\\}$
   $|\alpha| \leq |\beta|$ für alle $\alpha \rightarrow \beta$
 - Typ 2: falls zusätzlich jede Bedingung **ein** Nichtterminal ist  
   $\alpha \in V$
-- Typ 3: falls zusätzlich jedes Resultat aus einem Terminal und eventuell noch einem Nichtterminal besteht (außer $S \rightarrow \epsilon$)
+- Typ 3: falls zusätzlich jedes Resultat aus einem Terminal und eventuell noch einem Nichtterminal besteht (außer $S \rightarrow \epsilon$)  
   $\beta \in \Sigma \cup \Sigma V$  
   -> hat immer nur ein Nichtterminal!!!
 
@@ -183,10 +183,60 @@ TODO: Beweis
 **-> Jeder DFA $M$ mit $L(M) = L_k$ hat mindestens $2^k$ Zustände**
 
 ## NFAs mit $\epsilon$-Übergängen
--> Für Produktinen der Gestalt $A \rightarrow B$
+-> Für Produktionen der Gestalt $A \rightarrow B$
 
+$\epsilon$-NFA -> $\delta : Q \times (\Sigma \cup \\{\epsilon \\}) \rightarrow \mathcal{P}(Q)$
 
+### Für jeden $\epsilon$-NFA $N$ gibt es einen NFA $N'$
+- $\delta' : Q \times \Sigma \rightarrow \mathcal{P}(Q)$  
+  $\delta'(q, a) = \bigcup_{i \geq 0, j \geq 0} \hat \delta(\\{ q \\}, \epsilon^i a \epsilon^j)$
+  -> Für jeden Zustand, vereinige alle Zustände, die mit a oder eingefügten $\epsilon$ erreicht werden können
+- Falls $N$ $\epsilon$ akzeptiert, dann setze $F' = F \cup \\{q_0 \\}$, sonst $F' = F$
 
+## Reguläre Ausdrücke
+- $\emptyset$, $\epsilon$ und $a$ für $a \in \Sigma$ sind reguläre Ausdrücke
+- Falls $\alpha$ und $\beta$ reguläre Ausdrücke sind, dann auch $\alpha \beta$, $\alpha | \beta$ und $\alpha^*$
 
+### Definierte Sprache
+- $L(\emptyset) = \emptyset$, $L(\epsilon) = \epsilon$ und $L(a) = a$
+- $L(\alpha \beta) = L(\alpha) L(\beta)$ -> alle Kombinationen konkatenieren
+- $L(\alpha | \beta) = L(\alpha) \cup L(\beta)$
+- $L(\alpha^*) = L(\alpha)^*$ -> $\\{\epsilon\\}$ + alle Wiederholungen 
 
+### Strukturelle Induktion
+Beweis von Eigenschaft $P$ für alle regulären Ausdrücke
+- Beweise $P(\emptyset)$, $P(\epsilon)$ und $P(a)$ für alle $a \in \Sigma$
+- Beweise $P(\alpha) \land P(\beta) \Rightarrow P(\alpha \beta)$
+- Beweise $P(\alpha) \land P(\beta) \Rightarrow P(\alpha | \beta)$
+- Beweise $P(\alpha) \Rightarrow P(\alpha^*)$
+
+## Reguläre Sprache $\iff$ Es gibt einen regulären Ausdruck
+
+### Regulärer Ausdruck $\Rightarrow$ Sprache ist regulär
+Gegeben: regulärer Audruck $\gamma$  
+-> Konstruiere $\epsilon$-NFA $N$ mit $L(N) = L(\gamma)$
+
+Basisfälle:
+- $\gamma = \emptyset$ -> NFA akzeptiert nichts / $F = \emptyset$
+- $\gamma = \epsilon / a$ -> NFA akzeptiert nur $\epsilon / a$
+
+Falls $\gamma = \alpha \beta$
+- Wir haben $N_\alpha$ und $N_\beta$
+- $Q_\gamma = Q_\alpha \cup Q_\beta$ mit $Q_\alpha \cap Q_\beta = \emptyset$
+- Starte mit $N_\alpha$  
+  -> $q_{0 \gamma} = q_{0 \alpha}$
+- Ende mit $N_\beta$
+  -> $F_\gamma = F\beta$
+- Verbinde alle Endzustände von $N_\alpha$ über $\epsilon$-Übergänge mit $q_{0 \beta}$  
+  -> $\delta = \delta_\alpha \cup \delta_\beta \cup \\{(f, \epsilon) \rightarrow \\{q_{0 \beta} \\} | f \in F_\alpha \\}$
+
+Falls $\gamma = \alpha | \beta$
+- Verbinde $q_{0 \gamma}$ über $\epsilon$-Übergänge mit $q_{0 \alpha}$ und $q_{0 \beta}$
+- $F_\gamma = F\alpha \cup F\beta$
+
+Falls $\gamma = \alpha^*$
+- Mache $q_{0 \gamma}$ zum Endzustand, um $\epsilon$ zu akzeptieren
+- Verbinde $q_{0 \gamma}$ und alle $F_\alpha$ mit $q_{0 \alpha}$ über $\epsilon$-Übergänge
+
+### Reguläre Sprache $\Rightarrow$ Es gibt einen regulären Ausdruck
 
