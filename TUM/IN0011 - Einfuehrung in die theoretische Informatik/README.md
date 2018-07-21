@@ -319,8 +319,43 @@ Angenommen, es sei doch regulär
 - Diese Sprache ist aber nicht regulär
 
 ## Entscheidungsverfahren
+- Eingabe: Ein oder mehrere Objekte, die reguläre Sprachen beschreiben (DFA, NFA, RE, Typ 3 etc.)
+- Frage: Haben diese Objekte eine bestimmte Eigeschaft?
 
+### Probleme mit $D$ gegeben:
+- Wortproblem $w \in L(D)$?
+- Leerheitsproblem $L(D) = \emptyset$?
+- Endlichkeitsproblem $L(D)$ endlich?
+- Äquivalenzproblem $L(D_1) = L(D_2)$?
 
+### Wortproblem in $\mathcal{O}(|w| + |M|)$ entscheidbar für DFA $M$
+Einfach einlesen und ausführen
 
+### Wortproblem in $\mathcal{O}(|Q|^2|w| + |N|)$ entscheidbar für NFA $N$
+- Wort der Reihe nach durchgehen und $S = \bar{\delta}(S, w_i}$ updaten
+- Kucken, ob $S$ irgendwann was von $F$ enthält
 
+### Leerheitsproblem in $\mathcal{O}(|Q|^2|\Sigma|)$ entscheidbar für NFA $N$
+- Kucken, ob $q_0$ einen Endzustand erreichen kann
+- Einfache Breitensuche
+- NFA hat $\leq |Q|^2|\Sigma|$ Kanten, DFA hat $\leq |Q||\Sigma|$ Kanten
+
+### Endlichkeitsproblem ist für NFAs / DFAs entscheidbar
+- Kucken, ob von $q_0$ aus eine nicht-leere Schleife erreichbar ist, von der aus $F$ erreichbar ist
+
+### Äquivalenzproblem ist für DFAs entscheidbar
+- Komplement und Durchschnitt kann mit endlichen Automaten berechnet werden
+- $L_1 \subseteq L_2 \iff L_1 \cap \overline L_2 = \emptyset$
+- $L_1 = L_2 \iff L_1 \subseteq L_2 \land L_2 \subseteq L_1$
+
+### $\Rightarrow$ Äquivalenzproblem ist für Reguläre Ausdrücke entscheidbar
+
+### Äquivalenzproblem ist für DFAs in Zeit $\mathcal{O}(|Q_1||Q_2||\Sigma|)$ entscheidbar
+Leerheitsproblem überprüfen für:
+- $L(M_1) \cap \overline{L(M_2)}$
+- $L(M_2) \cap \overline{L(M_1)}$
+- Jeweils $|Q_1||Q_2|$ Zustände -> jeweils Laufzeit von $\mathcal{O}(|Q_1||Q_2||\Sigma|)$
+
+### Äquivalenzproblem ist für NFAs in Zeit $\mathcal{O}(2^{|Q_1|+|Q_2|})$ entscheidbar, bei fixem $\Sigma$
+2 NFAs mit $m$ und $n$ Zuständen ergeben 2 DFAs mit $\mathcal{O}(2^{|m|} 2^{|n|})$ Zuständen
 
