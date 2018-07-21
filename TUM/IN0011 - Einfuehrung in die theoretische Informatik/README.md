@@ -70,7 +70,8 @@ $L(G) = \\{w \in \Sigma^* | S \rightarrow_G^* w\\}$
 - Typ 2: falls zusätzlich jede Bedingung **ein** Nichtterminal ist  
   $\alpha \in V$
 - Typ 3: falls zusätzlich jedes Resultat aus einem Terminal und eventuell noch einem Nichtterminal besteht (außer $S \rightarrow \epsilon$)
-  $\beta \in \Sigma \cup \Sigma V$
+  $\beta \in \Sigma \cup \Sigma V$  
+  -> hat immer nur ein Nichtterminal!!!
 
 Namen:
 - Typ 0: Phrasenstrukturgrammatik / Rekursiv-aufzählbare Sprache
@@ -143,3 +144,20 @@ gdw
 $q_0 \rightarrow_G a_1 q_2 \rightarrow_G a_1 a_2 q_3 \rightarrow_G ... \rightarrow_G a_1 ... a_n q_n \rightarrow_G a_1 ... a_n$ eine Ableitung von $G$ ist.
 
 ### Von rechtslinearer $G$ zur NFA $M$
+Gegeben: $G = (V, \Sigma, P, S)$
+
+NFA $M$:
+- $Q = V \cap \\{q_f\\}$ (mit $q_f \not \in V$ of course)
+- $\Sigma = \Sigma$
+- $q_0 = S$
+- Für jede Produktion $X \rightarrow a Y$: $Y \in \delta(X, a)$
+- Für jede Produktion $X \rightarrow a$: $q_f \in \delta(X, a)$
+- $F = \\{q_f\\}$
+
+$S \rightarrow_G a_1 X_1 \rightarrow_G a_1 a_2 X_2 \rightarrow_G ... \rightarrow_G a_1 ... a_{n-1} X_{n-1} \rightarrow_G a_1 ... a_n$ ist eine Ableitung von $G$  
+gdw  
+$q_f \in \delta(S, a_1 ... a_n)$
+
+Falls $S \rightarrow \epsilon$: Mach $q_0$ ebenfalls zum Endzustand
+
+### Von NFA $N$ zu DFA $M$ / Potenzmengenkonstruktion
