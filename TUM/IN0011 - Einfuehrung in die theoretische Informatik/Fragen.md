@@ -1,4 +1,4 @@
-# Grundbegriffe
+# 2 - Grundbegriffe
 
 ### Definiere Alphabet
 Endliche Menge, die die Zeichen enthält, aus denen Wörter gebildet werden.
@@ -69,6 +69,63 @@ G ist vom Typ
 
 ### Was ist das Wortproblem?
 Gegeben eine Grammatik G und ein Wort w, gilt $w \in L(G)$
+
+# 3 - Reguläre Sprachen
+
+## 3.1 - DFAs
+
+### Definiere einen DFA
+DFA M = $(Q, \Sigma, \delta, q_0, F)$
+- $Q$ = endliche Menge von Zuständen
+- $\Sigma$ = Eingabealphabet
+- $\delta : Q \times \Sigma \rightarrow Q$ = Übergangsfunktion
+- $q_0 \in Q$ = Startzustand
+- $F \subseteq Q$ = Menge an Endzuständen
+
+### Definiere die akzeptierte Sprache eines DFAs
+$\hat \delta : Q \times \Sigma^* \rightarrow Q$ definiert als:
+- $\hat \delta (q, \epsilon) = q$
+- $\hat \delta (q, aw) = \hat \delta(\delta(q, a), w)$ für $a \in \Sigma, w \in \Sigma^*$
+
+$L(M) = \\{w \in \Sigma^* | \hat \delta (q_0, w) \in F \\}$
+
+### Zeige, dass es für jeden DFA $M$ eine rechtslineare Grammatik $G$ mit $L(G) = L(M)$ gibt
+$M = (Q, \Sigma, \delta, q_0, F)$
+- $G = (V, T, P, S)$
+- $V = Q, T = \Sigma, S = q_0$
+- $(q_1 \rightarrow a q_2) \in P \iff \delta(q_1, a) = q_2$
+- $(q_1 \rightarrow a) \in P \iff \delta(q_1, a) \in F$
+- $(q_0 \rightarrow \epsilon) \in P \iff q_0 \in F$
+
+Daraus folgt:
+- $\hat{\delta}(q_0, a_1 ... a_n) \in F$  
+- gdw  
+- $q_0 \rightarrow_G a_1 q_2 \rightarrow_G a_1 a_2 q_3 \rightarrow_G ... \rightarrow_G a_1 ... a_n q_n \rightarrow_G a_1 ... a_n$ eine Ableitung von $G$ ist.
+- $\Rightarrow L(G) = L(M)$
+
+### Definiere einen NFA
+DFA N = $(Q, \Sigma, \delta, q_0, F)$
+- $Q$ = endliche Menge von Zuständen
+- $\Sigma$ = Eingabealphabet
+- $\delta : Q \times \Sigma \rightarrow \mathcal{P}(Q)$ = Übergangsfunktion
+- $q_0 \in Q$ = Startzustand
+- $F \subseteq Q$ = Menge an Endzuständen
+
+### Definiere die akzeptierte Sprache eines NFAs
+
+### Zeige, dass es für jede rechtslineare Grammatik $G$ einen NFA $N$ mit $L(G) = L(M)$ gibt
+
+### Zeige, dass es für jeden NFA $N$ einen DFA $M$ mit $L(G) = L(M)$ gibt
+
+### Definiere einen $\epsilon$-NFA
+
+
+
+
+
+
+
+
 
 
 
