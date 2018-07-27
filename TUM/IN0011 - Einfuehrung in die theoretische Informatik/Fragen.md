@@ -119,6 +119,59 @@ DFA N = $(Q, \Sigma, \delta, q_0, F)$
 
 ### Definiere einen $\epsilon$-NFA
 
+### Zeige, dass es für jeden $\epsilon$-NFA $N$ einen NFA $N'$ mit $L(N) = L(N')$ gibt
+
+## 3.5 Reguläre Ausdrücke
+
+### Definiere Reguläre Ausdrücke 
+
+### Definiere die Sprache von Regulären Ausdrücken
+
+### Definiere strukturelle Induktion auf regulären Ausdrücken
+
+### Beweise, dass eine Sprache L genau dann durch einen regulären Ausdruck darstellbar ist, wenn sie regulär ist
+
+### Gib Laufzeiten für die Konversion zwischen DFA, NFA, epsilon-NFA, und REs an
+
+### Beweise, dass wenn R, R1 und R2 reguläre Sprachen sind, dann auch R1R2, R1 u R2, R*, $\bar{R}$, $R_1 \cap R_2$ und R1 \ R2
+
+### Definiere den Produktautomaten und beweise, dass er den Durchschnitt von zwei Sprachen bildet
+
+### Gibt Rechenregeln für REs $\alpha, \epsilon, \emptyset$ an
+
+### Definiere Assoziativität, Kommutativität, Distributivität und Idempotenz bei REs
+
+### Gib drei Sternrechenregeln für REs
+
+### Was ist der Satz von Redko?
+
+### Definiere das Pumping Lemma und Pumping Lemma Zahlen
+
+### Beweise das Pumping Lemma
+
+### Beweise, dass L = {a^i b^i | i in N} nicht regulär ist
+
+### Was ist ein Entscheidungsproblem? Wann ist es entscheidbar? Erkläre 4 Probleme
+
+### Zeige, in welcher Zeit das Wortproblem für NFAs entscheidbar ist
+
+### Zeige, in welcher Zeit das Leerheitsproblem für DFAs / NFAs entscheidbar ist
+
+### Zeige, dass das Endlichkeitsproblem für DFAs und NFAs entscheidbar ist
+
+### Zeige, in welcher Zeit das Äquivalenzproblem für DFAs entscheidbar ist 
+
+### Zeige, in welcher Zeit das Äquivalenzproblem für NFAs entscheidbar ist bei fixem Sigma
+
+### Was ist Ardens Lemma?
+
+### Wie wandelt man einen FA in einen äquivalenten regulären Ausdruck um?
+
+### Gib den Algorithmus zur Minimierung eines DFA
+
+### Wann sind Zustände unterscheidbar?
+
+### Wann sind Zustände äquivalent?
 
 
 
