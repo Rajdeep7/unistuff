@@ -173,6 +173,61 @@ DFA N = $(Q, \Sigma, \delta, q_0, F)$
 
 ### Wann sind Zustände äquivalent?
 
+### Gib den schematischen O(n^4) Algorithmus zur Berechnung äquivalenter Zustände eines DFA
+
+### Gib den implementierten O(n^4) Algorithmus zur Berechnung äquivalenter Zustände eines DFA
+
+### Gib den O(n^2) Algorithmus zur Berechnung äquivalenter Zustände eines DFA
+
+### Wie ist eine Äquivalenzrelation definiert?
+
+### Wie ist eine Quotientenmenge definiert?
+
+### Definiere den Quotientenautomat
+
+### Definiere die Äquivalenzrelation einer Sprache L 
+
+### Beweise, dass wenn M ein DFA ohne unerreichbare Zustände ist, der M /= ein minimaler DFA für L(M) ist
+
+### Definiere den kanonischen Minimalautomat
+
+### Beweise die Myhill-Nerode Bedingung
+
+### Wie zeigt man Nichtregularität über die Myhill-Nerode Bedingung?
+
+# 4 - Kontextfreie Sprachen
+
+### Definiere eine Kontextfreie Grammatik
+
+### Wann ist eine CFG rechts- bzw. linkslinear?
+
+### Gib die induktive Definition der Grammatik S -> eps | [S] | SS an
+
+### Gib das Induktionsprinzip für die Grammatik S -> eps | [S] | SS an
+
+### Wie beweist man, dass eine CFG *genau* eine Sprache mit Eigenschaft P für jedes w erzeugt?
+1. w in L_G(S) => P(w) beweisen mit Induktion über die Erzeugung von w
+2. P(w) => w in L_G(S) beweisen mit Induktion über |w|, oft tricky
+
+### Gib die Induktive Definition einer beliebigen CFG an
+
+### Gib die Induktive Definition von A -> eps | aB und B -> Aa
+
+### Definiere eine mehrdeutige CFG / inhärent mehrdeutige CFL
+
+### Definiere die Chomsky Normalform
+
+### Beweise, dass man zu jeder CFG G eine CFG G' konstruieren kann, die keine eps-Produktionen enthält mit L(G') = L(G) \ {eps}
+
+### Beweise, dass man zu jeder CFG G eine CFG G' konstruieren kann, die keine Kettenproduktionen enthält, sodass L(G') = L(G)
+
+### Gib das Vorgehen zur Konstruktion einer Chomsky NF an
+
+### Definiere die Greibach Normalform für eine CFG
+
+### Gib das Pumping-Lemma für CFGs
+
+### Beweise das Pumping-Lemma für CFGs
 
 
 
