@@ -229,6 +229,34 @@ DFA N = $(Q, \Sigma, \delta, q_0, F)$
 
 ### Beweise das Pumping-Lemma für CFGs
 
+### Zeige, dass die Sprache L = {a^i b^i  c^i | i in N} nicht kontextfrei ist
+
+### Definiere nützlich, erzeugend und erreichbar
+
+### Wie kann man machen, dass eine Grammatik nur noch nützliche Symbole enthält mit L(G') = L(G)?
+
+### Beweise, dass die Menge aller erzeugenden Symbole einer CFG berechenbar ist
+
+### Beweise, dass für eine CFG G "L(G) = emptyset?" entscheidbar ist
+
+### Beweise, dass die Menge der erreichbaren Symbole einer CFG berechenbar ist
+
+### Beweise, dass das Wortproblem für eine CFG G entscheidbar ist
+
+### Definiere den CYK Algorithmus. Was ist seine Laufzeit?
+
+### Wie kann der CYK Algorithmus erweitert werden, dass er auch die Menge der Syntaxbäume für die Eingabe berechnet?
+
+### Welche Probleme sind für CFGs nicht entscheidbar?
+
+### Beweise die Abschlusseigenschaften von CFGs
+
+### Beweise, unter welchen operationen CFGs nicht abgeschlossen sind
+
+## Kellerautomaten
+
+###
+
 
 
 
