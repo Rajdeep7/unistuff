@@ -137,8 +137,6 @@
 ### Gib das Induktionsprinzip für die Grammatik S -> eps | [S] | SS an
 
 ### Wie beweist man, dass eine CFG *genau* eine Sprache mit Eigenschaft P für jedes w erzeugt?
-1. w in L_G(S) => P(w) beweisen mit Induktion über die Erzeugung von w
-2. P(w) => w in L_G(S) beweisen mit Induktion über |w|, oft tricky
 
 ### Gib die Induktive Definition einer beliebigen CFG an
 
