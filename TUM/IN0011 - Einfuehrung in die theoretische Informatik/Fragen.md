@@ -184,7 +184,47 @@
 
 ## Kellerautomaten
 
-###
+### Definiere einen Kellerautomaten
+
+### Definiere POP, PUSH und eps-Übergang für einen PDA
+
+### Gib die Konfiguration und Anfangskonfiguration eines PDA M
+
+### Definiere ->M für einen PDA
+
+### Definiere die Sprache eines PDA
+
+### Wie kann man M und M's konstruieren mit L_F(M) = L_eps(M')?
+
+### Wie bringt man eine CFG in die Form A -> b B1 ... Bk mit b in Sigma u {eps}?
+
+### Wie bringt man eine CFG in einen PDA?
+
+### Wie bringt man einen Leerer-Keller-Akzeptanz-PDA in eine CFG?
+
+### Definiere einen deterministischen Kellerautomaten
+
+### Definiere eine deterministische CFL
+
+### Gib einen tabellarischen Überblick der Abschlusseigenschaften
+
+### Gib einen tabellarischen Überblick der Entscheidbarkeit
+
+# 5 - Berechenbarkeit, Entscheidbarkeit
+
+### Definiere berechenbar
+
+### Was ist total, partiell und echt partiell?
+
+### Definiere eine abzählbare Menge M
+
+### Definiere eine überabzählbare Menge M
+
+### Gibt es nicht berechenbare Funktionen?
+
+### Definiere eine TM
+
+
 
 
 
