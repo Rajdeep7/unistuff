@@ -359,3 +359,41 @@ Leerheitsproblem überprüfen für:
 ### Äquivalenzproblem ist für NFAs in Zeit $\mathcal{O}(2^{|Q_1|+|Q_2|})$ entscheidbar, bei fixem $\Sigma$
 2 NFAs mit $m$ und $n$ Zuständen ergeben 2 DFAs mit $\mathcal{O}(2^{|m|} 2^{|n|})$ Zuständen
 
+## Rechenregeln für reguläre Ausdrücke
+- $\emptyset | \alpha \equiv \alpha | \emptyset \equiv \alpha$
+- $\emptyset \alpha \equiv \alpha \emptyset \equiv \emptyset$
+- $\epsilon \alpha \equiv \alpha \epsilon \equiv \alpha$
+- $\emptyset^* \equiv \epsilon$
+- $\epsilon^* \equiv \epsilon$
+
+Assoziativität:
+- $(\alpha | \beta) | \gamma \equiv \alpha | (\beta | \gamma)$
+- $(\alpha \beta) \gamma \equiv \alpha (\beta \gamma)$
+
+Kommutativität:
+$\alpha | \beta \equiv \beta | \alpha$
+
+Distributivität:
+- $\alpha(\beta | gamma) \equiv \alpha \beta | \alpha \gamma$
+- $(\beta | gamma) \alpha \equiv \beta \alpha | \gamma \alpha$
+
+Stern Lemma:
+- $\epsilon | \alpha \alpha^* \equiv  \alpha^*$
+- $\alpha^* \alpha \equiv \alpha \alpha^*$
+- $(\alpha^*)^* \equiv \alpha^*$
+
+### Satz von Redko
+Es gibt keine endliche Menge von gültigen Äquivalenzen aus denen sich alle gültigen Äquivalenzen herleiten lassen!
+
+## Automaten und Gleichungssyteme
+
+### Ardens Lemma
+Sind $A, B$ und $X$ Sprachen mit $\epsilon \not \in A$, so gilt  
+$X = AX \cup B \Rightarrow X = A^*B$
+
+($\epsilon \not \in A$ muss gelten, da $X = \\{\epsilon \\} X \cup B$ keine eindeutige Lösung hat. Jede Sprache $X \supseteq B$ ist Lösung)
+
+## Minimierung endlicher Automaten
+
+
+
