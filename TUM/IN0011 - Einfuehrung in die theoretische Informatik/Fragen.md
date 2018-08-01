@@ -42,7 +42,7 @@
 
 ### Definiere einen NFA
 
-### Definiere die akzeptierte Sprache eines NFAs
+### # Definiere die akzeptierte Sprache eines NFAs
 
 ### Zeige, dass es für jede rechtslineare Grammatik $G$ einen NFA $N$ mit $L(G) = L(M)$ gibt
 
@@ -50,7 +50,7 @@
 
 ### Definiere einen $\epsilon$-NFA
 
-### Zeige, dass es für jeden $\epsilon$-NFA $N$ einen NFA $N'$ mit $L(N) = L(N')$ gibt
+### # Zeige, dass es für jeden $\epsilon$-NFA $N$ einen NFA $N'$ mit $L(N) = L(N')$ gibt
 
 ## 3.5 Reguläre Ausdrücke
 
@@ -72,7 +72,7 @@
 
 ### Definiere Assoziativität, Kommutativität, Distributivität und Idempotenz bei REs
 
-### Gib drei Sternrechenregeln für REs
+### # Gib drei Sternrechenregeln für REs
 
 ### Was ist der Satz von Redko?
 
@@ -84,7 +84,7 @@
 
 ### Was ist ein Entscheidungsproblem? Wann ist es entscheidbar? Erkläre 4 Probleme
 
-### Zeige, in welcher Zeit das Wortproblem für NFAs entscheidbar ist
+### # Zeige, in welcher Zeit das Wortproblem für NFAs entscheidbar ist
 
 ### Zeige, in welcher Zeit das Leerheitsproblem für DFAs / NFAs entscheidbar ist
 
@@ -94,9 +94,9 @@
 
 ### Zeige, in welcher Zeit das Äquivalenzproblem für NFAs entscheidbar ist bei fixem Sigma
 
-### Was ist Ardens Lemma?
+### # Was ist Ardens Lemma?
 
-### Wie wandelt man einen FA in einen äquivalenten regulären Ausdruck um?
+### # Wie wandelt man einen FA in einen äquivalenten regulären Ausdruck um?
 
 ### Gib den Algorithmus zur Minimierung eines DFA
 
@@ -114,23 +114,23 @@
 
 ### Wie ist eine Quotientenmenge definiert?
 
-### Definiere den Quotientenautomat
+### # Definiere den Quotientenautomat
 
 ### Definiere die Äquivalenzrelation einer Sprache L 
 
-### Beweise, dass wenn M ein DFA ohne unerreichbare Zustände ist, der M /= ein minimaler DFA für L(M) ist
+### # Beweise, dass wenn M ein DFA ohne unerreichbare Zustände ist, der M /= ein minimaler DFA für L(M) ist
 
 ### Definiere den kanonischen Minimalautomat
 
 ### Beweise die Myhill-Nerode Bedingung
 
-### Wie zeigt man Nichtregularität über die Myhill-Nerode Bedingung?
+### # Wie zeigt man Nichtregularität über die Myhill-Nerode Bedingung?
 
 # 4 - Kontextfreie Sprachen
 
 ### Definiere eine Kontextfreie Grammatik
 
-### Wann ist eine CFG rechts- bzw. linkslinear?
+### # Wann ist eine CFG rechts- bzw. linkslinear?
 
 ### Gib die induktive Definition der Grammatik S -> eps | [S] | SS an
 
@@ -166,21 +166,21 @@
 
 ### Beweise, dass die Menge aller erzeugenden Symbole einer CFG berechenbar ist
 
-### Beweise, dass für eine CFG G "L(G) = emptyset?" entscheidbar ist
+### # Beweise, dass für eine CFG G "L(G) = emptyset?" entscheidbar ist
 
 ### Beweise, dass die Menge der erreichbaren Symbole einer CFG berechenbar ist
 
 ### Beweise, dass das Wortproblem für eine CFG G entscheidbar ist
 
-### Definiere den CYK Algorithmus. Was ist seine Laufzeit?
+### # Definiere den CYK Algorithmus. Was ist seine Laufzeit?
 
 ### Wie kann der CYK Algorithmus erweitert werden, dass er auch die Menge der Syntaxbäume für die Eingabe berechnet?
 
-### Welche Probleme sind für CFGs nicht entscheidbar?
+### # Welche Probleme sind für CFGs nicht entscheidbar?
 
-### Beweise die Abschlusseigenschaften von CFGs
+### # Beweise die Abschlusseigenschaften von CFGs
 
-### Beweise, unter welchen operationen CFGs nicht abgeschlossen sind
+### # Beweise, unter welchen operationen CFGs nicht abgeschlossen sind
 
 ## Kellerautomaten
 
@@ -224,8 +224,69 @@
 
 ### Definiere eine TM
 
+### Was ist die Konfiguration und Startkonfiguration einer TM?
 
+### Zeige, dass wenn Algorithmen als Wörter kodiert werden können, dann gibt es unberechenbare Funktionen N -> {0,1}
 
+### Was ist die graphische Notation für delta(p, a) -> (q, b, d)?
+
+### Definiere die Sprache einer TM
+
+### Definiere eine Turing-berechenbare Funktion
+
+### Wann hält eine TM?
+
+### Definiere die sequentielle Komposition von M_1 und M_2
+
+### Definiere WHILE-berechenbar
+
+### Gib die Syntax-Bausteine von WHILE-Programmen
+
+### Definiere entscheidbar
+
+### Gib eine Band=0? TM an
+
+### Beweise, dass das spezielle Halteproblem nicht entscheidbar ist
+
+### Beweise, dass das allgemeine Halteproblem nicht entscheidbar ist
+
+### Definiere reduzierbar
+
+### Zeige, dass falls A <= B und B ist entscheidbar, dann ist auch A entscheidbar
+
+### Wie zeigt man die Unentscheidbarkeit eines Problems?
+
+### Definiere semi-entscheidbar
+
+### Definiere rekursiv aufzählbar
+
+### Gib die äquivalente Aussagen zu Semi-Entscheidbarkeit
+
+### Zeige, dass K semi-entscheidbar ist
+
+### Gib den Satz von Rice
+
+### Zeige, dass es unentscheidbar ist, ob ein Programm für mindestens eine Eingabe hält
+
+### Gib den Satz von Rice-Shapiro
+
+### Gib die drei wichtigsten Terminationserkenntnisse
+
+### Was ist das PCP?
+
+### Definiere P
+
+### Definiere NP
+
+### Definiere einen polynomiell beschränkten Verifikator
+
+### Definiere polynomiell reduzierbar
+
+### Definiere SAT
+
+### Definiere 3KNF-SAT
+
+### Wie zeigt man NP-Vollständigkeit?
 
 
 
