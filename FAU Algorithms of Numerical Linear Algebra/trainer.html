@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html>
+	<title>ANLA Trainer</title>
+	<head>
+		<style>
+			.answer {
+				margin-top: 8px;
+				margin-bottom: 16px;
+				color: #888;
+			}
+		</style>
+		<script type="text/x-mathjax-config">
+			MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+		</script>
+		<script type="text/javascript" async
+		src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+	</head>
+	<body>
+
+		<h1>ANLA Trainer</h1>
+
+		<p>When I studied for my ANLA exam, there were no exam protocols, on which I could test my knowledge. So I created my own set of questions - the ANLA trainer for the subject "Algorithms for Numerical Linear Algebra". Please consider that this document is in no way an official document by the chair. It was made by me, a student. Thus, I do not claim correctness or completeness of the following questions and answers.</p>
+
+		<p>The structure of the lecture strongly followed the book "Numerical Linear Algebra" by Trefethen and Bau.</p>
+
+		<h3>Lecture 1 - Matrix-Vector Multiplication</h3>
+		<ol>
+			<li>
+				<div class="question">
+					Why is the rank of the outer product of two vectors $u$ and $v$ equal to 1?
+				</div>
+				<div class="answer">
+					Because each column of $u \cdot v^*$ is a multiple of $u \implies$ all columns are linearly dependent $\implies$ column space is $\{a \cdot u | a \in C\}$ with dimension 1.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given a matrix $A$ and a vector $v$. How can you compute the coefficients of the expansion of $v$ in the column space of $A$?
+				</div>
+				<div class="answer">
+					The coordinates are given by $A^{-1}v$, if A is invertible. If A is not invertible, the problem is underdetermined and can be solved by setting the coordinates
+					of columns to zero that can be expressed as a linear combination of other columns of A.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					"The inverse of nonsingular upper-triangular matrix also upper-triangular." If this is correct, proof it, if not give a counter example.
+				</div>
+				<div class="answer">
+					It is correct. Let A be the non-singular upper-triangular matrix. Remember that each column of $A \cdot B$ is a weighted sum of the columns of $A$.
+					The weights for the $i$-th column of $A \cdot B$ are given by the entries of the $i$-th column of $B$, namely $b_{1,i}$ to $b_{m,i}$. If we now want to
+					produce the i-th column of $I$, the unit vector $e_i$, we have to produce a one in the $i$-th entry and zeros otherwise. All columns $a_{i+1} ... a_{m}$
+					may have non-zero entries in their $(i+1)$-th entry. This means, we may not use them to produce $e_i$, because they would introduce non-zero values in the $(i+1)$-th entry.
+					Thus, their weight in $b_i$ should be zero which means that for $j > i: b_{ij} = 0$, making $B$ upper-triangular as well.
+				</div>
+			</li>
+		</ol>
+
+		<h3>Lecture 2 - Orthogonal Vectors and Matrices</h3>
+		<ol>
+			<li>
+				<div class="question">
+					How are hermitian matrices defined?
+				</div>
+				<div class="answer">
+					Let $A^*$ be the <a href="https://en.wikipedia.org/wiki/Hermitian_adjoint">hermitian conjugate</a> of a matrix $A \in \mathbb{C}^{m \times m}$. If A is a hermitian matrix, then
+					$A = A^*$. If $A$ is a real hermitian matrix, it is symmetric and $A = A^T$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given a vector $v \in \mathbb{C}^m$ and an orthonormal set $\{q_1,...,q_n\}$ with $m > n$. How can you decompose $v$ into $n+1$ orthogonal components?
+				</div>
+				<div class="answer">
+					Project $v$ onto each $q_i$ by $q_i^* v$. This gives us the length of $v$ in this direction and $n$ orthogonal vectors $(q_i^* v)*q_i$. As $m > n$, it may
+					occur that the $n$ components will not suffice to decompose $v$. So we get a remainder
+					$$r = v - (q_1^* v)\cdot q_1 - ... - (q_n^* v)\cdot q_n .$$
+					This remainder will be orthogonal to each  $q_i \in \{q_1,...,q_n\}$, which can be shown by calculating $q_i^*r$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					How are unitary matrices defined?
+				</div>
+				<div class="answer">
+					A unitary matrix $Q \in \mathbb{C}^{m \times m}$ is a matrix, whose inverse is also its hermitian conjugate. This means that $Q^* = Q^{-1}$ and $Q^*Q = I$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Why is the length of a vector $v$, measured with the $L_2$ norm, preserved when multiplying it by a unitary matrix $Q$?
+				</div>
+				<div class="answer">
+					Multiplication with a unitary matrix preserves inner products: $(Qx)^*(Qy) = x^* Q^*Qy = x^*y$
+					<br />
+					Thus, $||Qx||_2 = \sqrt{(Qx)^*(Qx)} = \sqrt{x^*x} = ||x||_2$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What property do eigenvalues of a unitary matrix have?
+				</div>
+				<div class="answer">
+					An eigenvalue of a matrix is the value by which the corresponding eigenvector is scaled when multiplied with the matrix. So, in our case, we have a unitary matrix
+					$Q \in \mathbb{C}^{m \times m}$. Multiplication with a unitary matrix may change the vector, but it will not change its length: $||Qx|| = ||x||$. Thus, the eigenvalues
+					of a unitary matrix have an absolute value of 1.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What geometric effect can the multiplication with a unitary matrix have on the vectors in a matrix?
+				</div>
+				<div class="answer">
+					As multiplication with a unitary matrix preserves inner products, it preserves the lenghts of the vectors and the angles between
+					them as well. Therefore, the multiplication can only resemble a rotation and/or a reflection of the matrix.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What can be said about the determinant of a unitary matrix $Q$?
+				</div>
+				<div class="answer">
+					$I = QQ^T$. $det(I) = 1$ and $det(A^*) = det(A)^*$ for any matrix $A$. Therefore, $|det(Q)| = 1$ must follow.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given a matrix $A \in \mathbb{C}^{m\times n}$ with $m > n$. Show that $A^*A$ is nonsingular if and only if $A$ is nonsingular.
+				</div>
+				<div class="answer">
+					$det(A^*A) = det(A^*)det(A) = det(A)^2 > 0$.
+				</div>
+			</li>
+		</ol>
+		<h3>Lecture 3 - Norms</h3>
+		<ol>
+			<li>
+				<div class="question">
+					What three conditions must hold for a vector norm?
+				</div>
+				<div class="answer">
+					<ol>
+						<li>
+							The length of a vector is positive except for the zero vector.
+						</li>
+						<li>
+							The length of the sum of two arbitrary vectors $a$ and $b$, $||a+b||$, cannot exceed $||a||+||b||$.
+						</li>
+						<li>
+							The length of a scaled vector should scale accordingly: $||\alpha x||=|\alpha |||x||$.
+						</li>
+					</ol>
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Draw the unit circles of the 1-, 2- and $\infty$-norm.
+				</div>
+				<div class="answer">
+					1-norm: a diamond, 2-norm: a circle, $\infty$-norm: a square.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What are weighted $p$-norms?
+				</div>
+				<div class="answer">
+					Weighted $p$-norms consist of two parts: a matrix $W$, which scales each entry of a vector before it is measured, and the $p$-norm itself.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What are induced matrix norms?
+				</div>
+				<div class="answer">
+					An induced matrix norm is a way of measuring the impact of a matrix $A \in \mathbb{C}^{m \times n}$ as an operator. We measure two times: before and after a vector $x \in \mathbb{C}^{n}$
+					is multiplied with A. So, we need two norms: $|\cdot |_{(n)}$ for measuring $|x|_{(n)}$ and $|\cdot |_{(m)}$ for measuring $|Ax|_{(m)}$. The induced norm $|\cdot |_{(m,n)}$ measures
+					the supremum of the scaling factors caused by the multiplication with $A$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					How can you quickly calculate the 1-norm and the $\infty$-norm of a matrix?
+				</div>
+				<div class="answer">
+					The 1-norm is the "maximum column sum" and the $\infty$-norm is the "maximum row sum". In both sums, we take the absolute value of an entry before adding it to the sum.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What does the Cauchy-Schwarz inequality state?
+				</div>
+				<div class="answer">
+					The Cauchy-Schwarz inequality gives a bound for the inner product of two vectors $x$ and $y$:
+					$$|x^*y|\le ||x||_2||y||_2$$
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Let $A$ be a outer product of two vectors $u$ and $v$, $A = uv^*$. Give a bound for $||A||_2$.
+				</div>
+				<div class="answer">
+					$||A||_2 \le ||u||_2 ||v||_2$, because
+					$$||Ax||_2 = ||uv^*x||_2 = ||u||_2 \cdot |v^*x| \le ||u||_2 ||v||_2 ||x||_2$$
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Give a bound for $||AB||_F^2$.
+				</div>
+				<div class="answer">
+					We can use the Cauchy-Schwarz inequality.
+					Let $a^*_i$ be the $i$-th row of $A$ and $b_j$ be the $j$-th row of $B$.
+					$$
+					||AB||_F^2 = \sum_{i=1}^{n}{\sum_{j=1}^{m}{|a^*_i b_j|^2}} \le \sum_{i=1}^{n}{\sum_{j=1}^{m}{(||a^*_i||_2||b_j||_2)^2}} = \sum_{i=1}^{n}{||a_i||_2^2}\sum_{j=1}^{m}{||b_j||_2^2}
+					= ||A||_F^2||B||_F^2
+					$$
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given are two matrices $A \in \mathbb{C}^{m \times n}$ and $Q \in \mathbb{C}^{m \times m}$. Show that if $Q$ is unitary, then $||QA||_2=||A||_2$.
+				</div>
+				<div class="answer">
+					Unitary matrices preserve the length of a vector $x$: $||Qx||_2 = ||x||_2$. Thus, it will also preserve the length of $Ax$ when being multiplied with it. Therefore, the multiplication
+					with $Q$ will not change the supremum of all scaling factors caused by multiplying $x$ with $A$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given are the norms $||\cdot ||_{(l)}, ||\cdot ||_{(m)}, ||\cdot ||_{(n)}$ on $\mathbb{C}^l, \mathbb{C}^m, \mathbb{C}^n$ respectively and two matrices $A \in \mathbb{C}^{l \times m}$ and $A \in \mathbb{C}^{l \times m}$. Give a bound for $||AB||_{(l,n)}$.
+				</div>
+				<div class="answer">
+					$||AB||_{(l,n)} \le ||A||_{(l,m)} ||B||_{(m,n)}$
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given is square symmetrical matrix $A \in \mathbb{C}^{m \times m}$. Give a bound for $||A^{-1}||$.
+				</div>
+				<div class="answer">
+					$1 = ||I|| = ||AA^{-1}|| \le ||A|| ||A^{-1}||$
+					<br />Therefore, $||A^{-1}|| \ge ||A||^{-1}$.
+				</div>
+			</li>
+
+		</ol>
+		<h3>Lecture 4 - The Singular Value Decomposition</h3>
+		<ol>
+			<li>
+				<div class="question">
+					What is the difference between the reduced SVD and the full SVD of a matrix $A \in \mathbb{C}^{m \times n}$ with $m > n$?
+				</div>
+				<div class="answer">
+					In the reduced SVD, $\hat{U}$, the matrix containing the left singular vectors of $A$, is a $m \times n$ matrix. Although
+					it consists of orthonormal columns, it is not unitary since it is not a square matrix. In the full SVD, $U$ is made a unitary $m \times m$
+					matrix by extending $\hat{U}$ with $m-n$ orthonormal columns. Furthermore $\Sigma$, the matrix of singular values is extended with $m-n$
+					empty rows.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What difference will rank-deficiency make for the SVD of a matrix $A \in \mathbb{C}^{m \times n}$?
+				</div>
+				<div class="answer">
+					If $A$ has rank $r \lt n$, it will have $r$ non-zero singular values.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Calculate the reduced SVD of the matrix
+					$$ A = \begin{pmatrix}-2 & 11\\ -10 & 5\end{pmatrix}$$
+
+				</div>
+				<div class="answer">
+					We can calculate the SVD by calculating the eigenvectors and eigenvalues of $A^TA$ and $AA^T$ (see the next question for further explanation).
+					$$ AA^T = \begin{pmatrix}125 & 75 \\ 75 & 125\end{pmatrix} $$
+
+					We get the characteristic polynomial, which we set to zero to find the eigenvalues:
+					$$ p(a) = (125-a)(125-a)-75^2 = 0$$
+					We get two eigenvalues $\lambda _1 = 50$ and $\lambda _2 = 200$. To find the corresponding eigenvectors, we can divide $AA^T$ and the eigenvalues by 25 and solve for x:
+
+					$$ \begin{pmatrix}5 & 3 \\ 3 & 5\end{pmatrix} x = 2 x $$
+					$$\begin{pmatrix}5 x_1 + 3 x_2 \\ 3 x_1 + 5 x_2\end{pmatrix} -
+					\begin{pmatrix}2 x_1 \\ 2 x_2\end{pmatrix} = 0$$
+
+					The solution for $\lambda _1 = 50$ is $x = \begin{pmatrix} 1 & -1 \end{pmatrix}^T$. For $\lambda _2 = 200$, the solution is $x = \begin{pmatrix} 1 & 1 \end{pmatrix}^T$. However, $U$ shall only contain orthonormal vectors. We have to normalize each eigenvector. Furthermore, we want our singular values to be sorted in descending order along the diagonal of $\Sigma$, so we interchange both eigenvalues and eigenvectors. This results in
+
+					$$ U = \begin{pmatrix}\sqrt{2} & \sqrt{2} \\ \sqrt{2} & -\sqrt{2}\end{pmatrix}, \Sigma = \begin{pmatrix}\sqrt{200} & 0 \\ 0 & \sqrt{50}\end{pmatrix}.$$
+
+					Now we can calculate the eigenvectors of
+					$$ A^TA = \begin{pmatrix}104 & -72 \\ -72 & 146\end{pmatrix} $$ by solving $A^TA x = \lambda _{1/2} x$. This gives us $x = \begin{pmatrix} -0.8 & -0.6 \end{pmatrix}^T$ for $\lambda _1 = 50$ and $x = \begin{pmatrix} -0.6 & 0.8 \end{pmatrix}^T$ for $\lambda _2 = 200$. When forming $V$ we have to interchange the eigenvectors analogously to above resulting in
+
+					$$V = \begin{pmatrix}-0.6 & 0.8 \\ -0.8 & - 0.6\end{pmatrix}.$$
+
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Why can you use the eigenvalues and eigenvectors of $A^TA$ and $AA^T$ to determine the SVD of a matrix
+					$A \in \mathbb{C}^{m \times n}$?
+				</div>
+				<div class="answer">
+					Consider the SVD $A = U\Sigma V^T$
+					$$A^TA = (U\Sigma V^T)^T(U\Sigma V^T)$$
+					$$A^TA = V\Sigma U^T U \Sigma V^T$$
+					$$A^TA = V\Sigma \Sigma V^T$$
+					$$A^TA ~ V= V \Sigma ^2$$
+					Therefore, $V$ consists of the eigenvectors of $A^TA$ and $\Sigma$ of the roots of the eigenvalues of $A^TA$.
+					Similarly, we can show that $U$ consists of the eigenvectors of $AA^T$ and $\Sigma$ will consist of the roots
+					of the eigenvalues of $AA^T$ as well.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given that the singular values of a matrix are distinct, why will the SVD of that matrix be unique?
+				</div>
+				<div class="answer">
+					We can verify this by the geometric interpretation of the SVD. The image of an unit sphere under the multiplication of any matrix
+					is a hyperellipse. The hyperellipse's principal semiaxes are the columns of $U\Sigma$. Distinct singular values mean distinct lengths of
+					the semiaxes. Therefore, $U$ and $\Sigma$ are uniquely determined, as we can assign each column of $U$ to a specific singular
+					value / length of a semiaxis. Since $V$ contains the preimages of the semiaxes, it is unique as well.
+				</div>
+			</li>
+		</ol>
+		<h3>Lecture 5 - More on the SVD</h3>
+		<ol>
+			<li>
+				<div class="question">
+					Let $A = U\Sigma V^T$ be the SVD of a matrix $A \in \mathbb{C}^{m \times n}$ with rank $r$. Why will the range of $A$ be $\langle
+					u_1, ..., u_r\rangle$ and the nullspace of $A$ be $\langle v_{r+1}, ..., v_n\rangle$?
+				</div>
+				<div class="answer">
+					<b>Range($A$):</b> Any $n$-dimensional vector can be expressed as a linear combination of the columns of $V$.
+					Therefore, any vector in the range of $A$ can be expressed as a linear combination of the hyperellipses semiaxes, the columns
+					of $U\Sigma$. But above, we verified that the $(r+1)$-th to the $n$-th row of $\Sigma$ will be empty meaning that the hyperellipses
+					semiaxes in the directions $\{u_{r+1}, ..., u_n\}$ are zero. Therefore, $\langle u_1, ..., u_r\rangle$ suffices to build the range
+					of $A$.
+					<br />
+					<b>Nullspace($A$):</b> How can we choose a vector $x$ to let $U\Sigma V^T x$ be zero? The columns $r+1$ to $n$ of $U\Sigma$ are empty.
+					Thus, the nullspace of $U\Sigma$ is $\langle e_{r+1}, ..., e_n\rangle$ with $e_i$ being the $i$-th canonical unit vector. As
+					$V^TV = I$, $\langle v_{r+1}, ..., v_n\rangle$ will result in $\langle e_{r+1}, ..., e_n\rangle$ when being multiplied by $V^T$.
+
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Why is $||A||_2 = \sigma _1$ and $||A||_F = \sqrt{\sigma _1^2+...+\sigma _r^2}?$
+				</div>
+				<div class="answer">
+					Both follow from the fact that the 2-norm and the Frobenius norm are invariant under unitary multiplication. So it comes down to
+					calculating the norm of $\Sigma$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Why are the singular values of a hermitian matrix its absolute eigenvalues?
+				</div>
+				<div class="answer">
+					A hermitian matrix $A$ has real eigenvalues and orthogonal eigenvectors. That means it has an eigenvalue decomposition
+					$A = Q\Lambda Q^T$, where $Q$ is a unitary matrix containing the eigenvectors of $A$. By applying the necessary permutations and
+					operations on $Q$ and $Q^T$, we can make all entries of $\Lambda$ positive and ordered while keeping $Q$ unitary. This way, we
+					transform the eigenvalue decomposition into a singular value decomposition.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					How can you calculate $|det(A)|$ using the SVD?
+				</div>
+				<div class="answer">
+					$|det(A)| = |det(U)||det(\Sigma )||det(V^*)| = |det(\Sigma)| = \prod _{i=1} ^n \sigma_i$
+				</div>
+			</li>
+		</ol>
+		<h3>Lecture 6 - Projectors</h3>
+		<ol>
+			<li>
+				<div class="question">
+					How is a projector defined?
+				</div>
+				<div class="answer">
+					A projector is a square matrix $P$ that satisfies $P^2 = P$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What do the range and the nullspace of $P$ describe geometrically?
+				</div>
+				<div class="answer">
+					All vectors $v$ in the range of $P$ lie on the shadow of $P$ meaning that the projection will not change their position: $Pv = v$.
+					The nullspace of $P$ contains all the directions $Pv-v$ from a vector $v$ to its projection $Pv$. This can be verified by
+					computing $P(Pv-v) = Pv - Pv = 0$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					How is the complementary projector of $P$ defined and how are its range and nullspace related to those of $P$?
+				</div>
+				<div class="answer">
+					The complementary projector is $I-P$. Let us see, onto which space $I-P$ projects:
+					<ul>
+						<li>
+							$(I-P)v = v-Pv = - (Pv - v)$. This shows us that $I-P$ projects onto the nullspace of $P$.
+							<br/>
+							$\implies range(I-P) \subseteq null(P)$
+						</li>
+						<li>
+							We can also see that all
+							vectors in $null(P)$ are in the range of $I-P$. If a vector $v$ satisfies $Pv = 0$, then $(I-P)v = v$.
+							<br/>
+							$\implies null(P) \subseteq range(I-P)$
+						</li>
+						<li>
+							What is the complementary projector of $I-P$? $I-(I-P) = P$. This way, we can also see that $null(I-P) = range(P)$.
+						</li>
+					</ul>
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Why does a projector separate $\mathbb{C}^m$ in two spaces?
+				</div>
+				<div class="answer">
+					A non-zero vector $v \in \mathbb{C}^m$ is either in $range(P)$ or in $null(P)$:
+					$$v \in null(P) \land v \in range(P)$$
+					$$\implies Pv = 0 \land (I-P)v = 0 $$
+					$$\implies v - Pv = 0 \implies v = 0$$
+					Therefore, we have $range(P) \cap null(P) = {0}$ and $span(range(P) + null(P)) = \mathbb{C}^m$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What is the geometric and algebraic meaning of a orthogonal projector $P$?
+				</div>
+				<div class="answer">
+					Geometrically, the vectors of range($P$) are orthogonal to those of null($P$).
+					<br/>
+					Algebraically, an orthogonal projector satisfies $P = P^*$, because this leads to $Px$ and $(I-P)y$ being orthogonal
+					to each other. In fact, only hermitian projectors can be orthogonal projectors. This can be shown by calculating the SVD of an
+					orthogonal projector P, which will be $Q\Sigma Q^*$ with $Q$ being a unitary matrix. Therefore $P^* = P$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Show that there exists a SVD $Q\Sigma Q^*$ of an orthogonal projector $P$ with $Q \in \mathbb{C}^{m \times m}$ being a
+					unitary matrix.
+				</div>
+				<div class="answer">
+					If $P$ is orthogonal, then range($P$) and null($P$) are orthogonal to each other. Let the first $n$ columns of $Q$ span
+					range($P$) and the other $m-n$ columns span null($P$). Then $PQ$ is a matrix with only the first $n$ columns of $Q$ and zeros
+					otherwise. Therefore, $Q^*PQ$ is a diagonal matrix with $n$ ones followed by $m-n$ zeros on the diagonal. This is our $\Sigma$:
+					$$Q^*PQ = \Sigma \implies P = Q\Sigma Q^*$$
+					As Q is unitary, P is hermitian.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given an unitary matrix $Q \in \mathbb{C}^{m \times m}$. How can you form an orthogonal projector onto $S_1$ along $S_2$ with
+					$span(S_1)$ being $n$-dimensional and $span(S_2)$ being $(m-n)$-dimensional?
+				</div>
+				<div class="answer">
+					Drop $m-n$ columns of $Q$ resulting in $\hat{Q}$. $\hat{Q}\hat{Q}^*$ will be hermitian and therefore an
+					orthogonal projector.
+					<br />
+					($\hat{Q}\hat{Q}^*$ is equals to $Q\Sigma Q^*$ with $\Sigma$ being a diagonal matrix with $n$ ones followed by $m-n$
+					zeros on the diagonal.)
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given an arbitrary vector $v$. How can you build an orthogonal projector $P_v$ that isolates the components of any vector $x$ into
+					a single direction $v$?
+				</div>
+				<div class="answer">
+					Make $v$ a unit vector and build an orthogonal projector with a "very reduced" $\hat{Q}$ consisting only of the normalized $v$:
+					$$\frac{v}{||v||_2}\left(\frac{v}{||v||_2}\right)^* = \frac{vv^*}{v^* v} = P_v $$
+				</div>
+			</li>
+		</ol>
+		<h3>Lecture 7 - QR Factorization</h3>
+		<ol>
+			<li>
+				<div class="question">
+					What is the QR Factorization?
+				</div>
+				<div class="answer">
+					It is a way of expressing an arbitrary matrix $A \in \mathbb{C}^{m \times n}$ as $A=QR$, where $Q$ is an unitary matrix and $R$ is a upper-triangular matrix.
+					If $A$ has full rank, $\langle a_1, ..., a_i \rangle = \langle q_1, ..., q_i \rangle$ for $j = 1,...,n$. If $A$ is rank-deficient,
+					$\langle a_1, ..., a_i \rangle \subset \langle q_1, ..., q_i \rangle$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Can you calculate the QR factorization of a matrix $A \in \mathbb{C}^{n \times m}$ with $m \lt n$?
+				</div>
+				<div class="answer">
+					No, because either $Q$ would have to be a $n \times m$ matrix or $R$ a $n \times m$ matrix. The first case is impossible, because we can only find $n$ $n$-dimensional orthogonal vectors. The second case is impossible as well, because a $n \times m$ matrix cannot be upper-triangular.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Describe the steps of the classical Gram-Schmidt Orthogonalization in words. How are $Q$ and $R$ calculated given a matrix $A$
+					with full rank?
+				</div>
+				<div class="answer">
+					<ul>
+						<li>
+							The Gram-Schmidt Orthogonalization starts with an empty $Q$ and $R$.
+						</li>
+						<li>
+							In the first iteration, it calculates $q_1 = a_1/r_{11}$ with $r_{11} = ||a_1||_2$
+						</li>
+						<li>
+							In each following $j$-th iteration, it adds a new unit vector $q_j$ to $Q$, which is orthogonal to the others.
+							$a_j$ has to be a linear combination of $q_1$ to $q_j$ with $r_{1j}$ to $r_{jj}$ as coefficients. This way it
+							ensures that $\langle a_1, ..., a_j \rangle = \langle q_1, ..., q_j \rangle$.
+						</li>
+						<li>
+							The new $q_j$ can be found via the remainder $v$ in
+							$$v = a_j - (q_1^* a_j)\cdot q_1 - ... - (q_{j-1}^* a_j)\cdot q_{j-1} .$$
+							$q_i$ = $v/||v||_2$, $r_{jj}=||v||_2$ and $r_{ij} = q_i^* a_j$ for $i=1,...,j$
+						</li>
+					</ul>
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What happens in the classical Gram-Schmidt algorithm, if $A$ is rank-deficient?
+				</div>
+				<div class="answer">
+					At some point, $a_j$ can be completely described by $\langle q_1, ..., q_{j-1} \rangle$. Then $v$ will be zero. In this case, we
+					pick an arbitrary $q_j$ orthogonal to $q_1,...,q_{j-1}$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					When will the reduced QR factorization be unique?
+				</div>
+				<div class="answer">
+					If $A$ has full rank and $r_{jj}$ is restricted to be positive.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					How can you solve $Ax=b$ for a given $A \in \mathbb{C}^{m \times n}, b \in \mathbb{C}^m$ using the QR
+					factorization of $A$?
+				</div>
+				<div class="answer">
+					Solve $Rx = Q^*b$ for $x$. This is easier than solving $Ax = b$, because $R$ is upper triangular.
+				</div>
+			</li>
+		</ol>
+		<h3>Lecture 8 - Gram-Schmidt Orthogonalization</h3>
+		<ol>
+			<li>
+				<div class="question">
+					How can you formulate a Gram-Schmidt iteration using one projector per iteration?
+				</div>
+				<div class="answer">
+					We need to project $a_j$ to $q_j$ with $q_j$ being orthogonal to $q_1, ..., q_{j-1}$. By choosing $\hat{Q}_{j-1} =
+					\left( q_1, ..., q_{j-1} \right)$ we can form an orthogonal projector $\hat{Q}_{j-1}\hat{Q}_{j-1}^*$ that will project $a_j$
+					onto $\langle q_1, ..., q_{j-1}\rangle$. Therefore, $P_j = I- \hat{Q}_{j-1}\hat{Q}_{j-1}^*$ will project $a_j$ onto a
+					$m-(j-1)$-dimensional space orthogonal to $q_1, ..., q_{j-1}$. We can then calculate $q_j$ by normalizing $P_j a_j$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What is the difference between an iteration in the modified and the classical Gram-Schmidt algorithm?
+				</div>
+				<div class="answer">
+					The classical Gram-Schmidt uses one projector $P_j$ with rank $m-(j-1)$. The modified Gram-Schmidt uses $j-1$ projectors
+					$P_{\perp q_1}, ..., P_{\perp q_{j-1}}$. Each of those $(m-1)$-dimensional projectors projects onto a space orthogonal to $q_i$.
+					$P_j$ is then replaced by product of those projectors: $P_j=P_{\perp q_{j-1}}\cdot ...\cdot P_{\perp q_{2}}\cdot P_{\perp q_{1}}$.
+					This way, each projector can be applied subsequently from right to left to $a_j$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Why is $P_j$ equal to $P_{\perp q_{j-1}}\cdot ...\cdot P_{\perp q_{2}}\cdot P_{\perp q_{1}}$.
+				</div>
+				<div class="answer">
+					Without loss off generality, we show that $P_{\perp q_2}\cdot P_{\perp q_1} = P_3$:
+					$$P_{\perp q_2}\cdot P_{\perp q_1} = (I-q_1q_1^*)(I-q_2q_2^*) = I - q_1q_1^* - q_2q_2^* = I - \hat{Q}_2 \hat{Q}_2^* = P_3$$
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Give an asymptotic expression for the flop count of the classical and the modified Gram-Schmidt algorithm
+				</div>
+				<div class="answer">
+					In both algorithms the innermost loops are similar: we calculate an inner product and subtract a scaled vector from another.
+					As the vectors dimension is $m$ this amounts to  $\sim 4m$ flops per loop. The loop is called $\sim  n^2/2$ times. This gives a total
+					flop count of $\sim 2mn^2$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Why can the modified Gram-Schmidt algorithm be described as "triangular orthogonalization"?
+				</div>
+				<div class="answer">
+					Each outer loop can be summarized by a multiplication with an upper-triangular matrix $R_1$ to $R_n$.
+					Thus, $A R_1 R_2 \cdot \cdot \cdot R_n = \hat{Q}$.
+				</div>
+			</li>
+		</ol>
+		<h3>Lecture 10 - Householder Triangularization</h3>
+		<ol>
+			<li>
+				<div class="question">
+					What happens with the matrix $A$ from a mathematical point of view in an iteration of the Housholder Triangularization?
+				</div>
+				<div class="answer">
+					A is being multiplied on the left with a unitary matrix $Q_k$. This keeps the first $(k-1)$ columns and rows of $A$ the same. In the $k$-th column it introduces zeros below the diagonal. All other columns may be modified as well from the $k$-th entry on.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What is the general structure of $Q_k$?
+				</div>
+				<div class="answer">
+					$Q_k = \begin{pmatrix}I & 0 \\ 0 & F \end{pmatrix}$ with $I$ being the $(k-1) \times (k-1)$ identity and $F$ a hermitian unitary $(m-k+1) \times (m-k+1)$ matrix called the Householder reflector.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					How can you derive a formula for the Housholder reflector $F$ in the $k$-th iteration without paying respect to numerical stability?
+				</div>
+				<div class="answer">
+					<ul>
+						<li>
+							We want to transform the entries $k,...,m$ of the $k$-th column of $A$ from $x = (x_1,...,x_{m-k+1})^T$ to $Fx = (||x||,0,...0)^T$ by applying $F$.
+						</li>
+						<li>
+							This comes down to transforming $x$ to $||x||e_1$. Source and destination are connected via $v = ||x||e_1 - x$
+						</li>
+						<li>
+							If we would project $x$ with $P_{\perp v}$, we would land on the hyperplane orthogonal to $v$. This hyperplane lies exactly mid-way.
+						</li>
+						<li>
+							We want to go twice as long and "reflect" $x$ across the hyperplane. So instead of using
+							$P_{\perp v} = I-\frac{vv^*}{v^*v}$, we use $F = I- 2\frac{vv^*}{v^*v}$.
+						</li>
+					</ul>
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Why do we want to transform the entries $k,...,m$ of the $k$-th column of $A$ from $x = (x_1,...,x_{m-k+1})^T$ to $Fx = (||x||,0,...0)^T$ by applying $F$?
+				</div>
+				<div class="answer">
+					Because the hyperplane orthogonal to $v = ||x||e_1 - x$ lies exactly between $x$ and $||x||e_1$. If we chose other $ae_1, a \in \mathbb{C}$ with $|a| \ne ||x||$, this would not be the case. Thus we would not be able to reflect across the hyperplane and land exactly on a scalar of $e_1$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					How should you choose the Housholder reflector with respect to numerical stability and why?
+				</div>
+				<div class="answer">
+					<ul>
+						<li>
+							If we choose $-||x||e_1$ as our destination instead of $||x||e_1$, the connecting vector $v$ would also be orthogonal to a hyperplane that lies mid-way.
+						</li>
+						<li>
+							A higher distance between $x$ and $||x||e_1$ causes smaller cancellation errors and thus a higher numerical stability. It is the longest if we reflect to $-sign(x_1)||x||e_1$
+						</li>
+						<li>
+							Thus, $v = -sign(x_1)||x||e_1 - x$
+						</li>
+						<li>
+							The length and sign of $v$ do not matter, so we simplify to $v = sign(x_1)||x||e_1 + x$
+						</li>
+					</ul>
+
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Derive an asymptotic expression for the flop count of applying the Householder algorithm to a matrix $A \in \mathbb{C}^{m \times n}$.
+				</div>
+				<div class="answer">
+					The relevant line of code is $A_{k:m,k:n} = A_{k:m,k:n} - 2v_k(v_k^*A_{k:m,k:n})$. It mainly consists of
+					<ul>
+						<li>
+							a matrix multiplication of a $1 \times (m-k+1)$ matrix with a $(m-k+1) \times (n-k+1)$ matrix. This amounts to $2(m-k+1)(n-k+1)$ flops.
+						</li>
+						<li>
+							a outer product of a $(m-k+1)$-dimensional vector with a $(n-k+1)$-dimensional vector, which amounts to $(m-k+1)(n-k+1)$ flops.
+						</li>
+						<li>
+							a subtraction of two $(m-k+1) \times (n-k+1)$ matrices. This amounts to $(m-k+1)(n-k+1)$flops.
+						</li>
+					</ul>
+					As $k$ goes from $1$ to $n$, we get a total of $\sum _{k=1}^{n}{4(m-k+1)(n-k+1)}$ flops.
+					<br />
+					We can simplify the total to
+					$$4\sum _{k=1}^{n}{(m-n+k)k} = 4 (\sum _{k=1}^{n}{mk} - \sum _{k=1}^{n}{nk} + \sum _{k=1}^{n}{kk})$$
+					$$= 4 (m\frac{n^2}{2} - \frac{n^3}{2} + \frac{n^3}{3})$$
+					$$= 2mn^2 - \frac{2}{3}n^3$$
+				</div>
+			</li>
+		</ol>
+		<h3>Lecture 11 - Least Squares Problems</h3>
+		<ol>
+			<li>
+				<div class="question">
+					Given are a matrix $A \in \mathbb{C}^{m \times n} (m \ge n)$ and a vector $b \in \mathbb{C}^m$. How is the residual $r$ defined in a least squares problem $Ax = b$?
+				</div>
+				<div class="answer">
+					$r = b-Ax$
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Why is the optimal solution the orthogonal projection of $b$ to the range of $A$?
+				</div>
+				<div class="answer">
+					We search the closest point $y = Ax$ to $b$. All possible points lie in the range of $A$. If $y$ is the closest possible point, then $r = b-y$ will be orthogonal to the range of $A$. As $-r$ is the direction of the projection, we know that we need to project $b$ orthogonally onto the range of $A$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What are the normal equations of a least squares problem?
+				</div>
+				<div class="answer">
+					$A^*Ax = A^*b$, derived from $A^*r = 0$ and $r=b-Ax$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					How is the pseudoinverse $A^+$ defined?
+				</div>
+				<div class="answer">
+					$A^+ = (A^*A)^{-1}A^*$
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Name three ways of solving a least squares problem.
+				</div>
+				<div class="answer">
+					<ul>
+						<li>
+							Normal equations
+						</li>
+						<li>
+							QR Factorization
+						</li>
+						<li>
+							SVD
+						</li>
+					</ul>
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Describe the way of solving least squares problems with normal equations.
+				</div>
+				<div class="answer">
+					We take the normal equations $A^*Ax = A^*b$, but replace $A^*A$ with its Cholesky factorization $R^*R$.
+					<ol>
+						<li>
+							Compute $A^*A$ and $A^*b$
+						</li>
+						<li>
+							Compute the Cholesky factorization of $A^*A$ resulting in the problem $R^*Rx = A^*b$
+						</li>
+						<li>
+							Solve the lower-triangular system $R^*w = A^*b$ for $w$.
+						</li>
+						<li>
+							Solve the upper-triangular system $Rx = w$ for $x$.
+						</li>
+					</ol>
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Which parts of solving least squares problems with normal equations are dominating the work load? Give an asymptotic estimate of the total work load of solving the least squares problem.
+				</div>
+				<div class="answer">
+					The dominating steps are the first two steps, which together take $\sim mn^2 + \frac{1}{3}n^3$ flops.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Describe the way of solving least squares problems with QR factorization.
+				</div>
+				<div class="answer">
+					We calculate the orthogonal projector $P$. As range($\hat{Q}$) $=$ range($A$), we can take $P=\hat{Q}\hat{Q}^*$. This way, we reach a system with an exact solution $y = Pb = \hat{Q}\hat{Q}^*b$.
+					<br/>
+					We replace $A$ with $\hat{Q}\hat{R}$ and solve $\hat{R}x = \hat{Q}^*b$.
+					<br/>
+					In efficient steps:
+					<ol>
+						<li>
+							Compute the QR factorization $A=\hat{Q}\hat{R}$.
+						</li>
+						<li>
+							Compute $\hat{Q}^*b$.
+						</li>
+						<li>
+							Solve $\hat{R}x = \hat{Q}^*b$.
+						</li>
+					</ol>
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Which parts of solving least squares problems with QR factorization are dominating the work load? Give an asymptotic estimate of the total work load of solving the least squares problem.
+				</div>
+				<div class="answer">
+					The calculation of the QR factorization dominates the work load. If we use Householder reflections, we have a total of $\sim 2mn^2 - \frac{2}{3}n^3$ flops.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Describe the way of solving least squares problems with SVD.
+				</div>
+				<div class="answer">
+					Similar to the way of solving it with QR factorization. Instead of range($\hat{Q}$) $=$ range($A$), we make use of the fact that range($\hat{U}$) $=$ range($A$).
+					<br/>
+					This leads to $y = Pb = \hat{U}\hat{U}^*b$. Ultimately we need to solve $\hat{\Sigma}V^*x = \hat{U}^*b$.
+					<ol>
+						<li>Compute the SVD $A = \hat{U}\hat{\Sigma}V^*$.</li>
+						<li>Compute the right side $\hat{U}^*b$.</li>
+						<li>Solve the diagonal system $\hat{\Sigma}w = \hat{U}^*b$ for w.</li>
+						<li>Compute $x$ directly with $x = Vw$.</li>
+					</ol>
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Which parts of solving least squares problems with SVD are dominating the work load? Give an asymptotic estimate of the total work load of solving the least squares problem.
+				</div>
+				<div class="answer">
+					The calculation of the SVD factorization dominates the work load.
+					<ul>
+						<li>For $m \gg n$ this is the same as for a QR factorization, $\sim 2mn^2 - \frac{2}{3}n^3$ flops.</li>
+						<li>For $m \approx n$ the work load is $\sim 2mn^2 + 11n^3$ flops.</li>
+					</ul>
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					How do the three algorithms (normal equations, QR, SVD) differ in their performance?
+				</div>
+				<div class="answer">
+					<ul>
+						<li>Normal equations is the fastest way.</li>
+						<li>QR factorization is numerically more stable than normal equations.</li>
+						<li>If $A$ is close to rank-deficient, the QR factorization suboptimal regarding numerical stability. Then solving the least squares problem with SVD is a more stable way.</li>
+					</ul>
+				</div>
+			</li>
+		</ol>
+		<h3>Lecture 12 - Conditioning and Conditioning Numbers</h3>
+		<ol>
+			<li>
+				<div class="question">
+					Given are a small pertubation of $x$, called $\delta x$ and the resulting perturbation of $f(x)$, called $\delta f$. $\delta f$ is defined as $\delta f = f(x+\delta x) - f(x)$. Let $\delta x$ and $\delta f$ be infinitesimal. How is the absolute condition number $\hat{\kappa}$ of the problem $f$ at $x$ defined?
+				</div>
+				<div class="answer">
+					$\hat{\kappa} = \sup _{\delta x} \frac{||\delta f||}{||\delta x||}$
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					How is the Jacobian of $f$ at $x$ defined and how can it be used to calculate the absolute condition number?
+				</div>
+				<div class="answer">
+					The Jacobian is a matrix, whose $i,j$ entry is the partial derivative $\partial f_i/\partial x_j$ at $x$. For $\delta x \rightarrow 0$, $\delta f = J(x)\delta x$.
+					<br />Therefore, $\hat{\kappa} = ||J(x)||$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					How is the relative condition number defined, if $\delta x$ and $\delta f$ are infinitesimal? Give one definition with and one without using the Jacobian.
+				</div>
+				<div class="answer">
+					The relative condition number does not consider the absolute perturbations of $f$ and $x$, but their relative perturbations.
+					$$\kappa = \sup _{\delta x} \frac{||\delta f||/||f||}{||\delta x||/||x||} = \hat{\kappa}  \frac{||x||}{||f(x)||}$$
+					$$\kappa = \frac{||J(x)||}{||f(x)||/||x||}$$
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given is $f : x \mapsto 3x$. Calculate the Jacobian, absolute and relative condition number of $f$ at any $x$.
+				</div>
+				<div class="answer">
+					$$J(x) = f'(x) = 3 \qquad \hat{\kappa} = 3 \qquad \kappa = \frac{3}{||f(x)||/||x||} = \frac{3}{3x/x} = 1$$
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given is $f : x \mapsto x^2$. Calculate the Jacobian, absolute and relative condition number of $f$ at any $x$.
+				</div>
+				<div class="answer">
+					$$J(x) = |2x| \qquad \hat{\kappa} = |2x| \qquad \kappa = \frac{|2x|}{||f(x)||/||x||} = \frac{|2x|}{|x^2/x|} = 2$$
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given is $f : x \mapsto (x+50)^2$. Calculate the Jacobian, absolute and relative condition number of $f$ at any $x$.
+				</div>
+				<div class="answer">
+					$$J(x) = |2x + 100| \qquad \hat{\kappa} = |2x + 100| \qquad \kappa = \frac{|2x+100| ||x||}{||f(x)||} = \frac{2x^2+100|x|}{(x+50)^2}$$
+					This means, that generally, $f$ is well-conditioned, because $\kappa \lt 2$. However, for $x \rightarrow -50$, $f$ is ill-conditioned.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given is $f : x \mapsto x_1 - x_2$ for a vector $x = (x_1,x_2)^* \in \mathbb{C}^2$. Calculate the Jacobian, absolute and relative condition number of $f$ at any $x$ using the $\infty$-norm.
+				</div>
+				<div class="answer">
+					$$J(x) = \begin{pmatrix} \frac{\partial f}{\partial x_1} & \frac{\partial f}{\partial x_1}\end{pmatrix} = \begin{pmatrix}1 & -1 \end{pmatrix}$$
+					$$\hat{\kappa} = ||J(x)||_{\infty} = 2 \qquad \kappa = \frac{2}{||f(x)||_{\infty}/||x||_{\infty}} = \frac{2}{|x_1-x_2| / max\{|x_1|,|x_2|\}}$$
+					This means, the problem is ill-conditioned for $x_1 \approx x_2$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Why is the problem of finding the roots of a polynomial ill-conditioned?
+				</div>
+				<div class="answer">
+					Changing the coefficients of a polynomial of degree 2 by $\delta c$ can lead to a change of the roots by $\sqrt{\delta c}$. This means that $J = \infty$ and therefore $\kappa = \infty$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What is the condition of matrix-vector multiplication with a fixed nonsingular square $A$ and a perturbed $x$? Give a definition using $x$ and a bound without using $x$.
+				</div>
+				<div class="answer">
+					$$\kappa = ||A|| \frac{||x||}{||Ax||}$$
+					$$\frac{||x||}{||Ax||} = \left(\frac{||Ax||}{||x||}\right)^{-1} \le ||A^{-1}||$$
+					$$\implies \kappa \le ||A||||A^{-1}||$$
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What is the condition of computing $x$ in $Ax = b$, if $A$ and $b$ are given. Assume that $A$ is nonsingular, square and fixed and $b$ is perturbed.
+				</div>
+				<div class="answer">
+					This comes down to calculating $A^{-1}b$, so the condition is $\kappa = ||A^{-1}||\frac{||b||}{||x||} \le ||A^{-1}||||A||$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					How is the condition number of non-singular square matrix $A \in \mathbb{C}^{m\times m}$ defined?
+				</div>
+				<div class="answer">
+					$\kappa(A) = ||A||||A^{-1}||$
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					How can you calculate the condition number of a non-singular square matrix $A \in \mathbb{C}^{m\times m}$ in the 2-norm?
+				</div>
+				<div class="answer">
+					$||A||_2 = \sigma _1, ||A^{-1}||_2 = 1 / \sigma _m \implies \kappa(A) = \sigma _1 / \sigma _m $
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					How is the condition number of a non-singular rectangular matrix $A \in \mathbb{C}^{m\times n}, m \ge n$ defined?
+				</div>
+				<div class="answer">
+					We use the pseudoinverse: $\kappa(A) = ||A||||A^+||$
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					What is the condition of computing $x$ in $Ax = b$, if $A$ and $b$ are given. Assume that $A$ is nonsingular, square and perturbed and $b$ is fixed.
+				</div>
+				<div class="answer">
+					$\kappa = ||A||||A^{-1}|| = \kappa(A)$
+				</div>
+			</li>
+		</ol>
+		<h3>Lecture 13 - Floating Point Arithmetic</h3>
+		<ol>
+			<li>
+				<div class="question">
+					What are the two fundamental requirements that a computer with floating point arithmetic should fulfill for representing and operations with real numbers? Assume that the gap between $1$ and the next larger floating point number on this computer is given by $2\epsilon_{machine}$.
+				</div>
+				<div class="answer">
+					<ol>
+						<li>The error $\epsilon$ introduced by <b>representing</b> a number $x$ in floating point arithmetic should not be larger than $\epsilon_{machine}$.
+							<br/>$fl(x) = x(1+\epsilon)$ with $|\epsilon| \le \epsilon_{machine}$. </li>
+						<li>The error $\epsilon$ introduced by a floating point <b>operation</b> $\oplus$ should not be larger than $\epsilon_{machine}$:
+							<br/>$x \oplus y = (x+y)(1+\epsilon)$ with $|\epsilon| \le \epsilon_{machine}$. (You can replace $+$ with $-, \cdot,$ and $\div$ as well)</li>
+					</ol>
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Should both fundamental requirements hold for complex numbers as well?
+				</div>
+				<div class="answer">
+					Basically, yes. If complex numbers are represented by two real numbers denoting the real and the imaginary part, then the requirements hold for addition and subtraction. For multiplication and division, $\epsilon{machine}$ must be scaled by at less than $6$ for the requirement to be valid.
+				</div>
+			</li>
+		</ol>
+		<h3>Lecture 14 - Stability</h3>
+		<ol>
+			<li>
+				<div class="question">
+					How is the relative error of a computation $\tilde{f}(x)$ defined?
+				</div>
+				<div class="answer">
+					The relative error with respect to the correct result $f(x)$ is defined as $\frac{||\tilde{f}(x)-f(x)||}{||f(x)||}$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					When is an algorithm $\tilde{f}$ for a problem $f$ accurate?
+				</div>
+				<div class="answer">
+					It is accurate, if <b>for each $x$</b>, the relative error is $ \mathcal{O}(\epsilon_{machine})$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					When is an algorithm $\tilde{f}$ for a problem $f$ stable?
+				</div>
+				<div class="answer">
+					It is stable, if <b>for all $x$</b> we can find <b>some</b> $\tilde{x}$, which are relatively close to $x$, for which our answer would have been nearly the right answer:
+					$$\frac{||\tilde{f}(x)-f(\tilde{x})||}{||f(\tilde{x})||} = \mathcal{O}(\epsilon_{machine})$$
+					for some $\tilde{x}$ with $\frac{||\tilde{x}-x||}{||x||} = \mathcal{O}(\epsilon_{machine})$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					When is an algorithm $\tilde{f}$ for a problem $f$ backward-stable?
+				</div>
+				<div class="answer">
+					It is backward-stable, if <b>for all $x$</b> we can find <b>some</b> $\tilde{x}$, which are relatively close to $x$, for which our answer would have been the right answer:
+					$$\tilde{f}(x) = f(\tilde{x})$$
+					for some $\tilde{x}$ with $\frac{||\tilde{x}-x||}{||x||} = \mathcal{O}(\epsilon_{machine})$.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					<b>Note:</b> two important things for which I could not formulate questions yet:
+				</div>
+				<div class="answer">
+					<ul>
+						<li>If the stability of an algorithm is independent of its input (for example a matrix $A$), it still dependends on the dimensionality of $A$. A different dimensionality means different spaces $X$ and $Y$ and therefore a different $f : X \mapsto Y$. A bound for $\frac{||\tilde{f}(x)-f(\tilde{x})||}{||f(\tilde{x})||}$ may depend on the dimensionality.</li>
+						<li>The stability of an algorithm is independent of the choice of norms. This is because for norms on the same space, two constants can be found so that one norm bounds the other for all $x$ and vice-versa.</li>
+					</ul>
+				</div>
+			</li>
+		</ol>
+		<h3>Lecture 15 - More on Stability</h3>
+		<ol>
+			<li>
+				<div class="question">
+					Given is an algorithm $\tilde{f}(x)$ that computes $f(x) = 2x$ as $x \oplus x$. Is this algorithm backward stable, stable, but not backward stable, or unstable?
+				</div>
+				<div class="answer">
+					$$\begin{align}
+					\tilde{f}(x) &= fl(x)\oplus fl(x)  \\
+								&= (x(1+\epsilon_1)) \oplus (x(1+\epsilon_1)) \\
+								&= (x(1+\epsilon_1) + x(1+\epsilon_1))(1+\epsilon_2)\\
+								&= 2x(1+\epsilon_3)
+					\end{align}
+					$$
+					with $|\epsilon_1|, |\epsilon_2| \le \epsilon_{machine}$ and $|\epsilon_3| \le 2\epsilon_{machine} + \mathcal{O}(\epsilon_{machine})$.
+					This means that we can find $\tilde{x}$ with $\frac{|\tilde{x}-x|}{|x|} = \mathcal{O}(\epsilon_{machine})$, so that $\tilde{f}(x) = f(\tilde{x})$.
+					<br/>$\implies$ backward stable
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given is an algorithm $\tilde{f}(x)$ that computes $f(x) = x - x$ as $x \ominus x$. Is this algorithm backward stable, stable, but not backward stable, or unstable?
+				</div>
+				<div class="answer">
+					$$\begin{align}
+					\tilde{f}(x) &= fl(x)\ominus fl(x)  \\
+								&= (x(1+\epsilon_1)) \ominus (x(1+\epsilon_1)) \\
+								&= 0
+					\end{align}
+					$$
+					with $|\epsilon_1| \le \epsilon_{machine}$. Since $f(\tilde{x})$ will be zero as well, we can find $\tilde{x}$ with $\frac{|\tilde{x}-x|}{|x|} = \mathcal{O}(\epsilon_{machine})$, so that $\tilde{f}(x) = f(\tilde{x})$.
+					<br/>$\implies$ backward stable
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given is an algorithm $\tilde{f}(x)$ that computes $f(x) = x + 1$ as $x \oplus 1$. Is this algorithm backward stable, stable, but not backward stable, or unstable?
+				</div>
+				<div class="answer">
+					$$\begin{align}
+					\tilde{f}(x) &= fl(x)\oplus 1  \\
+								&= (x(1+\epsilon_1)) \oplus 1 \\
+								&= (x(1+\epsilon_1) + 1)(1+\epsilon_2)
+					\end{align}
+					$$
+					with $|\epsilon_1|,|\epsilon_2| \le \epsilon_{machine}$. For $x \rightarrow 0$, the absolute error will be $\mathcal{O}(\epsilon_{machine})$. To reach $\tilde{f}(x) = f(\tilde{x})$, we need $\tilde{x} = x + C \epsilon_{machine}$. But since $x \rightarrow 0$, these $\tilde{x}$ cannot satisfy $\frac{|\tilde{x}-x|}{|x|} = \mathcal{O}(\epsilon_{machine})$.
+					<br/>$\implies$ not backward stable
+					<br/>Nevertheless, for $\tilde{x} = x$, $f(\tilde{x}) = x+1$ and therefore $\frac{||\tilde{f}(x)-f(\tilde{x})||}{f(\tilde{x})} = \mathcal{O}(\epsilon_{machine})$
+					<br/>$\implies$ stable
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					Given that the computation of an rank-one outer product $A = xy^*$ of two vectors $x$ and $y$ is stable, explain why it cannot be backward stable.
+				</div>
+				<div class="answer">
+					The result of $\tilde{f}$ will be $\tilde{A}$, a matrix with small perturbations. To reach $\tilde{f}(x,y) = f(\tilde{x},\tilde{y})$, we would have to find $\tilde{x}$ and $\tilde{y}$, so that $\tilde{x}\tilde{y}^* = \tilde{A}$. Generally, a perturbation of $A$ will not have rank exactly $1$, so we cannot find $\tilde{x}$ and $\tilde{y}$. This means that the computation is not backward stable.
+				</div>
+			</li>
+			<li>
+				<div class="question">
+					How can you relate the condition number $\kappa$ of a problem to the relative errors of a backward stable algorithm solving that problem?
+				</div>
+				<div class="answer">
+					By the definition of backward stability and the condition number $\kappa$, we can see that the relative errors satisfy
+					$$\frac{||\tilde{f}(x)-f(x)||}{||f(x)||} = \mathcal{O}(\kappa (x) \epsilon_{machine})$$
+				</div>
+			</li>
+		</ol>
+	</body>
+</html>
