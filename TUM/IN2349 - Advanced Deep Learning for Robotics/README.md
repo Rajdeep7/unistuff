@@ -2,7 +2,7 @@
 
 Course page: https://bbaeuml.github.io/ss18-advanced-dl-for-robotics/
 
-`Summary.md` contains the content of all lectures in Q&A format. Most of the content consists of formulas (for example derivation of Monte Carlo Dropout). These are not in the .md file, so it might not be too helpful for studying for the exam.
+`Summary.md` contains a few questions and answers I wrote down as preparation for the exam. Most of the answers consists of formulas (for example derivation of Monte Carlo Dropout). These are not in the .md file, so it might not be too helpful for studying for the exam.
 
 The exam contained three large exercises:
 1. Bayesian Deep Learning
